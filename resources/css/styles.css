@@ -1,0 +1,112 @@
+.navbar, .footer {
+    background-color: #003371;
+}
+.navbar > *, .footer > * {
+    color: white;
+}
+.logo {
+    max-width: 150px;
+    height: auto;
+    font-size: 4rem;
+    font-weight: bold;
+    letter-spacing: -2px;
+    background: linear-gradient(to bottom, white, #4da6ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.logo-footer {
+    max-width: 300px;
+    height: auto;
+}
+body {
+    background-color: #f2f2f2;
+}
+.btn-subscribe {
+    background-color: #c0c0c0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 20px;
+}
+.btn-subscribe:hover {
+    background-color: #a0a0a0;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: #4da6ff;
+}
+.icon-box {
+    background-color: #f0f0f2;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.category-card {
+    background-color: #6c757d;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    margin: 10px;
+    min-height: 200px;
+}
+.profile-card {
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.profile-image {
+    background-color: #52a5e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+.token-section {
+    background-color: #52a5e0;
+    color: white;
+    padding: 50px 0;
+}
+.destacados-section {
+    background-color: #d9d9d9;
+    color: white;
+    padding: 50px 0;
+}
+.token-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin: 10px;
+}
+.btn-view, .btn-buy {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+.btn-view:hover, .btn-buy:hover {
+    background-color: #5a6268;
+}
+.tag {
+    background-color: white;
+    color: black;
+    border-radius: 20px;
+    padding: 5px 15px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.welcome-section {
+    background-color: #3c81b6;
+}
+
+.funcion-section {
+    background-color: white;
+}
+
+.categorias-section {
+    background-color: white;
+}
