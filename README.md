@@ -1,66 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<hr>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+    <img src="public/images/truekly.png" width="500" alt="Truekly Logo">
 </p>
 
-## About Laravel
+<hr>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+    La plataforma de intercambio de servicios basada en trueque y créditos virtuales.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<hr>
+<br>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# 💱 **Truekly**
 
-## Learning Laravel
+Bienvenido a **Truekly**, la plataforma donde el **trueque** de habilidades y servicios se encuentra con la innovación de los **Tokenskills**, una moneda digital que facilita las transacciones entre usuarios. Si no puedes intercambiar directamente tus habilidades, no te preocupes, los **Tokenskills** permiten realizar cualquier transacción de manera rápida, sencilla y segura.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Características Clave
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Truekly** ofrece una experiencia única con estas funcionalidades:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- 🤝 **Intercambio Directo de Servicios:** ¿Sabes frontend y alguien necesita aprender backend? ¡Intercámbialo! Truekly te permite negociar habilidades entre usuarios sin intermediarios ni dinero real.
 
-## Laravel Sponsors
+- 💰 **Tokenskills:** Tu moneda dentro de Truekly. Acumula Tokenskills ofreciendo tus servicios y utilízalos para adquirir otros servicios o incluso venderlos a otros usuarios.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- 🎯 **Interfaz Intuitiva:** Truekly está diseñada para ser extremadamente fácil de usar, permitiendo a los usuarios gestionar tanto los servicios que ofrecen como los Tokenskills con un par de clics.
 
-### Premium Partners
+- 🔄 **Sistema de Trueque Flexible:** Fomenta el intercambio directo de conocimientos. Si no es posible un trueque directo, puedes utilizar **Tokenskills** como alternativa, haciendo las transacciones aún más accesibles.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Innovaciones
 
-## Contributing
+**Truekly** implementa varias características innovadoras que mejoran la experiencia del usuario:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- 🏆 **Trueque Directo:** Truekly fomenta la economía del intercambio, sin necesidad de intermediarios ni dinero real. ¡Negocia servicios y conocimientos de forma directa!
 
-## Code of Conduct
+- 💸 **Venta de Tokenskills:** Si no necesitas utilizar tus Tokenskills de inmediato, puedes venderlos a otros usuarios a un precio más bajo, ayudando a aquellos que necesiten obtener créditos de forma más económica.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- 👨‍💻 **Comisión por Transacción:** Truekly obtiene una pequeña comisión sobre las transacciones realizadas entre los usuarios, lo que asegura la sostenibilidad a largo plazo de la plataforma.
 
-## Security Vulnerabilities
+## Futuras Implementaciones
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Truekly** no se detiene aquí y tenemos grandes planes para el futuro:
 
-## License
+- 🚨 **Alertas de Servicios:** Los usuarios podrán configurar alertas personalizadas para recibir notificaciones sobre nuevos servicios que coincidan con sus necesidades.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- 📱 **Aplicación Móvil:** Estamos desarrollando una versión móvil para que puedas gestionar tus servicios y Tokenskills desde cualquier lugar, de forma rápida y cómoda.
+
+- 📝 **Sistema de Valoraciones:** Los usuarios podrán dejar valoraciones sobre los servicios que recibieron, lo que ayudará a crear una red de confianza y a mejorar la calidad del intercambio.
+
+> Hecho con pasión por Darren Angelo Lajara Corpuz y Seven de León Amador 🚀
