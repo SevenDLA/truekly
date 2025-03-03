@@ -14,6 +14,8 @@
         @include('nav')
         @yield('content')       
         @include('footer')
+        @yield('scripts')
     </div>
+
 </body>
 </html>

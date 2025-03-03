@@ -22,7 +22,7 @@
     <div class="row mb-5">
         <div class="col-12">
             <a class="navbar-brand" href="/">
-                <img src="truekly.png" class="img-fluid logo-footer">
+                <img src="{{ asset('images/truekly.png') }}" class="img-fluid logo-footer">
             </a>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light p-4">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
-      <img src="truekly.png" class="img-fluid logo">
+      <img src="{{ asset('images/truekly.png') }}" class="img-fluid logo">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -17,9 +17,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Carrito</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/users">Usuarios</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/services">Servicios</a>

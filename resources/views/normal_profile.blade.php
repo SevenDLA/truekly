@@ -1,5 +1,6 @@
 @extends('layout')
 
+
 @section('content')
 @vite(['resources/js/script.js'])
 <div class="container mt-4">
@@ -84,6 +85,13 @@
                                 <h5 class="card-title text-primary">${service.title}</h5>
                                 <p class="card-text">${service.description}</p>
                                 <p class="card-text"><strong>Precio:</strong> $${service.price}</p>
+                                <p>${service.id}</p>
+                                <a class="btn btn-warning" href="editar_servicio/${service.id}">Edit</a>
+                                <form action="/eliminar_servicio/${service.id}" method="POST" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
                             </div>
                         </div>
                     `);

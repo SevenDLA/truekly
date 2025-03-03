@@ -5,6 +5,11 @@
 @section('content')
 <div class="container mt-4">
     <div class="row">
+        <!-- Barra de búsqueda -->
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar usuarios..." title="Escribe un nombre de usuario">
+    </div>
+
+    <div class="row" id="user-list">
         @foreach ($users as $user)
         <div id="USER{{ $user->id }}" class="col boxes" style="position: relative; left: 0px; top: 0px;">
             <div class="card mb-4 rounded-3 shadow-sm">
@@ -37,4 +42,27 @@
         <a href="/users/nuevo" class="btn btn-success btn-lg"><i class="bi bi-plus"></i> Nuevo usuario</a>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    function myFunction() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("user-list");
+        li = ul.getElementsByClassName("boxes");
+        
+        // Recorremos todos los elementos de la lista y los mostramos u ocultamos según la búsqueda
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByClassName("card-header")[0]; // Obtener el nombre del usuario
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = ""; // Mostrar el item
+            } else {
+                li[i].style.display = "none"; // Ocultar el item
+            }
+        }
+    }
+</script>
 @endsection

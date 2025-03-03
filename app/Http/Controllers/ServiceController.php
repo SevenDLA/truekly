@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Service;
 
+use App\Http\Controllers\UserController;
+
 class ServiceController extends Controller
 {   
     function listado()
@@ -117,10 +119,47 @@ class ServiceController extends Controller
     
     /**SERVICIOS ACTUALES**/
     
-    function create_new_user_service($id)
+    function service_formulario($id)
     {
         return view('services.create_new_service',compact('id'));
     }
+
+    function almacenar_servicio(Request $request, $id)
+    {
+      $service = New Service();
+
+      $service->user_id     = $id;
+      $service->title       = $request->title;
+      $service->description = $request->description;
+      $service->price       = $request->price;
+
+      $service->save();
+
+      return redirect()->route('profile.normal');
+    }
+
+    function eliminar_servicio_usuario($id)
+    {
+        $id = (int) $id;
+
+        $servicio = Service::find($id);
+
+
+        $servicio->delete();
+        
+        return redirect()->route('profile.normal')->with('success', 'Service deleted successfully.');
+    }
+
+    function modificar_servicio_usuario($id)
+    {
+
+        $id = (int) $id;
+
+        $servicio = Service::find($id);
+
+        return view('services.edit_service', compact('servicio', 'id'));
+    }
+
 
     public function getUserServicesAjax($userId)
     {
