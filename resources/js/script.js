@@ -49,13 +49,11 @@ $(document).ready(function ()
             },
             success: function (response) 
             {
-                alert(`${fieldType.charAt(0).toUpperCase() + fieldType.slice(1)} actualizado correctamente.`);
                 MessageBox.showMessage("success", `${fieldType.charAt(0).toUpperCase() + fieldType.slice(1)} actualizado correctamente.`, `${fieldType}`)
                 $(`#user-${fieldType}`).text(newValue); // Update UI
                 $("#" + fieldType).val(""); // Clear input field
             },
             error: function (xhr) {
-                alert("Error al actualizar: " + xhr.responseJSON.message);
                 MessageBox.showMessage("error", xhr.responseJSON.message, `${fieldType}`)
             }
         });

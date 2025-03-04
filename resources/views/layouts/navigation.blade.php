@@ -18,7 +18,12 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('users.listado')" :active="request()->routeIs('users.listado')">
-                        {{ __('Users') }}
+                        {{ __('Usuarios') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('services.listado')" :active="request()->routeIs('services.listado')">
+                        {{ __('Servicios') }}
                     </x-nav-link>
                 </div>
             </div>

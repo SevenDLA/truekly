@@ -7,10 +7,11 @@
 @section('content')
 
 <x-guest-layout>
-    <form method="POST" action="{{ route('service.create',['id' => $id]) }}">
+    <form method="POST" action="{{ route('service.store',['id_usuario', '$id_usuario', 'id_servicio' => $id_servicio]) }}">
         @csrf
         
         <input type="hidden" name="oper" value="create_service" />
+        <input type="hidden" name="id_servicio" value="{{ $id_servicio }}"/>
 
         <!-- Título -->
         <div class="mb-3">

@@ -14,12 +14,8 @@ class ServiceController extends Controller
     function listado()
     {
 
-        $users = User::paginate(7);
-
-        $SEX     = User::SEX;
-
-
-        return view('services.service',compact('users','SEX'));
+        $services = Service::with('user')->paginate(7);
+        return view('services.service', compact('services'));
     }
 
 
@@ -119,16 +115,16 @@ class ServiceController extends Controller
     
     /**SERVICIOS ACTUALES**/
     
-    function service_formulario($id)
+    function service_formulario($id_usuario)
     {
-        return view('services.create_new_service',compact('id'));
+        return view('services.create_new_service',compact('id_usuario'));
     }
 
-    function almacenar_servicio(Request $request, $id)
+    function almacenar_servicio(Request $request)
     {
-      $service = New Service();
+    $service = empty($request->id_servicio)? new Service() : Service::find($request->id_servicio);
 
-      $service->user_id     = $id;
+      $service->user_id     = auth()->id();
       $service->title       = $request->title;
       $service->description = $request->description;
       $service->price       = $request->price;
@@ -150,14 +146,10 @@ class ServiceController extends Controller
         return redirect()->route('profile.normal')->with('success', 'Service deleted successfully.');
     }
 
-    function modificar_servicio_usuario($id)
+    function modificar_servicio_usuario($id_usuario,$id_servicio)
     {
-
-        $id = (int) $id;
-
-        $servicio = Service::find($id);
-
-        return view('services.edit_service', compact('servicio', 'id'));
+        $servicio = Service::find($id_servicio);
+        return view('services.edit_service', compact('id_usuario', 'id_servicio', 'servicio'));
     }
 
 

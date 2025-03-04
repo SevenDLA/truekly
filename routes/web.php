@@ -24,10 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/perfil',     [UserController::class,    'perfil']) ->name('profile.normal');
 
     Route::delete('/eliminar_servicio/{id}', [ServiceController::class, 'eliminar_servicio_usuario']);
-    Route::get('/editar_servicio/{id}', [ServiceController::class, 'modificar_servicio_usuario']);
+    Route::get('/editar_servicio/{id_usuario}/{id_servicio}', [ServiceController::class, 'modificar_servicio_usuario'])
+    ->name('editar_servicio');
 
-    Route::get('/nuevo_servicio/{id}', [ServiceController::class, 'service_formulario']);
-    Route::post('/nuevo_servicio/{id}', [ServiceController::class, 'almacenar_servicio'])->name('service.create');
+    Route::get('/nuevo_servicio/{id_usuario}', [ServiceController::class, 'service_formulario']);
+    Route::post('/nuevo_servicio/{id_usuario}', [ServiceController::class, 'almacenar_servicio'])->name('service.store');
     
 
 });
@@ -52,6 +53,7 @@ Route::get('/admin', function () {
 
 Route::get('/admin/listado', [UserController::class, 'listado'])->middleware('auth')->name('users.listado');
 
+Route::get('/admin/services', [ServiceController::class, 'listado'])->middleware('auth')->name('services.listado');
 
 Route::post('/update-user-info', [UserController::class, 'updateUserInfo'])->middleware('auth');
 

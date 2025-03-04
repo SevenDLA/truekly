@@ -86,7 +86,8 @@
                                 <p class="card-text">${service.description}</p>
                                 <p class="card-text"><strong>Precio:</strong> $${service.price}</p>
                                 <p>${service.id}</p>
-                                <a class="btn btn-warning" href="editar_servicio/${service.id}">Edit</a>
+                                <p>${service.user_id}</p>
+                                <a class="btn btn-warning" href="editar_servicio/${service.user_id}/${service.id}">Edit</a>
                                 <form action="/eliminar_servicio/${service.id}" method="POST" style="display:inline;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -98,7 +99,7 @@
                 });
                 }
 
-                $('#servicesList').append(`<a href="/nuevo_servicio/{{ $current_logged_in_user->id }}">Añadir servicio</a>`)
+                $('#servicesList').append(`<a href="/nuevo_servicio/{{ $current_logged_in_user->id }}" class="btn btn-primary">Añadir servicio</a>`)
             },
             error: function(xhr) {
                 console.error("Error al cargar servicios:", xhr);

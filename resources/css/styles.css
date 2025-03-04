@@ -15,6 +15,21 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+/* Esto evitará que el acordeón se esconda completamente */
+.accordion-collapse {
+    visibility: hidden;
+    height: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease, height 0.3s ease;
+}
+
+/* Esta clase controla la visibilidad y el tamaño cuando el acordeón se abre */
+.accordion-collapse.show {
+    visibility: visible;
+    height: auto;
+    opacity: 1;
+}
+
 .logo-footer {
     max-width: 300px;
     height: auto;
