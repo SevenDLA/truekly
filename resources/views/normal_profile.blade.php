@@ -65,9 +65,13 @@
     
     <div id="servicesList">
     </div>
-    <script>
+    
+    
+</div>
+
+<script>
         $(document).ready(function() {
-        let userId = "{{ $current_logged_in_user->id }}"; // Using Blade variable inside JavaScript
+        let userId = "{{ $current_logged_in_user->id }}";
 
         $.ajax({
             url: `/user/${userId}/services/ajax`,
@@ -107,7 +111,5 @@
         });
     });
     </script>
-    
-</div>
 
 @endsection

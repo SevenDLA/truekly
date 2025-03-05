@@ -136,7 +136,7 @@
                                     <h5 class="text-black icon-box">{{ $pack['tokens'] }} TokenSkills</h5>
                                     <p class="fs-4 mb-3 text-black icon-box">{{ $pack['precio'] }}€</p>
                                     <!-- <button class="btn btn-buy text-black">Comprar</button> -->
-                                    <button class="btn btn-subscribe w-100">Comprar</button>
+                                    <a href="/buy" class="btn btn-subscribe w-100" >Comprar</a>
                                 </div>
                             </div>
                         @endforeach

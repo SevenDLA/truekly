@@ -30,7 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_servicio/{id_usuario}', [ServiceController::class, 'service_formulario']);
     Route::post('/nuevo_servicio/{id_usuario}', [ServiceController::class, 'almacenar_servicio'])->name('service.store');
     
-
+    Route::get('/buy', function(){
+        return view('buy');
+    });
 });
 
 
@@ -46,7 +48,7 @@ Route::post('/users/nuevo'         , [UserController::class, 'almacenar'])->name
 
 Route::get('/services'       , [ServiceController::class, 'listado'])->name('services.listado');
 
-
+Route::get('/service/{id}'            , [serviceController::class, 'mostrar'])->name('services.mostrar');
 Route::get('/admin', function () {
     return view('admin.dashboard');
 })->middleware('auth')->name('admin');

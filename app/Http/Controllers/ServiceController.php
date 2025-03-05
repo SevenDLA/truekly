@@ -19,14 +19,18 @@ class ServiceController extends Controller
     }
 
 
-    function formulario($oper='', $id='')
+    public function formulario($oper = '', $id = '')
     {
-        $user = empty($id)? new User() : User::find($id);
-        
-        $SEX     = User::SEX;
-
-        return view('users.formulario',compact('SEX','user','oper'));
+        // Si hay un ID, buscar la compra; si no, crear una nueva
+        $purchase = empty($id) ? new Service() : Service::find($id);
+    
+        // Opcional: si necesitas cargar información adicional, como usuarios o servicios
+        $users = User::all(); 
+        $services = Service::all(); 
+    
+        return view('services.purchase', compact('purchase', 'users', 'services', 'oper'));
     }
+    
 
     function mostrar($id)
     {
