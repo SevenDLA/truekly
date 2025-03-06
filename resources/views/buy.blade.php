@@ -5,15 +5,15 @@
     
     {{-- Left side: Order Review --}}
     <div style="width: 50%; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-        <a href="#" style="display: block; margin-bottom: 10px;">← Regresar</a>
+        <a href="/" style="display: block; margin-bottom: 10px;">← Regresar</a>
         <h2>Revisa tu pedido</h2>
         <p>Este es un resumen de tu pedido para asegurarnos de que adquieres lo que realmente buscas.</p>
         
         <div style="display: flex; align-items: center; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
             <img src="{{ asset('images/tokens.png') }}" alt="Tokens" style="width: 80px; height: 80px;">
             <div style="margin-left: 10px;">
-                <strong>200 TokenSkills</strong>
-                <p>9 €</p>
+                <strong>{{$cantidad_tokens}}</strong>
+                <p>{{ $precio_tokens }}€</p>
             </div>
         </div>
 

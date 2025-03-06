@@ -2,7 +2,7 @@
 
 
 @section('content')
-@vite(['resources/js/script.js'])
+@vite(['resources/js/profile.js'])
 <div class="container mt-4">
     <div class="row">
         <!-- User Profile Section -->

@@ -30,8 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_servicio/{id_usuario}', [ServiceController::class, 'service_formulario']);
     Route::post('/nuevo_servicio/{id_usuario}', [ServiceController::class, 'almacenar_servicio'])->name('service.store');
     
-    Route::get('/buy', function(){
-        return view('buy');
+    Route::get('/buy/{cantidad_tokens}/{precio_tokens}', function($cantidad_tokens, $precio_tokens){
+        return view('buy', compact('cantidad_tokens', 'precio_tokens'));
     });
 });
 
