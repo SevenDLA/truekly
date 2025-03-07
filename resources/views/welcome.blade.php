@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Listado de usuarios')
+@section('title', 'Truekly')
 
 @section('content')
 
@@ -164,9 +164,24 @@
                             <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                 <div class="d-flex justify-content-center">
                                     <div class="token-card p-3 text-center"> <!-- Centrar el contenido de la tarjeta -->
-                                        <div class="d-flex justify-content-center align-items-center mb-3"> <!-- Contenedor para centrar la imagen -->
-                                            <img src="{{ asset('images/coin.png') }}" 
-                                                alt="Coins" class="img-fluid" style="max-height: 150px;"> <!-- Aumentar el tamaño de la imagen -->
+                                        <div class="d-flex justify-content-center align-items-center mb-3 position-relative" style="height: 150px;">
+                                            <!-- Contenedor para las monedas -->
+                                            <div class="position-relative" style="width: 100px; height: 100px;">
+                                                @php
+                                                    $numCoins = min(5, intval($pack['tokens'] / 100)); // Número de monedas (máximo 5)
+                                                    $totalOffset = ($numCoins - 1) * 10; // Desplazamiento total hacia la derecha
+                                                @endphp
+                                                @for ($i = 0; $i < $numCoins; $i++)
+                                                    <img src="{{ asset('images/coin.png') }}" 
+                                                         alt="Coins" 
+                                                         class="img-fluid position-absolute" 
+                                                         style="
+                                                            max-height: 100px;
+                                                            transform: translateX({{ $i * 10 - ($totalOffset / 2) }}px);
+                                                            z-index: {{ $i }};
+                                                         ">
+                                                @endfor
+                                            </div>
                                         </div>
                                         <h5 class="text-black icon-box fs-5">{{ $pack['tokens'] }} TokenSkills</h5> <!-- Reducir el tamaño del texto -->
                                         <p class="fs-6 mb-2 text-black icon-box">{{ $pack['precio'] }}€</p> <!-- Reducir el tamaño del texto -->
@@ -191,8 +206,6 @@
         </div>
     </div>
 </section>
-
-<!-- Modal para mostrar todos los paquetes de tokens -->
 <div class="modal fade" id="tokensModal" tabindex="-1" aria-labelledby="tokensModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg"> <!-- Modal grande -->
         <div class="modal-content">
@@ -210,10 +223,25 @@
                         ['tokens' => 2000, 'precio' => 99.99]
                     ] as $pack)
                         <div class="flex-shrink-0 me-3" style="width: 250px;"> <!-- Ancho fijo para cada tarjeta -->
-                            <div class="token-card p-3 text-center bg-light rounded shadow-sm">
-                                <div class="d-flex justify-content-center align-items-center mb-3">
-                                    <img src="{{ asset('images/coin.png') }}" 
-                                        alt="Coins" class="img-fluid" style="max-height: 100px;"> <!-- Imagen más pequeña para el modal -->
+                            <div class="token-card p-3 text-center bg-light rounded shadow-sm position-relative">
+                                <div class="d-flex justify-content-center align-items-center mb-3 position-relative" style="height: 100px;">
+                                    <!-- Contenedor para las monedas -->
+                                    <div class="position-relative" style="width: 100px; height: 100px;">
+                                        @php
+                                            $numCoins = min(5, intval($pack['tokens'] / 100)); // Número de monedas (máximo 5)
+                                            $totalOffset = ($numCoins - 1) * 10; // Desplazamiento total hacia la derecha
+                                        @endphp
+                                        @for ($i = 0; $i < $numCoins; $i++)
+                                            <img src="{{ asset('images/coin.png') }}" 
+                                                 alt="Coins" 
+                                                 class="img-fluid position-absolute" 
+                                                 style="
+                                                    max-height: 100px;
+                                                    transform: translateX({{ $i * 10 - ($totalOffset / 2) }}px);
+                                                    z-index: {{ $i }};
+                                                 ">
+                                        @endfor
+                                    </div>
                                 </div>
                                 <h5 class="text-black fs-5">{{ $pack['tokens'] }} TokenSkills</h5>
                                 <p class="fs-6 mb-2 text-black">{{ $pack['precio'] }}€</p>

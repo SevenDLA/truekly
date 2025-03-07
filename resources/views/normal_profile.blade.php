@@ -1,5 +1,6 @@
 @extends('layout')
 
+@section('title', 'Mi Perfil')
 
 @section('content')
 @vite(['resources/js/profile.js'])
