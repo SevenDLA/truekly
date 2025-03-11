@@ -125,6 +125,8 @@ class UserController extends Controller
         return view('normal_profile',compact('current_logged_in_user', 'SEX'));
     }
 
+
+    //Para cambiar el email o teléfono del usuario.
     public function updateUserInfo(Request $request)
     {
         \Log::info('Request received:', $request->all()); // Debugging
@@ -139,6 +141,10 @@ class UserController extends Controller
 
         if ($request->has('phone')) {
             $rules['phone'] = 'required|digits_between:9,15|unique:users,phone_number';
+        }
+
+        if ($request->has('tokens')){
+            $rules['tokens'] = 'required|numeric';
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -161,10 +167,38 @@ class UserController extends Controller
             $user->phone_number = $request->phone;
         }
 
+        if($request->has('tokens'))
+        {
+            $user->tokens = $request->tokens;
+        }
+        
         $user->save();
 
         return response()->json(['message' => 'User info updated successfully!']);
     }
 
+    //Actualizar la cantidad de tokens que un usuario tiene al comprar
+    public function updateTokens(Request $request)
+    {
+        $user = Auth::user();
+        $user->tokens = $request->tokens;
+        $user->save();
+
+        return response()->json(['message' => 'Tokens updated successfully']);
+    }
+
+    //Comprobar si un usuario existe mediante su email o username
+
+    public function userExists($userInfo)
+    {
+        $user = User::where('email', $userInfo)
+            ->orWhere('username', $userInfo)
+            ->first();
+        $exists = (is_null($user));
+
+        
+
+        return view('test', compact('user', 'exists',));
+    }
     
 }

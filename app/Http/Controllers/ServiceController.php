@@ -11,12 +11,43 @@ use App\Http\Controllers\UserController;
 
 class ServiceController extends Controller
 {   
-    function listado()
-    {
 
-        $services = Service::with('user')->paginate(7);
-        return view('services.service', compact('services'));
+    public function listado(Request $request)
+    {
+        // Obtener los parámetros de filtrado
+        $maxPrice = $request->input('maxPrice');
+        $categories = $request->input('categories', []);
+        $userFilter = $request->input('user');
+
+        // Consulta base
+        $query = Service::with('user');
+
+        // Aplicar filtros
+        if ($maxPrice && $maxPrice > 0) { // Solo aplicar filtro si el precio máximo es mayor que 0
+            $query->where('price', '<=', $maxPrice);
+        }
+        if (!empty($categories)) {
+            $query->whereIn('category', $categories);
+        }
+        if ($userFilter) {
+            $query->where('user_id', $userFilter); // Filtrar por ID de usuario
+        }
+
+        // Paginar los resultados
+        $services = $query->paginate(9);
+
+        // Obtener todos los usuarios para el filtro de usuario
+        $users = User::all();
+
+        // Devolver la vista parcial si es una solicitud AJAX
+        if ($request->ajax()) {
+            return view('services.partials.service_list', compact('services'))->render();
+        }
+
+        // Devolver la vista completa si no es AJAX
+        return view('services.service', compact('services', 'maxPrice', 'categories', 'userFilter', 'users'));
     }
+
 
 
     public function formulario($oper = '', $id = '')
@@ -32,9 +63,13 @@ class ServiceController extends Controller
     }
     
 
-    function mostrar($id)
+    public function mostrar($id)
     {
-        return $this->formulario('cons', $id);
+        // Fetch the service by its ID
+        $service = Service::findOrFail($id);
+
+        // Pass the service to the view
+        return view('services.purchase', compact('service'));
     }
 
 
@@ -43,6 +78,7 @@ class ServiceController extends Controller
         return $this->formulario('modi', $id);
 
     }
+
 
     function eliminar($id)
     {

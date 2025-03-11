@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/services">Servicios</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/mensajes">Mensajes</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/perfil">Perfil</a>
                 </li>
            </ul>

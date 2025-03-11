@@ -1,0 +1,28 @@
+PENDIENTE POR HACER
+Crear chat en tiempo real entre usuarios
+Crear la opción de intercambiar servicios
+Crear el carrito de la compra de tokens
+Hacer todo el proceso de transacción de tokens al comprar un determinado servicio
+
+COMPLETAR
+Completar todos los apartados del footer
+Completar toda la sección de administración
+
+MEJORAR
+Mejorar el icono
+Mejorar el nosotros
+Mejorar la barra de navegación
+Mejorar la interfaz
+
+
+
+
+
+
+
+
+PENDIENTE POR HACER (DARRENSIU)
+Página de gracias por la compra después de comprar tokens.
+Añadir opción de cambiar contraseña el perfil.
+Añadir input de confirmar contraseña al registrarse.
+Cambiar alerts por mensajes adecuados.

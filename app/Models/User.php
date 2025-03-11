@@ -13,62 +13,69 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     const SEX = [
-         'H' => 'Hombre'
-        ,'M' => 'Mujer'
-        ,'O' => 'Otro'
+        'H' => 'Hombre',
+        'M' => 'Mujer',
+        'O' => 'Otro'
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
-        'surname', // Agregamos 'surname'
-        'username', // Agregamos 'username'
+        'surname',
+        'username',
         'email',
-        'sex', // Agregamos 'sex'
-        'date_of_birth', // Agregamos 'date_of_birth'
-        'phone_number', // Agregamos 'phone_number'
+        'sex',
+        'date_of_birth',
+        'phone_number',
         'password',
-        'tokens', // Agregamos 'tokens'
+        'tokens',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'date_of_birth' => 'date', // Convertimos 'date_of_birth' a un tipo de fecha
-        'tokens' => 'integer', // Convertimos 'tokens' a tipo entero
+        'date_of_birth' => 'date',
+        'tokens' => 'integer',
     ];
 
-    /**
-     * The attributes that should be protected from mass-assignment.
-     *
-     * @var list<string>
-     */
-    // Si es necesario, puedes agregar un array $guarded en caso de que haya otros campos que no se puedan asignar masivamente
-    // protected $guarded = ['id']; 
-
+    // Relación con los servicios
     public function services()
-{
-    return $this->hasMany(Service::class);
-}
+    {
+        return $this->hasMany(Service::class);
+    }
 
+    // Relación con las conversaciones donde el usuario es user1
+    public function conversationsAsUser1()
+    {
+        return $this->hasMany(Conversation::class, 'user1_id');
+    }
 
+    // Relación con las conversaciones donde el usuario es user2
+    public function conversationsAsUser2()
+    {
+        return $this->hasMany(Conversation::class, 'user2_id');
+    }
+
+    // Obtener todas las conversaciones del usuario
+    public function conversations()
+    {
+        return Conversation::where('user1_id', $this->id)
+            ->orWhere('user2_id', $this->id);
+    }
+
+    // Relación con los mensajes enviados
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    // Relación con los mensajes recibidos
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
 }
