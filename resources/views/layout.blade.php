@@ -12,12 +12,10 @@
 </head>
 <body>
 
-    <div class="container">
         @include('nav')
         @yield('content')       
         @include('footer')
         @yield('scripts')
-    </div>
 
 </body>
 </html>

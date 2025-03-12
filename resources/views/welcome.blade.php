@@ -1,261 +1,288 @@
 @extends('layout')
 
-@section('title', 'Truekly')
+@section('title', 'Truekly - Plataforma de intercambio de habilidades')
 
 @section('content')
-
-    <section class="welcome-section p-5">
-        <h1 class="text-center fs-1">Bienvenido a Truekly</h1>
+    <!-- Hero Section -->
+    <section class="welcome-section">
+        <div class="container">
+            <h1 class="animate-fadeInUp">Bienvenido a Truekly</h1>
+            <p class="lead text-white mt-4 animate-fadeInUp animate-delay-1" style="max-width: 700px; margin: 0 auto;">
+                La plataforma donde puedes comprar, vender e intercambiar habilidades y servicios con otros usuarios.
+            </p>
+            <div class="mt-4 animate-fadeInUp animate-delay-2">
+                <a href="#como-funciona" class="btn btn-outline-light btn-lg">Descubre cómo funciona</a>
+            </div>
+        </div>
     </section>
 
-    <section class="funcion-section p-5 text-center">
-        <h2 class="mb-5 fs-1">¿Cómo funciona nuestra página?</h2>
+    <!-- How It Works Section -->
+    <section id="como-funciona" class="funcion-section">
         <div class="container">
-            <div class="row justify-content-center">
-                @foreach (['Compra' => 'bi-cash-coin', 'Intercambia' => 'bi-arrow-left-right', 'Vende' => 'bi-piggy-bank'] as $titulo => $icono)
-                    <div class="col-md-3">
-                        <div class="icon-box mx-auto">
-                            <i class="bi {{ $icono }} fs-1"></i>
+            <h2 class="text-center fs-1 mb-5">¿Cómo funciona nuestra plataforma?</h2>
+            <div class="row justify-content-center g-4">
+                @foreach ([
+                    ['titulo' => 'Compra', 'icono' => 'bi-cash-coin', 'desc' => 'Adquiere habilidades y servicios de otros usuarios utilizando nuestros TokenSkills.'],
+                    ['titulo' => 'Intercambia', 'icono' => 'bi-arrow-left-right', 'desc' => 'Ofrece tus habilidades a cambio de otras sin necesidad de usar dinero.'],
+                    ['titulo' => 'Vende', 'icono' => 'bi-piggy-bank', 'desc' => 'Monetiza tus conocimientos y habilidades ofreciéndolos en nuestra plataforma.']
+                ] as $index => $item)
+                    <div class="col-md-4 col-lg-3">
+                        <div class="icon-box h-100" style="--animation-order: {{ $index }}">
+                            <i class="bi {{ $item['icono'] }} fs-1"></i>
+                            <h5 class="fs-5 mt-3">{{ $item['titulo'] }}</h5>
+                            <p class="text-muted mt-2">{{ $item['desc'] }}</p>
                         </div>
-                        <h5 class="fs-5">{{ $titulo }}</h5>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
 
-    <hr>
+    <div class="container">
+        <hr class="my-5">
+    </div>
 
-    <section class="categorias-section p-5 text-center">
-        <h3 class="mb-4 fs-2">Categorías</h3>
-        <div id="categoriasCarousel" class="carousel slide" data-bs-interval="false">
-
-            <!-- Contenido del carrusel -->
-            <div class="carousel-inner">
-                @foreach (array_chunk(['Música', 'Gaming', 'Deporte', 'Arte', 'Cine', 'Tecnología'], 3) as $index => $grupo)
-                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                        <div class="container">
+    <!-- Categories Section -->
+    <section class="categorias-section">
+        <div class="container">
+            <h3 class="text-center fs-2">Explora por Categorías</h3>
+            <div id="categoriasCarousel" class="carousel slide" data-bs-interval="false">
+                <!-- Carousel Inner -->
+                <div class="carousel-inner">
+                    @foreach (array_chunk([
+                        ['nombre' => 'Música', 'icono' => 'music-note'],
+                        ['nombre' => 'Gaming', 'icono' => 'controller'],
+                        ['nombre' => 'Deporte', 'icono' => 'activity'],
+                        ['nombre' => 'Arte', 'icono' => 'palette'],
+                        ['nombre' => 'Cine', 'icono' => 'film'],
+                        ['nombre' => 'Tecnología', 'icono' => 'cpu']
+                    ], 3) as $index => $grupo)
+                        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                             <div class="row justify-content-center">
                                 @foreach ($grupo as $categoria)
-                                    <div class="col-md-3">
-                                        <div class="category-card mx-auto"><img src="{{ asset('images/computer.png') }}"></div>
-                                        <h4 class="fs-5 mt-3">{{ $categoria }}</h4>
+                                    <div class="col-md-4 col-lg-3">
+                                        <div class="category-card mx-auto">
+                                            <img src="{{ asset('images/' . $categoria['icono'] . '.svg') }}" 
+                                                 alt="{{ $categoria['nombre'] }}" 
+                                                 class="img-fluid mb-3">
+                                            <h4 class="fs-5">{{ $categoria['nombre'] }}</h4>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+
+                <!-- Carousel Controls -->
+                <button class="carousel-control-prev" 
+                        type="button" 
+                        data-bs-target="#categoriasCarousel" 
+                        data-bs-slide="prev">
+                    <i class="bi bi-chevron-left fs-4"></i>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" 
+                        type="button" 
+                        data-bs-target="#categoriasCarousel" 
+                        data-bs-slide="next">
+                    <i class="bi bi-chevron-right fs-4"></i>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+
+                <!-- Carousel Indicators -->
+                <div class="carousel-indicators">
+                    @foreach (array_chunk(['Música', 'Gaming', 'Deporte', 'Arte', 'Cine', 'Tecnología'], 3) as $index => $grupo)
+                        <button type="button" 
+                                data-bs-target="#categoriasCarousel" 
+                                data-bs-slide-to="{{ $index }}" 
+                                class="{{ $index == 0 ? 'active' : '' }}" 
+                                aria-label="Slide {{ $index + 1 }}"></button>
+                    @endforeach
+                </div>
             </div>
-
-            <!-- Flechas de navegación en los bordes -->
-            <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y text-black" 
-                    type="button" 
-                    data-bs-target="#categoriasCarousel" 
-                    data-bs-slide="prev">
-                <i class="bi bi-chevron-left fs-1"></i>
-            </button>
-            <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y text-black" 
-                    type="button" 
-                    data-bs-target="#categoriasCarousel" 
-                    data-bs-slide="next">
-                <i class="bi bi-chevron-right fs-1"></i>
-            </button>
-
-            <!-- Indicadores (puntitos del carrusel) -->
-            <div class="carousel-indicators position-static mt-4">
-                @foreach (array_chunk(['Música', 'Gaming', 'Deporte', 'Arte', 'Cine', 'Tecnología'], 3) as $index => $grupo)
-                    <button type="button" 
-                            data-bs-target="#categoriasCarousel" 
-                            data-bs-slide-to="{{ $index }}" 
-                            class="{{ $index == 0 ? 'active' : '' }} bg-black" 
-                            aria-label="Slide {{ $index + 1 }}"></button>
-                @endforeach
-            </div>
-
         </div>
     </section>
     
-    <section class="destacados-section p-5">
-        <div>
-            <h4 class="text-center mb-4 fs-2 text-black">Destacados</h4>
-            <p class="text-center text-muted mb-5 fs-3">Elige de nuestros usuarios más populares</p>
-            <div class="row text-black">
+    <!-- Featured Users Section -->
+    <section class="destacados-section">
+        <div class="container">
+            <h4 class="text-center fs-2 text-dark">Usuarios Destacados</h4>
+            <p class="text-center text-muted mb-5">Descubre a nuestros usuarios más populares y sus habilidades</p>
+            
+            <div class="row g-4">
                 @foreach ([
-                    ['nombre' => 'Lucas Pérez', 'tag' => 'Popular', 'desc' => 'Diseño interfaces atractivas y responsivas con React y Tailwind.'],
-                    ['nombre' => 'Ana Torres', 'tag' => 'Tendencia', 'desc' => 'Desarrollo backends seguros y escalables con Node.js y PostgreSQL.'],
-                    ['nombre' => 'Martín Rojas', 'tag' => 'Mejor valorado', 'desc' => 'Construyo webs completas, desde el frontend hasta el backend.']
+                    ['nombre' => 'Lucas Pérez', 'tag' => 'Popular', 'emoji' => '⭐', 'desc' => 'Diseño interfaces atractivas y responsivas con React y Tailwind.'],
+                    ['nombre' => 'Ana Torres', 'tag' => 'Tendencia', 'emoji' => '🔥', 'desc' => 'Desarrollo backends seguros y escalables con Node.js y PostgreSQL.'],
+                    ['nombre' => 'Martín Rojas', 'tag' => 'Mejor valorado', 'emoji' => '🏆', 'desc' => 'Construyo webs completas, desde el frontend hasta el backend.']
                 ] as $usuario)
                     <div class="col-md-4">
-                        <div class="profile-card bg-white p-3">
-                            <span class="tag fs-4">
-                                @if ($usuario['tag'] == 'Popular')
-                                    &#11088; <!-- ⭐ -->
-                                @elseif ($usuario['tag'] == 'Tendencia')
-                                    &#128293; <!-- 🔥 -->
-                                @elseif ($usuario['tag'] == 'Mejor valorado')
-                                    &#127942; <!-- 🏆 -->
-                                @endif
-                                {{ $usuario['tag'] }}
+                        <div class="profile-card h-100">
+                            <span class="tag">
+                                {{ $usuario['emoji'] }} {{ $usuario['tag'] }}
                             </span>
-                            <div class="profile-image text-center my-3">
-                                <img src="{{ asset('images/computer.png') }}" 
-                                    alt="Profile Image" class="img-fluid">
+                            <div class="profile-image">
+                                <img src="{{ asset('images/avatar-' . strtolower(explode(' ', $usuario['nombre'])[0]) . '.svg') }}" 
+                                     alt="{{ $usuario['nombre'] }}" 
+                                     class="img-fluid">
                             </div>
-                            <p class="fs-5 fw-bold tag mb-2">{{ $usuario['nombre'] }}</p>
-                            <p class="text-muted tag mb-3">{{ $usuario['desc'] }}</p>
+                            <h5 class="fs-5 fw-bold mb-2">{{ $usuario['nombre'] }}</h5>
+                            <p class="text-muted mb-4">{{ $usuario['desc'] }}</p>
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-view">Ver perfil</button>
+                                <a href="/perfil/{{ strtolower(str_replace(' ', '-', $usuario['nombre'])) }}" class="btn btn-view">Ver perfil</a>
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
+            
+            <div class="text-center mt-5">
+                <a href="/usuarios" class="btn btn-primary">Ver todos los usuarios</a>
+            </div>
         </div>
     </section>
 
-
-    <section class="token-section p-3"> <!-- Reducir el padding de la sección -->
-    <div class="container"> <!-- Añadir un contenedor para limitar el ancho -->
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <!-- Título con estilo mejorado -->
-                <h2 class="display-5 fw-bold text-white mb-4"> <!-- Título más grande y llamativo -->
-                    ¿Consideras que no tienes habilidades?
-                </h2>
-                <!-- Párrafo con estilo mejorado -->
-                <p class="lead text-secondary mb-4 text-white"> <!-- Texto más grande y suave -->
-                    En nuestra plataforma, puedes adquirir <span class="text-primary fw-bold">TokenSkills</span>, nuestra moneda digital, para acceder a diversos servicios.
-                    Si dispones de una cantidad significativa de tokens y habilidades, también tienes la opción de venderlos y recibir una compensación económica.
-                </p>
-                <!-- Botón de llamada a la acción (opcional) -->
-                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#tokensModal">
-                    Ver paquetes de tokens
-                </button>
-            </div>
-            <div class="col-md-6">
-                <div id="tokensCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <!-- Carousel Indicators -->
-                    <div class="carousel-indicators position-static mt-3"> <!-- Reducir el margen superior -->
-                        @foreach ([
-                            ['tokens' => 100, 'precio' => 4.99],
-                            ['tokens' => 250, 'precio' => 9.99],
-                            ['tokens' => 500, 'precio' => 24.99],
-                            ['tokens' => 1000, 'precio' => 45.99],
-                            ['tokens' => 2000, 'precio' => 99.99]
-                        ] as $index => $pack)
-                            <button type="button" 
-                                    data-bs-target="#tokensCarousel" 
-                                    data-bs-slide-to="{{ $index }}" 
-                                    class="{{ $index == 0 ? 'active' : '' }} bg-black" 
-                                    aria-label="Slide {{ $index + 1 }}"></button>
-                        @endforeach
-                    </div>
-
-                    <!-- Carousel Inner -->
-                    <div class="carousel-inner">
-                        @foreach ([
-                            ['tokens' => 100, 'precio' => 4.99],
-                            ['tokens' => 250, 'precio' => 9.99],
-                            ['tokens' => 500, 'precio' => 24.99],
-                            ['tokens' => 1000, 'precio' => 45.99],
-                            ['tokens' => 2000, 'precio' => 99.99]
-                        ] as $index => $pack)
-                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                <div class="d-flex justify-content-center">
-                                    <div class="token-card p-3 text-center"> <!-- Centrar el contenido de la tarjeta -->
-                                        <div class="d-flex justify-content-center align-items-center mb-3 position-relative" style="height: 150px;">
-                                            <!-- Contenedor para las monedas -->
-                                            <div class="position-relative" style="width: 100px; height: 100px;">
+    <!-- Token Section -->
+    <section class="token-section">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold mb-4">
+                        ¿Consideras que no tienes habilidades?
+                    </h2>
+                    <p class="lead mb-4">
+                        En nuestra plataforma, puedes adquirir <span class="fw-bold">TokenSkills</span>, nuestra moneda digital, para acceder a diversos servicios.
+                        Si dispones de una cantidad significativa de tokens y habilidades, también tienes la opción de venderlos y recibir una compensación económica.
+                    </p>
+                    <button type="button" class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#tokensModal">
+                        Ver paquetes de tokens
+                    </button>
+                </div>
+                <div class="col-lg-6">
+                    <div id="tokensCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <!-- Carousel Inner -->
+                        <div class="carousel-inner">
+                            @foreach ([
+                                ['tokens' => 100, 'precio' => 4.99],
+                                ['tokens' => 250, 'precio' => 9.99],
+                                ['tokens' => 500, 'precio' => 24.99],
+                                ['tokens' => 1000, 'precio' => 45.99],
+                                ['tokens' => 2000, 'precio' => 99.99]
+                            ] as $index => $pack)
+                                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                    <div class="token-card mx-auto" style="max-width: 300px;">
+                                        <div class="token-card-content">
+                                            <div class="token-coin-container">
                                                 @php
-                                                    $numCoins = min(5, intval($pack['tokens'] / 100)); // Número de monedas (máximo 5)
-                                                    $totalOffset = ($numCoins - 1) * 10; // Desplazamiento total hacia la derecha
+                                                    $numCoins = min(5, intval($pack['tokens'] / 100)); // Máximo 5 monedas
                                                 @endphp
                                                 @for ($i = 0; $i < $numCoins; $i++)
                                                     <img src="{{ asset('images/coin.png') }}" 
-                                                         alt="Coins" 
-                                                         class="img-fluid position-absolute" 
+                                                         alt="TokenSkills" 
+                                                         class="token-coin"
                                                          style="
-                                                            max-height: 100px;
-                                                            transform: translateX({{ $i * 10 - ($totalOffset / 2) }}px);
+                                                            transform: translate({{ ($i - ($numCoins-1)/2) * 15 }}px, -50%);
                                                             z-index: {{ $i }};
                                                          ">
                                                 @endfor
                                             </div>
+                                            <h5 class="fs-4 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
+                                            <p class="fs-5 mb-3 fw-bold">{{ $pack['precio'] }}€</p>
+                                            <a href="/comprar/{{ $pack['tokens'] }}" class="btn btn-subscribe w-100">Comprar ahora</a>
                                         </div>
-                                        <h5 class="text-black icon-box fs-5">{{ $pack['tokens'] }} TokenSkills</h5> <!-- Reducir el tamaño del texto -->
-                                        <p class="fs-6 mb-2 text-black icon-box">{{ $pack['precio'] }}€</p> <!-- Reducir el tamaño del texto -->
-                                        <a href="/buy/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-subscribe btn-sm w-100">Comprar</a> <!-- Reducir el tamaño del botón -->
                                     </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <!-- Carousel Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#tokensCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#tokensCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Siguiente</span>
+                        </button>
+
+                        <!-- Carousel Indicators -->
+                        <div class="carousel-indicators">
+                            @foreach ([100, 250, 500, 1000, 2000] as $index => $tokens)
+                                <button type="button" 
+                                        data-bs-target="#tokensCarousel" 
+                                        data-bs-slide-to="{{ $index }}" 
+                                        class="{{ $index == 0 ? 'active' : '' }}" 
+                                        aria-label="{{ $tokens }} tokens"></button>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokens Modal -->
+    <div class="modal fade" id="tokensModal" tabindex="-1" aria-labelledby="tokensModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tokensModalLabel">Paquetes de TokenSkills</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-wrap justify-content-center">
+                        @foreach ([
+                            ['tokens' => 100, 'precio' => 4.99],
+                            ['tokens' => 250, 'precio' => 9.99],
+                            ['tokens' => 500, 'precio' => 24.99],
+                            ['tokens' => 1000, 'precio' => 45.99],
+                            ['tokens' => 2000, 'precio' => 99.99]
+                        ] as $pack)
+                            <div class="token-card" style="width: 220px;">
+                                <div class="token-card-content">
+                                    <div class="token-coin-container">
+                                        @php
+                                            $numCoins = min(5, intval($pack['tokens'] / 100)); // Máximo 5 monedas
+                                        @endphp
+                                        @for ($i = 0; $i < $numCoins; $i++)
+                                            <img src="{{ asset('images/coin.png') }}" 
+                                                 alt="TokenSkills" 
+                                                 class="token-coin"
+                                                 style="
+                                                    transform: translate({{ ($i - ($numCoins-1)/2) * 10 }}px, -50%);
+                                                    z-index: {{ $i }};
+                                                    max-height: 50px;
+                                                 ">
+                                        @endfor
+                                    </div>
+                                    <h5 class="fs-5 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
+                                    <p class="fs-6 mb-3 fw-bold">{{ $pack['precio'] }}€</p>
+                                    <a href="/comprar/{{ $pack['tokens'] }}" class="btn btn-primary w-100">Comprar ahora</a>
                                 </div>
                             </div>
                         @endforeach
                     </div>
-
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev" type="button" data-bs-target="#tokensCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#tokensCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<div class="modal fade" id="tokensModal" tabindex="-1" aria-labelledby="tokensModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> <!-- Modal grande -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary" id="tokensModalLabel">Paquetes de TokenSkills</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex flex-nowrap overflow-auto"> <!-- Contenedor flexible en una sola fila -->
-                    @foreach ([
-                        ['tokens' => 100, 'precio' => 4.99],
-                        ['tokens' => 250, 'precio' => 9.99],
-                        ['tokens' => 500, 'precio' => 24.99],
-                        ['tokens' => 1000, 'precio' => 45.99],
-                        ['tokens' => 2000, 'precio' => 99.99]
-                    ] as $pack)
-                        <div class="flex-shrink-0 me-3" style="width: 250px;"> <!-- Ancho fijo para cada tarjeta -->
-                            <div class="token-card p-3 text-center bg-light rounded shadow-sm position-relative">
-                                <div class="d-flex justify-content-center align-items-center mb-3 position-relative" style="height: 100px;">
-                                    <!-- Contenedor para las monedas -->
-                                    <div class="position-relative" style="width: 100px; height: 100px;">
-                                        @php
-                                            $numCoins = min(5, intval($pack['tokens'] / 100)); // Número de monedas (máximo 5)
-                                            $totalOffset = ($numCoins - 1) * 10; // Desplazamiento total hacia la derecha
-                                        @endphp
-                                        @for ($i = 0; $i < $numCoins; $i++)
-                                            <img src="{{ asset('images/coin.png') }}" 
-                                                 alt="Coins" 
-                                                 class="img-fluid position-absolute" 
-                                                 style="
-                                                    max-height: 100px;
-                                                    transform: translateX({{ $i * 10 - ($totalOffset / 2) }}px);
-                                                    z-index: {{ $i }};
-                                                 ">
-                                        @endfor
-                                    </div>
-                                </div>
-                                <h5 class="text-black fs-5">{{ $pack['tokens'] }} TokenSkills</h5>
-                                <p class="fs-6 mb-2 text-black">{{ $pack['precio'] }}€</p>
-                                <a href="/buy/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-primary btn-sm w-100">Comprar</a>
-                            </div>
-                        </div>
-                    @endforeach
+
+    <!-- Call to Action Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h2 class="fs-1 mb-4">¿Listo para comenzar?</h2>
+                    <p class="lead mb-4">Únete a nuestra comunidad y empieza a intercambiar habilidades hoy mismo.</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <a href="/registro" class="btn btn-primary btn-lg">Registrarse</a>
+                        <a href="/explorar" class="btn btn-outline-primary btn-lg">Explorar</a>
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
         </div>
-    </div>
-</div>
-
+    </section>
 @endsection

@@ -162,16 +162,22 @@ class ServiceController extends Controller
 
     function almacenar_servicio(Request $request)
     {
-    $service = empty($request->id_servicio)? new Service() : Service::find($request->id_servicio);
+        $validatedData = $request->validate([
+            'title'            => 'required|string|max:255',
+            'description'      => 'required|string|max:255',
+            'price'            => 'required|integer',
+        ]);
+      
+        $service = empty($request->id_servicio)? new Service() : Service::find($request->id_servicio);
 
-      $service->user_id     = auth()->id();
-      $service->title       = $request->title;
-      $service->description = $request->description;
-      $service->price       = $request->price;
+        $service->user_id     = auth()->id();
+        $service->title       = $request->title;
+        $service->description = $request->description;
+        $service->price       = $request->price;
 
-      $service->save();
+        $service->save();
 
-      return redirect()->route('profile.normal');
+        return redirect()->route('profile.normal');
     }
 
     function eliminar_servicio_usuario($id)

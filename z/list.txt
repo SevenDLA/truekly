@@ -22,7 +22,8 @@ Mejorar la interfaz
 
 
 PENDIENTE POR HACER (DARRENSIU)
-Página de gracias por la compra después de comprar tokens.
+Gracias por la compra después de comprar tokens.
 Añadir opción de cambiar contraseña el perfil.
 Añadir input de confirmar contraseña al registrarse.
 Cambiar alerts por mensajes adecuados.
+Añadir validaciones para crear servicios nuevos.
