@@ -6,16 +6,15 @@
     <!-- Hero Section -->
     <section class="welcome-section">
         <div class="container">
-            <h1 class="animate-fadeInUp">Bienvenido a Truekly</h1>
-            <p class="lead text-white mt-4 animate-fadeInUp animate-delay-1" style="max-width: 700px; margin: 0 auto;">
+            <h1 class="animate-fadeInUp text-center">Bienvenido a Truekly</h1>
+            <p class="lead text-white mt-4 animate-fadeInUp animate-delay-1 text-center" style="max-width: 700px; margin: 0 auto;">
                 La plataforma donde puedes comprar, vender e intercambiar habilidades y servicios con otros usuarios.
             </p>
-            <div class="mt-4 animate-fadeInUp animate-delay-2">
-                <a href="#como-funciona" class="btn btn-outline-light btn-lg">Descubre cómo funciona</a>
+            <div class="mt-4 animate-fadeInUp animate-delay-2 text-center">
+                <a href="#como-funciona" class="btn btn-primary">Descubre cómo funciona</a>
             </div>
         </div>
     </section>
-
     <!-- How It Works Section -->
     <section id="como-funciona" class="funcion-section">
         <div class="container">
@@ -27,7 +26,7 @@
                     ['titulo' => 'Vende', 'icono' => 'bi-piggy-bank', 'desc' => 'Monetiza tus conocimientos y habilidades ofreciéndolos en nuestra plataforma.']
                 ] as $index => $item)
                     <div class="col-md-4 col-lg-3">
-                        <div class="icon-box h-100" style="--animation-order: {{ $index }}">
+                        <div class="icon-box h-100 text-center" style="--animation-order: {{ $index }}">
                             <i class="bi {{ $item['icono'] }} fs-1"></i>
                             <h5 class="fs-5 mt-3">{{ $item['titulo'] }}</h5>
                             <p class="text-muted mt-2">{{ $item['desc'] }}</p>
@@ -38,15 +37,13 @@
         </div>
     </section>
 
-    <div class="container">
-        <hr class="my-5">
-    </div>
-
+    
     <!-- Categories Section -->
-    <section class="categorias-section">
+    <section class="categorias-section py-5" id="categoriasCarousel">
+        <hr class="py-5 border-primary">
         <div class="container">
             <h3 class="text-center fs-2">Explora por Categorías</h3>
-            <div id="categoriasCarousel" class="carousel slide" data-bs-interval="false">
+            <div class="carousel slide" data-bs-interval="false">
                 <!-- Carousel Inner -->
                 <div class="carousel-inner">
                     @foreach (array_chunk([
@@ -62,10 +59,10 @@
                                 @foreach ($grupo as $categoria)
                                     <div class="col-md-4 col-lg-3">
                                         <div class="category-card mx-auto">
-                                            <img src="{{ asset('images/' . $categoria['icono'] . '.svg') }}" 
+                                            <img src="{{ asset('images/default_female_pfp.jpg') }}" 
                                                  alt="{{ $categoria['nombre'] }}" 
                                                  class="img-fluid mb-3">
-                                            <h4 class="fs-5">{{ $categoria['nombre'] }}</h4>
+                                            <h4 class="fs-5 text-center">{{ $categoria['nombre'] }}</h4>
                                         </div>
                                     </div>
                                 @endforeach
@@ -79,14 +76,14 @@
                         type="button" 
                         data-bs-target="#categoriasCarousel" 
                         data-bs-slide="prev">
-                    <i class="bi bi-chevron-left fs-4"></i>
+                    <i class="bi bi-chevron-left fs-4 text-black"></i>
                     <span class="visually-hidden">Anterior</span>
                 </button>
                 <button class="carousel-control-next" 
                         type="button" 
                         data-bs-target="#categoriasCarousel" 
                         data-bs-slide="next">
-                    <i class="bi bi-chevron-right fs-4"></i>
+                    <i class="bi bi-chevron-right fs-4 text-black"></i>
                     <span class="visually-hidden">Siguiente</span>
                 </button>
 
@@ -105,7 +102,7 @@
     </section>
     
     <!-- Featured Users Section -->
-    <section class="destacados-section">
+    <section class="destacados-section py-5" id="usuariosDestacados">
         <div class="container">
             <h4 class="text-center fs-2 text-dark">Usuarios Destacados</h4>
             <p class="text-center text-muted mb-5">Descubre a nuestros usuarios más populares y sus habilidades</p>
@@ -121,15 +118,18 @@
                             <span class="tag">
                                 {{ $usuario['emoji'] }} {{ $usuario['tag'] }}
                             </span>
+                            <br>
+                            <br>
                             <div class="profile-image">
-                                <img src="{{ asset('images/avatar-' . strtolower(explode(' ', $usuario['nombre'])[0]) . '.svg') }}" 
+                                <img src="{{ asset('images/default_male_pfp.jpg') }}" 
                                      alt="{{ $usuario['nombre'] }}" 
                                      class="img-fluid">
                             </div>
+                            <br>
                             <h5 class="fs-5 fw-bold mb-2">{{ $usuario['nombre'] }}</h5>
                             <p class="text-muted mb-4">{{ $usuario['desc'] }}</p>
                             <div class="d-flex justify-content-end">
-                                <a href="/perfil/{{ strtolower(str_replace(' ', '-', $usuario['nombre'])) }}" class="btn btn-view">Ver perfil</a>
+                                <a href="/perfil/{{ strtolower(str_replace(' ', '-', $usuario['nombre'])) }}" class="btn btn-primary btn-view">Ver perfil</a>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
     </section>
 
     <!-- Token Section -->
-    <section class="token-section">
+    <section class="token-section py-5">
         <div class="container">
             <div class="row align-items-center g-4">
                 <div class="col-lg-6">
@@ -174,21 +174,19 @@
                                         <div class="token-card-content">
                                             <div class="token-coin-container">
                                                 @php
-                                                    $numCoins = min(5, intval($pack['tokens'] / 100)); // Máximo 5 monedas
+                                                    $numCoins = min(1, intval($pack['tokens'] / 100)); // Máximo 5 monedas
                                                 @endphp
                                                 @for ($i = 0; $i < $numCoins; $i++)
                                                     <img src="{{ asset('images/coin.png') }}" 
                                                          alt="TokenSkills" 
                                                          class="token-coin"
                                                          style="
-                                                            transform: translate({{ ($i - ($numCoins-1)/2) * 15 }}px, -50%);
-                                                            z-index: {{ $i }};
-                                                         ">
+                                                            ">
                                                 @endfor
                                             </div>
                                             <h5 class="fs-4 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
                                             <p class="fs-5 mb-3 fw-bold">{{ $pack['precio'] }}€</p>
-                                            <a href="/comprar/{{ $pack['tokens'] }}" class="btn btn-subscribe w-100">Comprar ahora</a>
+                                            <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-subscribe w-100">Comprar ahora</a>
                                         </div>
                                     </div>
                                 </div>
@@ -204,6 +202,8 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Siguiente</span>
                         </button>
+
+                        <br><br>
 
                         <!-- Carousel Indicators -->
                         <div class="carousel-indicators">
@@ -257,7 +257,7 @@
                                     </div>
                                     <h5 class="fs-5 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
                                     <p class="fs-6 mb-3 fw-bold">{{ $pack['precio'] }}€</p>
-                                    <a href="/comprar/{{ $pack['tokens'] }}" class="btn btn-primary w-100">Comprar ahora</a>
+                                    <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-primary w-100">Comprar ahora</a>
                                 </div>
                             </div>
                         @endforeach
@@ -278,8 +278,8 @@
                     <h2 class="fs-1 mb-4">¿Listo para comenzar?</h2>
                     <p class="lead mb-4">Únete a nuestra comunidad y empieza a intercambiar habilidades hoy mismo.</p>
                     <div class="d-flex justify-content-center gap-3">
-                        <a href="/registro" class="btn btn-primary btn-lg">Registrarse</a>
-                        <a href="/explorar" class="btn btn-outline-primary btn-lg">Explorar</a>
+                        <a href="/registrarse" class="btn btn-primary btn-lg">Registrarse</a>
+                        <a href="/servicios" class="btn btn-outline-primary btn-lg">Explorar</a>
                     </div>
                 </div>
             </div>

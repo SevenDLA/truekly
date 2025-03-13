@@ -6,11 +6,10 @@
     <div class="container mt-5">
         <div class="card shadow-lg p-4 rounded">
             <h2 class="text-center mb-4">Editar Servicio</h2>
-
-            <form method="POST" action="{{ route('service.store', ['id_servicio' => $id_servicio]) }}">
+            <h1>{{$a}}</h1>
+            <form method="POST" action="{{ route('service.store') }}">
                 @csrf
-                <input type="hidden" name="oper" value="create_service" />
-                <input type="hidden" name="id_servicio" value="{{ $id_servicio }}" />
+                <input type="hidden" name="id_servicio" value="{{ $servicio->id }}" />
 
                 <!-- Título -->
                 <div class="mb-3">

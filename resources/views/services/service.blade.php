@@ -3,18 +3,18 @@
 @section('title', 'Listado de Servicios')
 
 @section('content')
-<section class="bg-white py-5">
-    <div class="container">
-        <div class="row">
-            <!-- Filtros en la izquierda -->
-            <div class="col-md-3">
-                <div class="card shadow-sm mb-4">
+<section class="py-5" style="min-height: calc(100vh - 200px);">
+    <div class="container h-100">
+        <div class="row h-100">
+            <!-- Filtros (visible en todas las pantallas) -->
+            <div class="col-12 mb-4">
+                <div class="card shadow-lg rounded">
                     <div class="card-header bg-primary text-white text-center">
                         <h5 class="mb-0">Filtrar Servicios</h5>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         <div class="accordion" id="filtersAccordion">
-                            <!-- Filtro por precio -->
+                            <!-- Filtro por Precio -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filterPrice">
@@ -23,16 +23,16 @@
                                 </h2>
                                 <div id="filterPrice" class="accordion-collapse collapse show" data-bs-parent="#filtersAccordion">
                                     <div class="accordion-body">
-                                        <label for="priceRange" class="form-label">Máximo: 
-                                            <span id="priceValue">{{ $maxPrice && $maxPrice > 0 ? $maxPrice : 'Cualquiera' }}</span>
+                                        <label for="priceRange" class="form-label">
+                                            Máximo: <span id="priceValue">{{ $maxPrice > 0 ? $maxPrice : 'Cualquiera' }}</span>
                                         </label>
                                         <input type="range" class="form-range" min="0" max="1000" step="10" id="priceRange" 
-                                               value="{{ $maxPrice && $maxPrice > 0 ? $maxPrice : 0 }}">
+                                               value="{{ $maxPrice > 0 ? $maxPrice : 0 }}">
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Filtro por categoría -->
+                            <!-- Filtro por Categoría -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#filterCategory">
@@ -42,17 +42,17 @@
                                 <div id="filterCategory" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
                                     <div class="accordion-body">
                                         @foreach(['Tecnología', 'Hogar', 'Educación', 'Salud'] as $category)
-                                        <div class="form-check">
-                                            <input class="form-check-input category-filter" type="checkbox" value="{{ $category }}"
-                                                   {{ in_array($category, $categories ?? []) ? 'checked' : '' }}>
-                                            <label class="form-check-label">{{ $category }}</label>
-                                        </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input category-filter" type="checkbox" value="{{ $category }}" 
+                                                       {{ in_array($category, $categories ?? []) ? 'checked' : '' }}>
+                                                <label class="form-check-label">{{ $category }}</label>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Filtro por usuario -->
+                            <!-- Filtro por Usuario -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#filterUser">
@@ -77,8 +77,8 @@
                 </div>
             </div>
 
-            <!-- Lista de servicios a la derecha -->
-            <div class="col-md-9">
+            <!-- Lista de Servicios (ocupa todo el ancho) -->
+            <div class="col-12">
                 <div class="row" id="service-list">
                     @include('services.partials.service_list', ['services' => $services])
                 </div>
@@ -90,50 +90,39 @@
 
 @section('scripts')
 <script>
-    // Actualizar el valor del precio en tiempo real
-    document.getElementById("priceRange").addEventListener("input", function () {
-        let priceValue = this.value == 0 ? 'Cualquiera' : this.value;
-        document.getElementById("priceValue").innerText = priceValue;
-        applyFilters(); // Aplicar filtros automáticamente
-    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const priceRange = document.getElementById("priceRange");
+        const priceValue = document.getElementById("priceValue");
+        const categoryFilters = document.querySelectorAll('.category-filter');
+        const userFilter = document.getElementById("userFilter");
 
-    // Aplicar filtros automáticamente cuando cambian los checkboxes de categoría
-    document.querySelectorAll('.category-filter').forEach(checkbox => {
-        checkbox.addEventListener("change", applyFilters);
-    });
+        function applyFilters() {
+            const maxPrice = priceRange.value;
+            const selectedCategories = Array.from(categoryFilters)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            const user = userFilter.value;
 
-    // Aplicar filtros automáticamente cuando se selecciona un usuario
-    document.getElementById("userFilter").addEventListener("change", applyFilters);
+            const url = `/services?maxPrice=${maxPrice}&categories=${selectedCategories.join(',')}&user=${user}`;
 
-    // Función para aplicar los filtros
-    function applyFilters() {
-        let maxPrice = document.getElementById("priceRange").value;
-        let selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
-        let userFilter = document.getElementById("userFilter").value;
+            history.pushState(null, null, url);
 
-        // Construir la URL con los filtros
-        let url = `/services?maxPrice=${maxPrice}&categories=${selectedCategories.join(',')}&user=${userFilter}`;
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById("service-list").innerHTML = html;
+                });
+        }
 
-        // Actualizar la URL sin recargar la página
-        history.pushState(null, null, url);
-
-        // Enviar la solicitud AJAX
-        fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest' // Indicar que es una solicitud AJAX
-            }
-        })
-        .then(response => response.text())
-        .then(html => {
-            // Actualizar la lista de servicios y el paginador
-            document.getElementById("service-list").innerHTML = html;
-            document.getElementById("pagination-links").innerHTML = html.includes('pagination') ? html : '';
+        priceRange.addEventListener("input", function () {
+            priceValue.innerText = this.value == 0 ? 'Cualquiera' : this.value;
+            applyFilters();
         });
-    }
 
-    // Manejar el evento de retroceso/avance del navegador
-    window.addEventListener("popstate", function () {
-        applyFilters(); // Aplicar filtros cuando el usuario navega hacia atrás/adelante
+        categoryFilters.forEach(checkbox => checkbox.addEventListener("change", applyFilters));
+        userFilter.addEventListener("change", applyFilters);
+
+        window.addEventListener("popstate", applyFilters);
     });
 </script>
 @endsection

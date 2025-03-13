@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string  ('phone_number',    100);            // Crea una columna 'phone_number' de 100 caracteres
             $table->string  ('password');                        // Crea una columna 'password'
             $table->integer ('tokens')              ->default(0);// Crea una columna 'tokens' con valor predeterminado 0
+            $table->string  ('profile_pic')         ->nullable();  // Crea una columna 'profile_pic' que puede tener valor nulo.
             $table->timestamps();                                // Crea las columnas 'created_at' y 'updated_at'
         });
 

@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+
+
 
 class UserController extends Controller
 {   
@@ -201,4 +205,68 @@ class UserController extends Controller
         return view('test', compact('user', 'exists',));
     }
     
+    //Cambiar foto de perfil del usuario
+    public function updateImage(Request $request){
+        Log::info("Image upload request received", [
+            'user_id' => Auth::id(), 
+            'has_file' => $request->hasFile('image')
+        ]);
+
+        // Validate the uploaded image
+        $request->validate([
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
+
+        Log::info("Validation passed");
+
+        $user = Auth::user();
+
+        try {
+            // Ensure a file is present
+            if (!$request->hasFile('image')) {
+                Log::error("No file found in the request.");
+                return response()->json([
+                    'success' => false,
+                    'error' => 'No file uploaded.',
+                ], 400);
+            }
+
+            $file = $request->file('image');
+
+            // Delete old image if it exists
+            if (!empty($user->profile_pic) && Storage::disk('public')->exists($user->profile_pic)) {
+                Log::info("Deleting old image: " . $user->profile_pic);
+                Storage::disk('public')->delete($user->profile_pic);
+            }
+
+            // Generate a unique filename
+            $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+            // Store the image
+            $path = $file->storeAs('profile_pictures', $filename, 'public');
+
+            Log::info("File stored successfully at: " . $path);
+
+            // Update user profile picture
+            $user->profile_pic = $path;
+            $user->save();
+
+            Log::info("User profile updated successfully");
+
+            return response()->json([
+                'success' => true,
+                'image_url' => asset('storage/' . $path),
+            ]);
+        } catch (Exception $e) {
+            Log::error("Image upload failed: " . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'error' => 'Image upload failed. Please try again.',
+            ], 500);
+        }
+    }
+
+    
+
 }

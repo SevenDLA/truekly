@@ -153,11 +153,14 @@ class ServiceController extends Controller
         return $salida;
     }
     
-    /**SERVICIOS ACTUALES**/
+    /**MANEJO DE SERVICIOS POR PARTE DEL USUARIO**/
     
-    function service_formulario($id_usuario)
+    function service_formulario($id_servicio='')
     {
-        return view('services.create_new_service',compact('id_usuario'));
+        $servicio = empty($id_servicio) ? new Service() : Service::find($id_servicio);
+        $a= "hello";
+
+        return view('services.service_form', compact('servicio', 'a'));
     }
 
     function almacenar_servicio(Request $request)

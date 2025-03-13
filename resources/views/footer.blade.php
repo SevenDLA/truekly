@@ -62,9 +62,9 @@
                             <h5 class="text-uppercase fw-bold mb-4">Explorar</h5>
                             <ul class="list-unstyled footer-links">
                                 <li class="mb-2"><a href="#">Tienda</a></li>
-                                <li class="mb-2"><a href="#">Servicios</a></li>
-                                <li class="mb-2"><a href="#">Categorías</a></li>
-                                <li class="mb-2"><a href="#">Usuarios Destacados</a></li>
+                                <li class="mb-2"><a href="/servicios">Servicios</a></li>
+                                <li class="mb-2"><a href="#categoriasCarousel">Categorías</a></li>
+                                <li class="mb-2"><a href="#usuariosDestacados">Usuarios Destacados</a></li>
                             </ul>
                         </div>
                         <div class="col-md-4 col-6 mb-4 mb-md-0">

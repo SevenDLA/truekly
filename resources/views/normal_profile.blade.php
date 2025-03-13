@@ -9,8 +9,34 @@
         <!-- User Profile Section -->
         <div class="col-md-4 text-center">
             <div class="card p-4 shadow-sm border-primary">
-                <img src="https://via.placeholder.com/150" class="rounded-circle mb-3 border border-primary" alt="User Avatar">
+                
+                @if ($current_logged_in_user->profile_pic === null)
+                    <img src="{{ asset('images/default_' . ($current_logged_in_user->sex == 'H' ? 'male' : 'female') . '_pfp.jpg') }}" class="rounded-circle mb-3 border border-primary" alt="User Avatar">
+                    <p>{{$current_logged_in_user->sex == 'H'}}</p>
+                @else
+                <img src="{{ asset('storage/' . $current_logged_in_user->profile_pic) }}" class="rounded-circle mb-3 border border-primary" alt="User Avatar">
+
+                @endif
+
                 <h2 class="text-primary">{{$current_logged_in_user->username}}</h2>
+
+                <input type="file" id="image-input" style="display: none;">
+
+                <div class="d-flex flex-column gap-3">
+                    <!-- Upload/Change Profile Picture Button -->
+                    <button type="button" class="btn btn-primary" id="upload-btn">
+                        {{ $current_logged_in_user->profile_pic === null ? 'Añadir' : 'Cambiar' }} foto de perfil
+                    </button>
+
+                    <!-- Logout Button -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
         
@@ -96,7 +122,7 @@
                                         </div>
                                         <h5 class="text-black fs-5">{{ $pack['tokens'] }} TokenSkills</h5>
                                         <p class="fs-6 mb-2 text-black">{{ $pack['precio'] }}€</p>
-                                        <a href="/buy/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-primary btn-sm w-100">Comprar</a>
+                                        <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-primary w-100">Comprar</a>
                                     </div>
                                 </div>
                             @endforeach
@@ -108,7 +134,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -117,11 +142,12 @@
     <p>Tus servicios</p>
     <div id="servicesList"></div>
 </div>
-
+<br>
 <script>
     $(document).ready(function() {
         let userId = "{{ $current_logged_in_user->id }}";
 
+        //COGER SERVICIOS DEL USUARIO
         $.ajax({
             url: `/user/${userId}/services/ajax`,
             type: "GET",
@@ -137,10 +163,10 @@
                                 <div class="card-body">
                                     <h5 class="card-title text-primary">${service.title}</h5>
                                     <p class="card-text">${service.description}</p>
-                                    <p class="card-text"><strong>Precio:</strong> $${service.price}</p>
+                                    <p class="card-text"><strong>Precio:</strong> ${service.price} tokens</p>
                                     <p>${service.id}</p>
                                     <p>${service.user_id}</p>
-                                    <a class="btn btn-warning" href="editar_servicio/${service.user_id}/${service.id}">Edit</a>
+                                    <a class="btn btn-warning" href="servicio/${service.id}">Edit</a>
                                     <form action="/eliminar_servicio/${service.id}" method="POST" style="display:inline;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -152,13 +178,87 @@
                     });
                 }
 
-                $('#servicesList').append(`<a href="/nuevo_servicio/{{ $current_logged_in_user->id }}" class="btn btn-primary">Añadir servicio</a>`);
+                $('#servicesList').append(`<a href="/servicio/" class="btn btn-primary">Añadir servicio</a>`);
             },
             error: function(xhr) {
                 console.error("Error al cargar servicios:", xhr);
             }
         });
+
+
+
     });
 </script>
+
+<script>
+$(document).ready(function() {
+    let userId = "{{ $current_logged_in_user->id }}";
+
+    $('#upload-btn').on('click', function() {
+        $('#image-input').click();
+    });
+
+    $('#image-input').on('change', function() {
+        let file = this.files[0];
+        if (!file) return;
+
+        let formData = new FormData();
+        formData.append('image', file);
+        formData.append('_token', "{{ csrf_token() }}"); 
+
+        console.log("File selected:", file.name);
+
+        $.ajax({
+            url: "{{ route('profile.upload.image') }}",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                console.log("Uploading file...");
+                $('#upload-btn').prop('disabled', true).text('Uploading...');
+            },
+            success: function(response) {
+                console.log("Server response:", response);
+
+                if (response.success) {
+                    console.log("Image uploaded successfully!");
+                    $('.rounded-circle.mb-3.border-primary').attr('src', response.image_url + '?t=' + new Date().getTime());
+                    alert("Profile picture updated successfully!");
+                } else {
+                    console.error("Upload failed:", response.error);
+
+                    if (response.details) {
+                        let errorMsg = response.details.join("\n");
+                        alert("Upload failed: " + errorMsg);
+                        console.log("Validation error:", errorMsg);
+                    } else {
+                        alert(response.error);
+                    }
+                }
+            },
+            error: function(xhr) {
+                console.error("AJAX error:", xhr.responseText);
+
+                let errorMsg = "An error occurred. Please try again.";
+                if (xhr.status === 422) { 
+                    let response = JSON.parse(xhr.responseText);
+                    if (response.details) {
+                        errorMsg = response.details.join("\n");
+                    }
+                }
+
+                alert(errorMsg);
+            },
+            complete: function() {
+                $('#upload-btn').prop('disabled', false).text('Cambiar foto de perfil');
+            }
+        });
+    });
+});
+
+</script>
+
+
 
 @endsection

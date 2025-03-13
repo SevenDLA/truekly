@@ -1,69 +1,137 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <input type="hidden" name="oper" value="register" />
-        
-        <!--Nombre-->
-        <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" value="{{ old('name') }}">
-            @error('name') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+    <div class="container">
+        <div class="row justify-content-center min-vh-100 align-items-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-lg rounded-lg">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <img src="{{ asset('images/truekly.png') }}" class="img-fluid w-75" />
+                        </div>
 
-        <!--Apellidos-->
-        <div class="mb-3">
-            <label for="surname" class="form-label">Apellidos</label>
-            <input type="text" name="surname" class="form-control" id="surname" placeholder="Apellidos" value="{{ old('surname') }}">
-            @error('surname') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+                        <form method="POST" action="{{ route('registrarse') }}">
+                            @csrf
+                            <input type="hidden" name="oper" value="registrarse" />
 
-        <!--Nombre de usuario-->
-        <div class="mb-3">
-            <label for="username" class="form-label">Nombre de usuario</label>
-            <input type="text" name="username" class="form-control" id="username" placeholder="Nombre de usuario" value="{{ old('username') }}">
-            @error('username') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+                            <!-- Nombre -->
+                            <div class="mb-3">
+                                <x-input-label for="name" :value="__('Nombre')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <x-text-input id="name" class="form-control @error('name') is-invalid @enderror" 
+                                                  type="text" name="name" :value="old('name')" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('name')" class="invalid-feedback" />
+                            </div>
 
-        <!--Sexo-->
-        <div class="mb-3">
-            <label for="sex" class="form-label">Sexo</label>
-            <select name="sex" id="sex" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                <option value="">Selecciona un sexo...</option>
-                @foreach ($SEX as $clave_sex => $texto_sex)
-                    <option value="{{ $clave_sex }}" {{ old('sex') == $clave_sex ? 'selected' : '' }}>{{ $texto_sex }}</option>
-                @endforeach
-            </select>
-            @error('sex') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+                            <!-- Apellidos -->
+                            <div class="mb-3">
+                                <x-input-label for="surname" :value="__('Apellidos')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-users"></i>
+                                    </span>
+                                    <x-text-input id="surname" class="form-control @error('surname') is-invalid @enderror" 
+                                                  type="text" name="surname" :value="old('surname')" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('surname')" class="invalid-feedback" />
+                            </div>
 
-        <!--Fecha de nacimiento-->
-        <div class="mb-3">
-            <label for="date_of_birth" class="form-label">Fecha de nacimiento</label>
-            <input type="text" name="date_of_birth" class="form-control" id="date_of_birth" placeholder="DD/MM/YYYY" value="{{ old('date_of_birth') }}">
-            @error('date_of_birth') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+                            <!-- Nombre de usuario -->
+                            <div class="mb-3">
+                                <x-input-label for="username" :value="__('Nombre de usuario')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-at"></i>
+                                    </span>
+                                    <x-text-input id="username" class="form-control @error('username') is-invalid @enderror" 
+                                                  type="text" name="username" :value="old('username')" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('username')" class="invalid-feedback" />
+                            </div>
 
-        <!--Email-->
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" name="email" class="form-control" id="email" placeholder="Email" value="{{ old('email') }}">
-            @error('email') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+                            <!-- Sexo -->
+                            <div class="mb-3">
+                                <x-input-label for="sex" :value="__('Sexo')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-venus-mars"></i>
+                                    </span>
+                                    <select id="sex" name="sex" class="form-select @error('sex') is-invalid @enderror" required>
+                                        <option value="">Selecciona...</option>
+                                        @foreach ($SEX as $clave_sex => $texto_sex)
+                                            <option value="{{ $clave_sex }}" {{ old('sex') == $clave_sex ? 'selected' : '' }}>
+                                                {{ $texto_sex }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <x-input-error :messages="$errors->get('sex')" class="invalid-feedback" />
+                            </div>
 
-        <!--Número de teléfono-->
-        <div class="mb-3">
-            <label for="phone_number" class="form-label">Número de teléfono</label>
-            <input type="text" name="phone_number" class="form-control" id="phone_number" placeholder="Número de teléfono" value="{{ old('phone_number') }}">
-            @error('phone_number') <p style="color: red;">{{ $message }}</p> @enderror
-        </div>
+                            <!-- Fecha de nacimiento -->
+                            <div class="mb-3">
+                                <x-input-label for="date_of_birth" :value="__('Fecha de nacimiento')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                    <x-text-input id="date_of_birth" class="form-control @error('date_of_birth') is-invalid @enderror" 
+                                                  type="text" name="date_of_birth" :value="old('date_of_birth')" placeholder="DD/MM/YYYY" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('date_of_birth')" class="invalid-feedback" />
+                            </div>
 
-        <!--Contraseña-->
-        <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
-            <input type="password" name="password" class="form-control" id="password" placeholder="Contraseña">
-            @error('password') <p style="color: red;">{{ $message }}</p> @enderror
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <x-input-label for="email" :value="__('Email')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <x-text-input id="email" class="form-control @error('email') is-invalid @enderror" 
+                                                  type="email" name="email" :value="old('email')" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('email')" class="invalid-feedback" />
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="mb-3">
+                                <x-input-label for="phone_number" :value="__('Número de teléfono')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <x-text-input id="phone_number" class="form-control @error('phone_number') is-invalid @enderror" 
+                                                  type="text" name="phone_number" :value="old('phone_number')" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('phone_number')" class="invalid-feedback" />
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="mb-4">
+                                <x-input-label for="password" :value="__('Contraseña')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <x-text-input id="password" class="form-control @error('password') is-invalid @enderror" 
+                                                  type="password" name="password" required />
+                                </div>
+                                <x-input-error :messages="$errors->get('password')" class="invalid-feedback" />
+                            </div>
+
+                            <!-- Botón de envío -->
+                            <div class="d-flex justify-content-center mt-4">
+                                <x-primary-button class="btn btn-primary w-100">
+                                    <i class="fas fa-save me-2"></i>{{ __('Registrarse') }}
+                                </x-primary-button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+    </div>
 </x-guest-layout>

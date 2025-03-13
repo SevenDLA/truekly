@@ -30,7 +30,7 @@
             </a>
           </li>
           <li class="nav-item mx-1">
-            <a class="nav-link fw-medium" href="/services">
+            <a class="nav-link fw-medium" href="/servicios">
               <i class="bi bi-briefcase me-1"></i>Servicios
             </a>
           </li>
