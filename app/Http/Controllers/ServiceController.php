@@ -154,8 +154,8 @@ class ServiceController extends Controller
     }
     
     /**MANEJO DE SERVICIOS POR PARTE DEL USUARIO**/
-    
-    function service_formulario($id_servicio='')
+
+    function service_formulario($modi='', $id_servicio='')
     {
         $servicio = empty($id_servicio) ? new Service() : Service::find($id_servicio);
         $a= "hello";

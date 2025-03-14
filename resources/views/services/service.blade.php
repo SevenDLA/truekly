@@ -103,7 +103,7 @@
                 .map(cb => cb.value);
             const user = userFilter.value;
 
-            const url = `/services?maxPrice=${maxPrice}&categories=${selectedCategories.join(',')}&user=${user}`;
+            const url = `/servicios?maxPrice=${maxPrice}&categories=${selectedCategories.join(',')}&user=${user}`;
 
             history.pushState(null, null, url);
 

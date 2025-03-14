@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/servicio/{id_servicio?}', [ServiceController::class, 'service_formulario']);
 });
 
+Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);
+
 // Compra y venta de tokens
 Route::middleware('auth')->group(function () {
     Route::get('/comprar/{cantidad_tokens}/{precio_tokens}', function ($cantidad_tokens, $precio_tokens) {
@@ -55,7 +57,7 @@ Route::middleware('auth')->group(function () {
     })->name('admin');
 
     Route::get('/admin/listado', [UserController::class, 'listado'])->name('users.listado');
-    Route::get('/admin/services', [ServiceController::class, 'listado'])->name('services.listado');
+    Route::get('/admin/servicios', [ServiceController::class, 'listado'])->name('services.listado');
 });
 
 // Gestión de usuarios

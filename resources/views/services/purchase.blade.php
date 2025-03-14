@@ -9,7 +9,7 @@
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="/services">Servicios</a></li>
+                <li class="breadcrumb-item"><a href="/servicios">Servicios</a></li>
                 <li class="breadcrumb-item active underline" aria-current="page">{{ $service->title }}</li>
             </ol>
         </nav>

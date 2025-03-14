@@ -30,12 +30,14 @@
                 <h6 class="text-success">Precio: ${{ $service->price }}</h6>
                 <small class="text-secondary">Publicado por: {{ $service->user->name }} {{ $service->user->surname }}</small>
                 <div class="mt-3">
-                    <a href="/service/{{ $service->id }}" class="btn btn-primary btn-sm">Ver más</a>
+                    <a href="/servicio/ver/{{ $service->id }}" class="btn btn-primary btn-sm">Ver más</a>
                 </div>
             </div>
             <div class="card-footer bg-light text-center">
-                <a href="/service/editar/{{ $service->id }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
-                <a href="/service/eliminar/{{ $service->id }}" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</a>
+                @if(Auth::check() && Auth::user()->id == $service->user_id)
+                    <a href="/servicio/editar/{{ $service->id }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
+                    <a href="/servicio/eliminar/{{ $service->id }}" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</a>
+                @endif
             </div>
         </div>
     </div>
