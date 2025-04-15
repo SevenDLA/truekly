@@ -1,42 +1,40 @@
-<nav class="navbar navbar-expand-lg p-3 sticky-top">
+<nav class="navbar navbar-expand-lg p-2 p-md-3 sticky-top">
   <div class="container">
     <!-- Logo -->
     <a class="navbar-brand" href="/">
-      <img src="{{ asset('images/truekly.png') }}" class="img-fluid logo" alt="Truekly">
+      <img src="{{ asset('images/truekly.png') }}" class="img-fluid logo" alt="Truekly" style="max-height: 40px;">
     </a>
     
     <!-- Botón del menú móvil -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" 
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="bi bi-list text-white fs-2"></i>
-    </button>
+    <div class="d-flex align-items-center">
+      <div class="d-lg-none me-2">
+        <button class="btn btn-search" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-search text-white"></i>
+        </button>
+      </div>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" 
+              aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list text-white fs-2"></i>
+      </button>
+    </div>
     
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav ms-auto me-auto">
         <ul class="nav nav-underline d-flex align-items-center">
-          <li class="nav-item mx-1">
-            <a class="nav-link fw-medium" aria-current="page" href="#">
-              <i class="bi bi-shop me-1"></i>Tienda
-            </a>
-          </li>
           <li class="nav-item mx-1">
             <a class="nav-link fw-medium" href="#" data-bs-toggle="modal" data-bs-target="#nosotrosModal">
               <i class="bi bi-info-circle me-1"></i>Nosotros
             </a>
           </li>
           <li class="nav-item mx-1">
-            <a class="nav-link fw-medium" href="#">
+            <a class="nav-link fw-medium" href="/carrito">
               <i class="bi bi-cart me-1"></i>Carrito
             </a>
           </li>
           <li class="nav-item mx-1">
             <a class="nav-link fw-medium" href="/servicios">
               <i class="bi bi-briefcase me-1"></i>Servicios
-            </a>
-          </li>
-          <li class="nav-item mx-1">
-            <a class="nav-link fw-medium" href="/mensajes">
-              <i class="bi bi-chat me-1"></i>Mensajes
             </a>
           </li>
           <li class="nav-item mx-1">
@@ -48,21 +46,19 @@
       </div>
       
       <!-- Formulario de búsqueda y login -->
-      <div class="d-flex align-items-center mt-3 mt-lg-0">
-        <div class="dropdown me-2">
-          <button class="btn btn-search" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-search text-white"></i>
-          </button>
-          <div class="dropdown-menu p-3 dropdown-menu-end search-dropdown">
-            <form class="d-flex" role="search">
-              <input class="form-control me-2 border-primary" type="search" placeholder="¿Qué estás buscando?" aria-label="Search">
-              <button class="btn btn-primary" type="submit">Buscar</button>
-            </form>
-          </div>
-        </div>
+      <div class="d-none d-lg-flex align-items-center mt-3 mt-lg-0">
+
         <a class="btn btn-login ms-2" href="/login">
           <i class="bi bi-box-arrow-in-right me-1"></i>
           <span class="d-none d-md-inline">Iniciar sesión</span>
+        </a>
+      </div>
+      
+      <!-- Login button for mobile view -->
+      <div class="d-lg-none mt-3 text-center">
+        <a class="btn btn-login w-100" href="/login">
+          <i class="bi bi-box-arrow-in-right me-1"></i>
+          Iniciar sesión
         </a>
       </div>
     </div>
@@ -79,6 +75,26 @@
       </div>
       <div class="modal-body">
         <!-- Aquí va el contenido del modal -->
+        <div class="row">
+          <div class="col-md-6 mb-4 mb-md-0">
+            <p>
+              Truekly nació de la idea de crear una plataforma donde las personas pudieran intercambiar habilidades y servicios sin necesidad de dinero tradicional. Creemos en una economía colaborativa donde todos tienen algo valioso que ofrecer.
+            </p>
+            <p>
+              Nuestro equipo está formado por profesionales apasionados por la tecnología y la economía colaborativa.
+            </p>
+          </div>
+          <div class="col-md-6">
+            <h5>Nuestros Valores</h5>
+            <ul>
+              <li><strong>Comunidad:</strong> Fomentamos la conexión entre personas.</li>
+              <li><strong>Transparencia:</strong> Todas nuestras operaciones son claras y accesibles.</li>
+              <li><strong>Inclusión:</strong> Creemos que todos tienen habilidades valiosas para compartir.</li>
+              <li><strong>Sostenibilidad:</strong> Promovemos un consumo consciente y responsable.</li>
+            </ul>
+
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

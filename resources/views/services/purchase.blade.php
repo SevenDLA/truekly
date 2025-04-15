@@ -3,6 +3,10 @@
 @section('title', $service->title)
 
 @section('content')
+<!--Cuadro de mensaje-->
+<div id="messageBox"></div>
+
+
 <!-- Sección principal con fondo blanco -->
 <section class="bg-white py-4">
     <div class="container">
@@ -45,11 +49,11 @@
 
                         <!-- Botones de acción -->
                         <div class="d-grid gap-2 mt-auto">
-                            <button class="btn btn-primary btn-lg">
+                            <button class="btn btn-primary btn-lg" id="anhadir_button">
                                 <i class="bi bi-cart-plus"></i> Añadir al carrito
                             </button>
                             <button class="btn btn-outline-secondary btn-lg">
-                                <i class="bi bi-arrow-left"></i> Seguir comprando
+                                <a href="/servicios"><i class="bi bi-arrow-left"></i> Seguir comprando</a>
                             </button>
                         </div>
                     </div>
@@ -71,4 +75,68 @@
     </div>
 </section>
 
+<script>
+    
+    $(document).ready(function () 
+    {
+        $('#anhadir_button').on('click', function(){
+            $.ajax(
+            {
+                url: '/anhadir_servicio_carrito',
+                type: 'POST',
+                contentType: 'application/json',
+                headers: 
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: JSON.stringify({ id: parseInt("{{$service->id}}")}),
+
+
+
+
+                success: function (response) 
+                {
+                    console.log('Respuesta recibida', response);
+
+                    if(response.exito)
+                    {
+                        text    = response.exito
+                        bgColor = 'green'
+                    }
+                    else
+                    {
+                        text    = response.error
+                        bgColor = 'red'
+                    }
+
+
+
+                    $('#messageBox')
+                            .text(text) 
+                            .css({
+                                'background-color': `${bgColor}`,
+                                'color': 'white',
+                                'font-weight': 'bold',
+                                'text-align': 'center',
+                                'padding': '10px',
+                                'width': '100%'
+                            })
+                            .show();
+
+                        // Reload after 5 seconds
+                        setTimeout(function() {
+                            $('#messageBox').fadeOut('fast');
+                        }, 1000);
+
+
+
+                },
+                error: function (xhr) {
+                    console.error('Error actualizando carrito:', xhr.responseText);
+                }
+            });
+        })
+    });
+</script>
 @endsection
+

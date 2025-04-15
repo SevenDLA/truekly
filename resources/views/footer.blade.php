@@ -1,17 +1,17 @@
-<section class="footer p-5">
+<section class="footer p-4 p-md-5">
     <footer>
         <div class="container py-4">
             <!-- Newsletter subscription section -->
-            <div class="row mb-5 align-items-center bg-white p-4 rounded-4 shadow-sm">
+            <div class="row mb-5 align-items-center bg-white p-3 p-md-4 rounded-4 shadow-sm">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <p class="fs-5 fw-bold text-dark mb-0">¡Mantente al día! <span class="text-primary">Suscríbete</span> a nuestro boletín para obtener las mejores ofertas.</p>
                 </div>
                 <div class="col-md-6">
                     <div class="row g-2">
-                        <div class="col-md-8">
+                        <div class="col-8 col-md-8">
                             <input type="email" class="form-control border-primary" placeholder="Inserta tu email aquí">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-4 col-md-4">
                             <button class="btn btn-subscribe w-100 fw-bold">Suscribirse</button>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                     </a>
                 </div>
                 <div class="col-md-6 text-center text-md-end">
-                    <div class="d-flex gap-4 justify-content-center justify-content-md-end">
+                    <div class="d-flex gap-2 gap-md-4 justify-content-center justify-content-md-end">
                         <a href="#" class="social-icon" aria-label="Facebook">
                             <i class="bi bi-facebook fs-3"></i>
                         </a>
@@ -58,16 +58,15 @@
 
                 <div class="col-md-8">
                     <div class="row">
-                        <div class="col-md-4 col-6 mb-4 mb-md-0">
+                        <div class="col-6 col-md-4 mb-4 mb-md-0">
                             <h5 class="text-uppercase fw-bold mb-4">Explorar</h5>
                             <ul class="list-unstyled footer-links">
-                                <li class="mb-2"><a href="#">Tienda</a></li>
                                 <li class="mb-2"><a href="/servicios">Servicios</a></li>
                                 <li class="mb-2"><a href="#categoriasCarousel">Categorías</a></li>
                                 <li class="mb-2"><a href="#usuariosDestacados">Usuarios Destacados</a></li>
                             </ul>
                         </div>
-                        <div class="col-md-4 col-6 mb-4 mb-md-0">
+                        <div class="col-6 col-md-4 mb-4 mb-md-0">
                             <h5 class="text-uppercase fw-bold mb-4">Ayuda</h5>
                             <ul class="list-unstyled footer-links">
                                 <li class="mb-2"><a href="#">Preguntas Frecuentes</a></li>
@@ -76,7 +75,7 @@
                                 <li class="mb-2"><a href="#">Contacto</a></li>
                             </ul>
                         </div>
-                        <div class="col-md-4 col-6">
+                        <div class="col-6 col-md-4">
                             <h5 class="text-uppercase fw-bold mb-4">Legal</h5>
                             <ul class="list-unstyled footer-links">
                                 <li class="mb-2"><a href="#">Términos de Servicio</a></li>
@@ -91,10 +90,10 @@
 
             <!-- Copyright -->
             <div class="row mt-5 pt-4 border-top border-secondary">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <div class="col-12 col-md-6 text-center text-md-start mb-3 mb-md-0">
                     <p class="mb-0">&copy; 2025 Truekly. Todos los derechos reservados.</p>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
+                <div class="col-12 col-md-6 text-center text-md-end">
                     <p class="mb-0">Hecho con pasión por Darren Angelo Lajara Corpuz y Seven de León Amador</p>
                 </div>
             </div>

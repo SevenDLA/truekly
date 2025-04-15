@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/eliminar_servicio/{id}', [ServiceController::class, 'eliminar_servicio_usuario']);
     Route::post('/nuevo_servicio', [ServiceController::class, 'almacenar_servicio'])->name('service.store');
     Route::get('/servicio/{id_servicio?}', [ServiceController::class, 'service_formulario']);
+    Route::post('anhadir_servicio_carrito', [ServiceController::class, 'anhadir_servicio_carrito']);
 });
 
 Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);
@@ -74,6 +75,11 @@ Route::get('/servicio/{id}', [ServiceController::class, 'mostrar'])->name('servi
 // Actualización de usuario vía AJAX
 Route::middleware('auth')->post('/update-user-info', [UserController::class, 'updateUserInfo']);
 Route::get('/user/{id}/services/ajax', [ServiceController::class, 'getUserServicesAjax']);
+
+//Carrito
+Route::get('/carrito', function () {
+    return view('carrito');
+});
 
 // Autenticación
 require __DIR__.'/auth.php';

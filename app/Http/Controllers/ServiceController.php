@@ -201,11 +201,30 @@ class ServiceController extends Controller
         return view('services.edit_service', compact('id_usuario', 'id_servicio', 'servicio'));
     }
 
-
+    
     public function getUserServicesAjax($userId)
     {
         $user = User::with('services')->findOrFail($userId);
         return response()->json($user->services);
     }
-   
+    
+
+    public function anhadir_servicio_carrito(Request $request)
+    {
+        $id_servicio = $request->input('id');
+        $servicio = Service::findOrFail($id_servicio);
+        $carrito = session('carrito', []);
+
+
+        if (in_array($id_servicio, $carrito)) {
+            return response()->json(["error" => 'Servicio ya en el carrito']);
+        }
+
+        $carrito[$id_servicio] = $servicio->precio;
+        
+        session(['carrito' => $carrito]);
+
+        return response()->json(["exito" => 'Servicio añadido correctamente']);
+    }
+
 }
