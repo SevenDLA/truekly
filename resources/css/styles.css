@@ -635,10 +635,7 @@ section {
 }
 
 .carousel-indicators .active {
-    width: 14px;
-    height: 14px;
     opacity: 1;
-    transform: scale(1.2);
 }
 
 .carousel-control-prev,
@@ -934,4 +931,7 @@ section {
 .py-5.bg-light .container {
     position: relative;
     z-index: 1;
+}
+#subscriptionSuccess, #subscriptionError {
+    font-size: 0.9rem;
 }

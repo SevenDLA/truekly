@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/eliminar_servicio/{id}', [ServiceController::class, 'eliminar_servicio_usuario']);
     Route::post('/nuevo_servicio', [ServiceController::class, 'almacenar_servicio'])->name('service.store');
     Route::get('/servicio/{id_servicio?}', [ServiceController::class, 'service_formulario']);
-    Route::post('anhadir_servicio_carrito', [ServiceController::class, 'anhadir_servicio_carrito']);
+    Route::post('/anhadir_servicio_carrito', [ServiceController::class, 'anhadir_servicio_carrito']);
+    Route::post('/quitar_servicio_carrito', [ServiceController::class, 'quitar_servicio_carrito']);
 });
 
 Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);

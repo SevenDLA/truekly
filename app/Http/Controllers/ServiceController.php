@@ -155,12 +155,12 @@ class ServiceController extends Controller
     
     /**MANEJO DE SERVICIOS POR PARTE DEL USUARIO**/
 
-    function service_formulario($modi='', $id_servicio='')
+    function service_formulario($id_servicio='')
     {
         $servicio = empty($id_servicio) ? new Service() : Service::find($id_servicio);
-        $a= "hello";
+        $tipo_oper= empty($id_servicio) ? 'Crear servicio' : 'Editar servicio';
 
-        return view('services.service_form', compact('servicio', 'a'));
+        return view('services.service_form', compact('servicio', 'tipo_oper'));
     }
 
     function almacenar_servicio(Request $request)
@@ -226,5 +226,35 @@ class ServiceController extends Controller
 
         return response()->json(["exito" => 'Servicio añadido correctamente']);
     }
+
+
+    public function quitar_servicio_carrito(Request $request)
+    {
+        $id_servicio = $request->input('id');
+        $id_servicio = (int)$id_servicio;  // Ensure the id_servicio is an integer
+        $carrito = session('carrito', []);
+
+        // Remove the key if it exists
+        if (array_key_exists($id_servicio, $carrito)) {
+            unset($carrito[$id_servicio]);
+            session(['carrito' => $carrito]);
+
+            return response()->json([
+                'exito' => 'Servicio eliminado del carrito',
+                'id_servicio' => $id_servicio    
+            ]);
+        }
+
+        // If the service is not found, return an error with correct data
+        return response()->json([
+            'error' => 'Servicio no encontrado en el carrito',
+            'id_servicio' => $id_servicio,
+            'tipo_var_id' => gettype($id_servicio),
+            'carrito' => $carrito,
+            'servicio_en_carrito' => array_key_exists($id_servicio, $carrito)  // This should now correctly show true/false
+        ]);
+    }
+
+
 
 }

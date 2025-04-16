@@ -79,7 +79,8 @@
     
     $(document).ready(function () 
     {
-        $('#anhadir_button').on('click', function(){
+        $('#anhadir_button').on('click', function()
+        {
             $.ajax(
             {
                 url: '/anhadir_servicio_carrito',

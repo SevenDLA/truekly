@@ -12,7 +12,7 @@
     <h2 class="mb-4"><i class="bi bi-cart me-1"></i> Mi Carrito</h2>
     <div class="row">
         <!-- Product List -->
-        <div class="col-md-8">
+        <div class="col-md-8" id="listadoCarro">
             <script>
                 var listado_productos = [];
             </script>
@@ -20,7 +20,7 @@
                 $precio_total = 0;
             @endphp
 
-            @forelse ($carrito as $id)
+            @forelse ($carrito as $id => $precio)
                 @php
                     $servicio = Service::find($id);
                 @endphp
@@ -35,9 +35,9 @@
                         $precio_total += $servicio->price;
                     @endphp
 
-                    <div class="card mb-4 position-relative">
+                    <div class="card mb-4 position-relative servicioEnCarro">
                         <!-- Delete Button -->
-                        <button class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center position-absolute top-0 end-0 m-2" style="width: 30px; height: 30px;">
+                        <button class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center position-absolute top-0 end-0 m-2 delete-button" style="width: 30px; height: 30px;" data-id="{{ $servicio->id }}">
                             <i class="bi bi-x-lg"></i>
                         </button>
 
@@ -78,7 +78,7 @@
                 <h5 class="mb-3">Resumen del Pedido</h5>
                 <div class="mb-2 d-flex justify-content-between">
                     <span>Subtotal</span>
-                    <span>{{ $precio_total }}</span>
+                    <span id="precioTotal">{{ $precio_total }}</span>
                 </div>
                 <div class="mb-2 d-flex justify-content-between">
                     <span>Descuento</span>
@@ -97,6 +97,56 @@
 </div>
 
 <script>
-    console.log(listado_productos)
+
+    $(document).ready(function()
+    {
+
+        $('.delete-button').on('click', function() 
+        {
+            let card = $(this).closest('.card');
+            console.log("clicked")
+            $.ajax(
+            {
+                url:'/quitar_servicio_carrito',
+                type:'POST',
+                contentType: 'application/json',
+                headers:
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                
+                data: JSON.stringify({ id: parseInt(this.dataset.id)}),
+
+
+                success: function (response)
+                {
+                    console.log(response)
+                    listado_productos.forEach(p => console.log('ID:', p.id, typeof p.id));
+                    let precioActual = parseFloat($('#precioTotal').html());
+
+                    let producto = listado_productos.find(p => p.id === response.id_servicio);
+                    console.log('Producto:', producto);
+
+                    $('#precioTotal').html(precioActual - producto.price)
+                    card.remove();
+
+                    if ($('.servicioEnCarro').length === 0) 
+                    {
+                        console.log('No elements found');
+                        $('#listadoCarro').prepend('<p>Tu carrito está vacío.</p>')
+                    }
+                },
+
+                error: function (xhr) {
+                    console.error('Error borrando carrito:', xhr.responseText);
+                }
+
+            });
+
+        });
+
+
+
+    })
 </script>
 @endsection

@@ -1,12 +1,12 @@
 @extends('layout')
 
-@section('title', 'Editar servicio')
+@section('title', $tipo_oper)
 
 @section('content')
     <div class="container mt-5">
         <div class="card shadow-lg p-4 rounded">
-            <h2 class="text-center mb-4">Editar Servicio</h2>
-            <h1>{{$a}}</h1>
+            <h2 class="text-center mb-4">{{ $tipo_oper }}</h2>
+
             <form method="POST" action="{{ route('service.store') }}">
                 @csrf
                 <input type="hidden" name="id_servicio" value="{{ $servicio->id }}" />

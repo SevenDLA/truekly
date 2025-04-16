@@ -9,8 +9,10 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
                     <h1 class="animate-fadeInUp">Bienvenido a <span style="color: var(--primary);">Truekly</span></h1>
-                    <p class="lead text-white mt-4 animate-fadeInUp animate-delay-1" style="max-width: 700px; margin: 0 auto;">
-                        La plataforma donde puedes comprar, vender e intercambiar habilidades y servicios con otros usuarios.
+                    <p class="lead text-white mt-4 animate-fadeInUp animate-delay-1"
+                        style="max-width: 700px; margin: 0 auto;">
+                        La plataforma donde puedes comprar, vender e intercambiar habilidades y servicios con otros
+                        usuarios.
                     </p>
                     <div class="mt-5 animate-fadeInUp animate-delay-2">
                         <a href="#como-funciona" class="btn btn-primary btn-lg me-2">
@@ -34,11 +36,7 @@
                 <p class="lead text-muted">Descubre las tres formas de aprovechar Truekly</p>
             </div>
             <div class="row justify-content-center g-4">
-                @foreach ([
-                    ['titulo' => 'Compra', 'icono' => 'bi-cash-coin', 'desc' => 'Adquiere habilidades y servicios de otros usuarios utilizando nuestros TokenSkills.'],
-                    ['titulo' => 'Intercambia', 'icono' => 'bi-arrow-left-right', 'desc' => 'Ofrece tus habilidades a cambio de otras sin necesidad de usar dinero.'],
-                    ['titulo' => 'Vende', 'icono' => 'bi-piggy-bank', 'desc' => 'Monetiza tus conocimientos y habilidades ofreciéndolos en nuestra plataforma.']
-                ] as $index => $item)
+                @foreach ([['titulo' => 'Compra', 'icono' => 'bi-cash-coin', 'desc' => 'Adquiere habilidades y servicios de otros usuarios utilizando nuestros TokenSkills.'], ['titulo' => 'Intercambia', 'icono' => 'bi-arrow-left-right', 'desc' => 'Ofrece tus habilidades a cambio de otras sin necesidad de usar dinero.'], ['titulo' => 'Vende', 'icono' => 'bi-piggy-bank', 'desc' => 'Monetiza tus conocimientos y habilidades ofreciéndolos en nuestra plataforma.']] as $index => $item)
                     <div class="col-md-4">
                         <div class="icon-box h-100 text-center">
                             <i class="bi {{ $item['icono'] }}"></i>
@@ -59,25 +57,19 @@
                 <h3 class="fs-2">Explora por Categorías</h3>
                 <p class="text-muted">Encuentra servicios y habilidades según tus intereses</p>
             </div>
-            
+
             <div id="categoriasCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
                 <!-- Carousel Inner -->
                 <div class="carousel-inner">
-                    @foreach (array_chunk([
-                        ['nombre' => 'Música', 'icono' => 'bi-music-note', 'desc' => 'Clases de instrumentos, producción musical, composición'],
-                        ['nombre' => 'Gaming', 'icono' => 'bi-controller', 'desc' => 'Coaching en videojuegos, streaming, desarrollo'],
-                        ['nombre' => 'Deporte', 'icono' => 'bi-activity', 'desc' => 'Entrenamiento personal, nutrición, técnicas deportivas'],
-                        ['nombre' => 'Arte', 'icono' => 'bi-palette', 'desc' => 'Clases de dibujo, pintura, escultura y más'],
-                        ['nombre' => 'Cine', 'icono' => 'bi-film', 'desc' => 'Edición de video, guiones, actuación'],
-                        ['nombre' => 'Tecnología', 'icono' => 'bi-cpu', 'desc' => 'Programación, diseño web, análisis de datos']
-                    ], 3) as $index => $grupo)
+                    @foreach (array_chunk([['nombre' => 'Música', 'icono' => 'bi-music-note', 'desc' => 'Instrumentos, producción, composición'], ['nombre' => 'Gaming', 'icono' => 'bi-controller', 'desc' => 'Coaching en videojuegos, streaming'], ['nombre' => 'Deporte', 'icono' => 'bi-activity', 'desc' => 'Entrenamiento personal, nutrición'], ['nombre' => 'Arte', 'icono' => 'bi-palette', 'desc' => 'Clases de dibujo, pintura, escultura y más'], ['nombre' => 'Cine', 'icono' => 'bi-film', 'desc' => 'Edición de video, guiones, actuación'], ['nombre' => 'Tecnología', 'icono' => 'bi-cpu', 'desc' => 'Programación, diseño web, análisis de datos']], 3) as $index => $grupo)
                         <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                             <div class="row justify-content-center">
                                 @foreach ($grupo as $categoria)
                                     <div class="col-md-4">
                                         <div class="category-card">
                                             <div class="text-center mb-3">
-                                                <i class="bi {{ $categoria['icono'] }} fs-1" style="color: var(--primary);"></i>
+                                                <i class="bi {{ $categoria['icono'] }} fs-1"
+                                                    style="color: var(--primary);"></i>
                                             </div>
                                             <h4 class="fs-5 text-center mb-3">{{ $categoria['nombre'] }}</h4>
                                             <p class="text-muted text-center mb-3">{{ $categoria['desc'] }}</p>
@@ -89,40 +81,23 @@
                     @endforeach
                 </div>
 
-                <!-- Carousel Controls -->
-                <button class="carousel-control-prev" 
-                        type="button" 
-                        data-bs-target="#categoriasCarousel" 
-                        data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" 
-                        type="button" 
-                        data-bs-target="#categoriasCarousel" 
-                        data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
+
 
                 <!-- Carousel Indicators -->
                 <div class="carousel-indicators">
                     @foreach (array_chunk(['Música', 'Gaming', 'Deporte', 'Arte', 'Cine', 'Tecnología'], 3) as $index => $grupo)
-                        <button type="button" 
-                                data-bs-target="#categoriasCarousel" 
-                                data-bs-slide-to="{{ $index }}" 
-                                class="{{ $index == 0 ? 'active' : '' }}" 
-                                aria-label="Slide {{ $index + 1 }}"></button>
+                        <button type="button" data-bs-target="#categoriasCarousel" data-bs-slide-to="{{ $index }}"
+                            class="{{ $index == 0 ? 'active' : '' }}" aria-label="Slide {{ $index + 1 }}"></button>
                     @endforeach
                 </div>
             </div>
-            
+
             <div class="text-center mt-5">
                 <a href="/servicios" class="btn btn-outline-primary"><i class="bi bi-grid"></i>Ver todos los servicios </a>
             </div>
         </div>
     </section>
-    
+
     <!-- Featured Users Section Mejorada -->
     <section class="destacados-section py-5" id="usuariosDestacados">
         <div class="container">
@@ -131,25 +106,20 @@
                 <h4 class="fs-2 text-dark">Usuarios Destacados</h4>
                 <p class="text-muted">Descubre a nuestros usuarios más populares y sus habilidades</p>
             </div>
-            
+
             <div class="row g-4">
-                @foreach ([
-                    ['nombre' => 'Lucas Pérez', 'tag' => 'Popular', 'emoji' => '⭐', 'desc' => 'Diseño interfaces atractivas y responsivas con React y Tailwind.', 'rating' => 4.9],
-                    ['nombre' => 'Ana Torres', 'tag' => 'Tendencia', 'emoji' => '🔥', 'desc' => 'Desarrollo backends seguros y escalables con Node.js y PostgreSQL.', 'rating' => 4.8],
-                    ['nombre' => 'Martín Rojas', 'tag' => 'Mejor valorado', 'emoji' => '🏆', 'desc' => 'Construyo webs completas, desde el frontend hasta el backend.', 'rating' => 5.0]
-                ] as $usuario)
+                @foreach ([['nombre' => 'Lucas Pérez', 'tag' => 'Popular', 'emoji' => '⭐', 'desc' => 'Diseño interfaces atractivas y responsivas con React y Tailwind.', 'rating' => 4.9], ['nombre' => 'Ana Torres', 'tag' => 'Tendencia', 'emoji' => '🔥', 'desc' => 'Desarrollo backends seguros y escalables con Node.js y PostgreSQL.', 'rating' => 4.8], ['nombre' => 'Martín Rojas', 'tag' => 'Mejor valorado', 'emoji' => '🏆', 'desc' => 'Construyo webs completas, desde el frontend hasta el backend.', 'rating' => 5.0]] as $usuario)
                     <div class="col-md-4">
                         <div class="profile-card h-100">
                             <span class="tag">
                                 {{ $usuario['emoji'] }} {{ $usuario['tag'] }}
                             </span>
                             <div class="profile-image">
-                                <img src="{{ asset('images/default_male_pfp.jpg') }}" 
-                                     alt="{{ $usuario['nombre'] }}" 
-                                     class="img-fluid">
+                                <img src="{{ asset('images/default_male_pfp.jpg') }}" alt="{{ $usuario['nombre'] }}"
+                                    class="img-fluid">
                             </div>
                             <h5 class="fs-5 fw-bold mb-2">{{ $usuario['nombre'] }}</h5>
-                            
+
                             <!-- Valoración con estrellas -->
                             <div class="mb-3">
                                 @for ($i = 1; $i <= 5; $i++)
@@ -163,7 +133,7 @@
                                 @endfor
                                 <small class="ms-2 text-muted">({{ $usuario['rating'] }})</small>
                             </div>
-                            
+
                             <p class="text-muted mb-4">{{ $usuario['desc'] }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="text-primary fw-bold">
@@ -190,26 +160,28 @@
                         ¿No tienes habilidades específicas para intercambiar?
                     </h2>
                     <p class="lead mb-4">
-                        En nuestra plataforma, puedes adquirir <span class="fw-bold text-primary">TokenSkills</span>, nuestra moneda digital, para acceder a diversos servicios.
+                        En nuestra plataforma, puedes adquirir <span class="fw-bold text-primary">TokenSkills</span>,
+                        nuestra moneda digital, para acceder a diversos servicios.
                     </p>
                     <p class="mb-4">
                         Con TokenSkills podrás:
                     </p>
                     <ul class="mb-4 ps-0" style="list-style: none;">
                         <li class="mb-2">
-                            <i class="bi bi-check-circle-fill text-primary me-2"></i> 
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
                             Contratar servicios directamente sin necesidad de ofrecer habilidades
                         </li>
                         <li class="mb-2">
-                            <i class="bi bi-check-circle-fill text-primary me-2"></i> 
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
                             Recibir tokens por tus servicios y monetizarlos posteriormente
                         </li>
                         <li class="mb-2">
-                            <i class="bi bi-check-circle-fill text-primary me-2"></i> 
+                            <i class="bi bi-check-circle-fill text-primary me-2"></i>
                             Acceder a servicios premium y usuarios destacados
                         </li>
                     </ul>
-                    <button type="button" class="btn btn-outline-light btn-lg pulse" data-bs-toggle="modal" data-bs-target="#tokensModal">
+                    <button type="button" class="btn btn-outline-light btn-lg pulse" data-bs-toggle="modal"
+                        data-bs-target="#tokensModal">
                         <i class="bi bi-cart-plus"></i> Ver paquetes de tokens
                     </button>
                 </div>
@@ -217,32 +189,22 @@
                     <div id="tokensCarousel" class="carousel slide" data-bs-ride="carousel">
                         <!-- Carousel Inner -->
                         <div class="carousel-inner">
-                            @foreach ([
-                                ['tokens' => 100, 'precio' => 4.99, 'highlight' => ''],
-                                ['tokens' => 250, 'precio' => 9.99, 'highlight' => ''],
-                                ['tokens' => 500, 'precio' => 24.99, 'highlight' => 'Más popular'],
-                                ['tokens' => 1000, 'precio' => 45.99, 'highlight' => 'Mejor valor'],
-                                ['tokens' => 2000, 'precio' => 89.99, 'highlight' => 'Ahorro máximo']
-                            ] as $index => $pack)
+                            @foreach ([['tokens' => 100, 'precio' => 4.99], ['tokens' => 250, 'precio' => 9.99], ['tokens' => 500, 'precio' => 24.99], ['tokens' => 1000, 'precio' => 45.99], ['tokens' => 2000, 'precio' => 89.99]] as $index => $pack)
                                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                     <div class="token-card mx-auto" style="max-width: 320px;">
-                                        @if($pack['highlight'])
-                                            <div class="tag mb-3" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%);">
-                                                {{ $pack['highlight'] }}
-                                            </div>
-                                        @endif
                                         <div class="token-card-content">
                                             <div class="token-coin-container">
-                                                <img src="{{ asset('images/coin.png') }}" 
-                                                     alt="TokenSkills" 
-                                                     class="token-coin">
+                                                <img src="{{ asset('images/coin.png') }}" alt="TokenSkills"
+                                                    class="token-coin">
                                             </div>
                                             <h5 class="fs-3 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
                                             <p class="fs-4 mb-3 fw-bold">{{ $pack['precio'] }}€</p>
                                             <p class="text-muted mb-3">
-                                                {{ round($pack['precio'] / $pack['tokens'] * 100, 2) }}€ por cada 100 tokens
+                                                {{ round(($pack['precio'] / $pack['tokens']) * 100, 2) }}€ por cada 100
+                                                tokens
                                             </p>
-                                            <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-subscribe w-100">
+                                            <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}"
+                                                class="btn btn-subscribe w-100">
                                                 <i class="bi bi-bag-check"></i> Comprar ahora
                                             </a>
                                         </div>
@@ -252,11 +214,13 @@
                         </div>
 
                         <!-- Carousel Controls -->
-                        <button class="carousel-control-prev" type="button" data-bs-target="#tokensCarousel" data-bs-slide="prev">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#tokensCarousel"
+                            data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Anterior</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#tokensCarousel" data-bs-slide="next">
+                        <button class="carousel-control-next" type="button" data-bs-target="#tokensCarousel"
+                            data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Siguiente</span>
                         </button>
@@ -264,11 +228,9 @@
                         <!-- Carousel Indicators -->
                         <div class="carousel-indicators">
                             @foreach ([100, 250, 500, 1000, 2000] as $index => $tokens)
-                                <button type="button" 
-                                        data-bs-target="#tokensCarousel" 
-                                        data-bs-slide-to="{{ $index }}" 
-                                        class="{{ $index == 0 ? 'active' : '' }}" 
-                                        aria-label="{{ $tokens }} tokens"></button>
+                                <button type="button" data-bs-target="#tokensCarousel"
+                                    data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"
+                                    aria-label="{{ $tokens }} tokens"></button>
                             @endforeach
                         </div>
                     </div>
@@ -278,54 +240,32 @@
     </section>
 
     <!-- Tokens Modal Mejorado -->
+    <!-- Modal Paquetes TokenSkills con Scroll Horizontal -->
     <div class="modal fade" id="tokensModal" tabindex="-1" aria-labelledby="tokensModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-white text-white">
+                <div class="modal-header border-0">
                     <h5 class="modal-title" id="tokensModalLabel">
-                        <i class="bi bi-coin text-warning me-2"></i> Paquetes de TokenSkills
+                        <i class="bi bi-currency-exchange me-2"></i> Elige tu paquete de TokenSkills
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-center mb-4">Selecciona el paquete que mejor se adapte a tus necesidades</p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        @foreach ([
-                            ['tokens' => 100, 'precio' => 4.99, 'highlight' => ''],
-                            ['tokens' => 250, 'precio' => 9.99, 'highlight' => ''],
-                            ['tokens' => 500, 'precio' => 24.99, 'highlight' => 'Más popular'],
-                            ['tokens' => 1000, 'precio' => 45.99, 'highlight' => 'Mejor valor'],
-                            ['tokens' => 2000, 'precio' => 89.99, 'highlight' => 'Ahorro máximo']
-                        ] as $pack)
-                            <div class="token-card" style="width: 220px; position: relative;">
-                                @if($pack['highlight'])
-                                    <div class="tag mb-3" style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%);">
-                                        {{ $pack['highlight'] }}
-                                    </div>
-                                @endif
-                                <div class="token-card-content">
-                                    <div class="token-coin-container">
-                                        @php
-                                            $numCoins = min(3, intval($pack['tokens'] / 100)); // Máximo 3 monedas para no sobrecargar
-                                        @endphp
-                                        @for ($i = 0; $i < $numCoins; $i++)
-                                            <img src="{{ asset('images/coin.png') }}" 
-                                                 alt="TokenSkills" 
-                                                 class="token-coin"
-                                                 style="
-                                                    transform: translate({{ ($i - ($numCoins-1)/2) * 15 }}px, -50%);
-                                                    z-index: {{ $i }};
-                                                    max-height: 40px;
-                                                 ">
-                                        @endfor
-                                    </div>
-                                    <h5 class="fs-5 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
-                                    <p class="fs-6 mb-2 fw-bold">{{ $pack['precio'] }}€</p>
-                                    <p class="text-muted small mb-3">
-                                        {{ round($pack['precio'] / $pack['tokens'] * 100, 2) }}€ por cada 100 tokens
-                                    </p>
-                                    <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}" class="btn btn-primary w-100">
-                                        <i class="bi bi-bag-check"></i> Comprar
+                    <div class="scroll-container d-flex gap-4 overflow-auto px-2 py-3">
+                        @foreach ([['tokens' => 100, 'precio' => 4.99], ['tokens' => 250, 'precio' => 9.99], ['tokens' => 500, 'precio' => 24.99], ['tokens' => 1000, 'precio' => 45.99], ['tokens' => 2000, 'precio' => 89.99]] as $pack)
+                            <div class="token-card bg-light text-dark p-4 rounded-4 shadow-sm"
+                                style="min-width: 260px; max-width: 260px;">
+                                <div class="text-center">
+                                    <img src="{{ asset('images/coin.png') }}" alt="Token" class="mb-3"
+                                        style="width: 50px;">
+                                    <h5 class="fw-bold mb-1">{{ $pack['tokens'] }} TokenSkills</h5>
+                                    <p class="fs-5 fw-semibold mb-1">{{ $pack['precio'] }}€</p>
+                                    <p class="text-muted mb-3">{{ round(($pack['precio'] / $pack['tokens']) * 100, 2) }}€
+                                        por cada 100 tokens</p>
+                                    <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}"
+                                        class="btn btn-primary w-100">
+                                        <i class="bi bi-bag-check me-1"></i> Comprar
                                     </a>
                                 </div>
                             </div>
@@ -339,7 +279,9 @@
                                 </div>
                                 <div>
                                     <h6 class="alert-heading mb-1">¿Cómo funcionan los TokenSkills?</h6>
-                                    <p class="mb-0">Los TokenSkills son nuestra moneda virtual para intercambiar servicios en la plataforma. Puedes usarlos para adquirir habilidades o recibirlos al ofrecer las tuyas.</p>
+                                    <p class="mb-0">Los TokenSkills son nuestra moneda virtual para intercambiar
+                                        servicios en la plataforma. Puedes usarlos para adquirir habilidades o recibirlos al
+                                        ofrecer las tuyas.</p>
                                 </div>
                             </div>
                         </div>
@@ -351,6 +293,11 @@
             </div>
         </div>
     </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
 
     <!-- Call to Action Section Mejorada -->
     <section class="py-5 bg-light">
@@ -373,47 +320,4 @@
         </div>
     </section>
 
-    <!-- Script para mejorar la interactividad -->
-    <script>
-        // Agregar clase al navbar al hacer scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const navbar = document.querySelector('.navbar');
-            
-            if (navbar) {
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 50) {
-                        navbar.classList.add('scrolled');
-                    } else {
-                        navbar.classList.remove('scrolled');
-                    }
-                });
-            }
-            
-            // Inicialización de carruseles
-            const carousels = document.querySelectorAll('.carousel');
-            carousels.forEach(carousel => {
-                new bootstrap.Carousel(carousel, {
-                    interval: 5000,
-                    touch: true
-                });
-            });
-            
-            // Smooth scroll para links internos
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

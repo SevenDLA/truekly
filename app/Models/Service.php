@@ -15,4 +15,13 @@ class Service extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    const CATEGORY = [
+        'MUS' => 'Música',
+        'GAM' => 'Gaming',
+        'DEP' => 'Deporte',
+        'ART' => 'Arte',
+        'CIN' => 'Cine',
+        'TEC' => 'Tecnología'
+    ];
 }

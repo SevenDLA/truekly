@@ -7,13 +7,21 @@
                     <p class="fs-5 fw-bold text-dark mb-0">¡Mantente al día! <span class="text-primary">Suscríbete</span> a nuestro boletín para obtener las mejores ofertas.</p>
                 </div>
                 <div class="col-md-6">
-                    <div class="row g-2">
-                        <div class="col-8 col-md-8">
-                            <input type="email" class="form-control border-primary" placeholder="Inserta tu email aquí">
+                    <form id="newsletterForm">
+                        <div class="row g-2">
+                            <div class="col-8 col-md-8">
+                                <input type="email" id="newsletterEmail" class="form-control border-primary" placeholder="Inserta tu email aquí" required>
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <button type="submit" class="btn btn-subscribe w-100 fw-bold">Suscribirse</button>
+                            </div>
                         </div>
-                        <div class="col-4 col-md-4">
-                            <button class="btn btn-subscribe w-100 fw-bold">Suscribirse</button>
-                        </div>
+                    </form>
+                    <div id="subscriptionSuccess" class="mt-2 text-success d-none">
+                        <i class="bi bi-check-circle-fill"></i> ¡Te has suscrito con éxito!
+                    </div>
+                    <div id="subscriptionError" class="mt-2 text-danger d-none">
+                        <i class="bi bi-exclamation-circle-fill"></i> Por favor ingresa un email válido
                     </div>
                 </div>
             </div>
@@ -94,9 +102,42 @@
                     <p class="mb-0">&copy; 2025 Truekly. Todos los derechos reservados.</p>
                 </div>
                 <div class="col-12 col-md-6 text-center text-md-end">
-                    <p class="mb-0">Hecho con pasión por Darren Angelo Lajara Corpuz y Seven de León Amador</p>
+                    <p class="mb-0">Darren Angelo Lajara Corpuz y Seven de León Amador</p>
                 </div>
             </div>
         </div>
     </footer>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    const newsletterEmail = document.getElementById('newsletterEmail');
+    const successMessage = document.getElementById('subscriptionSuccess');
+    const errorMessage = document.getElementById('subscriptionError');
+
+    newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide previous messages
+        successMessage.classList.add('d-none');
+        errorMessage.classList.add('d-none');
+        
+        // Simple email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(newsletterEmail.value)) {
+            errorMessage.classList.remove('d-none');
+            return;
+        }
+        
+        // Simulate successful subscription
+        successMessage.classList.remove('d-none');
+        newsletterEmail.value = ''; // Clear the input
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+            successMessage.classList.add('d-none');
+        }, 5000);
+    });
+});
+</script>
