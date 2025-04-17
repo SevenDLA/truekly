@@ -52,7 +52,7 @@
                             <button class="btn btn-primary btn-lg" id="anhadir_button">
                                 <i class="bi bi-cart-plus"></i> Añadir al carrito
                             </button>
-                            <button class="btn btn-outline-secondary btn-lg">
+                            <button class="btn btn-secondary btn-lg">
                                 <a href="/servicios"><i class="bi bi-arrow-left"></i> Seguir comprando</a>
                             </button>
                         </div>

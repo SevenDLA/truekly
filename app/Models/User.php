@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     const SEX = [
         'H' => 'Hombre',
@@ -47,4 +48,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(Service::class);
     }
+
+    //Relación con las compras como comprador
+    public function purchases()
+    {
+        return $this->hasMany(Compra::class, 'user_buyer_id');
+    }
+
+    //Relación con las compras como vendedor
+    public function sales()
+    {
+        return $this->hasMany(Compra::class, 'user_seller_id');
+    }
+
 }

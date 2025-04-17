@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\CompraController;
 use Illuminate\Support\Facades\Route;
 
 // Página de inicio
@@ -59,13 +60,13 @@ Route::middleware('auth')->group(function () {
     })->name('admin');
 
     Route::get('/admin/listado', [UserController::class, 'listado'])->name('users.listado');
-    Route::get('/admin/servicios', [ServiceController::class, 'listado'])->name('services.listado');
+    Route::get('/admin/servicios', [ServiceController::class, 'listado_admin'])->name('services.admin.listado');
 });
 
 // Gestión de usuarios
-Route::get('/user/{id}', [UserController::class, 'mostrar'])->name('users.mostrar');
-Route::get('/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
-Route::get('/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
+Route::get('/admin/user/{id}', [UserController::class, 'mostrar'])->name('users.mostrar');
+Route::get('/admin/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::get('/admin/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
 Route::get('/users/nuevo', [UserController::class, 'alta'])->name('users.alta');
 Route::post('/users/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
 
@@ -81,6 +82,7 @@ Route::get('/user/{id}/services/ajax', [ServiceController::class, 'getUserServic
 Route::get('/carrito', function () {
     return view('carrito');
 });
+Route::post('/carrito/nuevo', [CompraController::class, 'crear_compra']);
 
 // Autenticación
 require __DIR__.'/auth.php';

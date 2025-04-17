@@ -255,6 +255,14 @@ class ServiceController extends Controller
         ]);
     }
 
-
-
+    public function pagar_servicios(Request $request)
+    {
+        
+    }
+    public function listado_admin(Request $request)
+    {
+        $services = Service::with('user')->paginate(15);
+        return view('services.admin_list', compact('services'));
+    }
+    
 }

@@ -78,19 +78,16 @@
                 <h5 class="mb-3">Resumen del Pedido</h5>
                 <div class="mb-2 d-flex justify-content-between">
                     <span>Subtotal</span>
-                    <span id="precioTotal">{{ $precio_total }}</span>
+                    <span id="precioTotal">{{ $precio_total }} tokens</span>
                 </div>
                 <div class="mb-2 d-flex justify-content-between">
                     <span>Descuento</span>
                     <span>- 0</span>
                 </div>
-                <div class="mb-2 d-flex justify-content-between">
-                    <span>Impuestos</span>
-                    <span>TBD</span>
-                </div>
+                
                 <hr>
 
-                <button class="btn btn-primary w-100 mt-2">Proceder al Pago</button>
+                <button class="btn btn-primary w-100 mt-2 pay-button">Proceder al Pago</button>
             </div>
         </div>
     </div>
@@ -145,7 +142,41 @@
 
         });
 
+        $('.pay-button').on('click', function()
+        {
 
+            console.log(listado_productos)
+            console.log(typeof(listado_productos))
+
+            listado_productos.forEach((producto, index) => 
+            {
+                console.log("UserID: " + producto.user_id);
+                console.log("Price: " + producto.price);
+            });
+
+            $.ajax(
+            {
+                url: '/carrito/nuevo',      // The URL where you want to send the request
+                type: 'POST',               // The HTTP request type
+                data: JSON.stringify(
+                {      // The data to send, stringify the object
+                    productos: listado_productos
+                }),
+                headers:
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: 'application/json',  // Ensure the server knows it's JSON
+                success: function(response) {  // Success callback
+                    console.log('Success:', response);  // Handle success here
+                },
+                error: function(xhr, status, error) {  // Error callback
+                    console.error('Error:', error);  // Handle errors here
+                }
+            });
+
+
+        }) 
 
     })
 </script>
