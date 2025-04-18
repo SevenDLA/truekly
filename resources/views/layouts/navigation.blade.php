@@ -18,6 +18,11 @@
                 <ul class="nav nav-underline d-flex align-items-center">
                     <!-- Users Link -->
                     <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium" href="/admin">
+                            <i class="bi bi-house me-1"></i>Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
                         <a href="{{ route('users.listado') }}"
                             class="nav-link fw-medium @if (request()->routeIs('users.listado')) active @endif">
                             <i class="bi bi-people me-1"></i>
@@ -30,11 +35,6 @@
                             class="nav-link fw-medium @if (request()->routeIs('services.admin.listado')) active @endif">
                             <i class="bi bi-briefcase me-1"></i>
                             Servicios
-                        </a>
-                    </li>
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="/perfil">
-                            <i class="bi bi-person me-1"></i>Perfil
                         </a>
                     </li>
                 </ul>

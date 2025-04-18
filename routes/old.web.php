@@ -17,7 +17,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Test usuario
-Route::get('/test', [CompraController::class, 'listado_compras']);
+Route::get('/test/{id_servicio?}', [ServiceController::class, 'service_formulario']);
 
 // Perfil de usuario
 Route::middleware('auth')->group(function () {

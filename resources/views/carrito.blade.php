@@ -122,6 +122,8 @@
                     let precioActual = parseFloat($('#precioTotal').html());
 
                     let producto = listado_productos.find(p => p.id === response.id_servicio);
+                    let index = listado_productos.findIndex(p => p.id === response.id_servicio);
+                    listado_productos.splice(index, 1);
                     console.log('Producto:', producto);
 
                     $('#precioTotal').html(precioActual - producto.price)
@@ -150,7 +152,7 @@
 
             listado_productos.forEach((producto, index) => 
             {
-                console.log("UserID: " + producto.user_id);
+                console.log("User seller: " + producto.user_id);
                 console.log("Price: " + producto.price);
             });
 

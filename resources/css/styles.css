@@ -216,7 +216,6 @@ section {
 .btn-subscribe:hover {
     background-color: var(--primary-hover);
     box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-    transform: translateY(-2px);
 }
 
 .btn-primary::after,
@@ -248,7 +247,6 @@ section {
 .btn-view:hover,
 .btn-buy:hover {
     background-color: var(--secondary);
-    transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(15, 23, 42, 0.3);
 }
 
@@ -261,7 +259,6 @@ section {
 .btn-outline-primary:hover {
     background-color: var(--primary);
     color: var(--text-light);
-    transform: translateY(-2px);
 }
 
 .btn-search,
@@ -276,7 +273,6 @@ section {
 .btn-search:hover,
 .btn-login:hover {
     background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
 }
 
 .btn-lg {
@@ -367,13 +363,11 @@ section {
 
 .category-card:hover {
     box-shadow: var(--box-shadow-md);
-    transform: translateY(-5px);
 }
 
 .icon-box:hover,
 .profile-card:hover {
     box-shadow: var(--box-shadow-lg);
-    transform: translateY(-5px);
 }
 
 .icon-box i {
@@ -424,9 +418,6 @@ section {
     height: 200px;
 }
 
-.profile-card:hover .profile-image img {
-    transform: scale(1.05);
-}
 
 .tag {
     background-color: var(--primary-light);
@@ -440,10 +431,6 @@ section {
     transition: var(--transition-normal);
 }
 
-.profile-card:hover .tag {
-    background-color: var(--primary);
-    color: var(--text-light);
-}
 
 /* Token Cards Mejoradas */
 .token-card {
@@ -455,7 +442,6 @@ section {
 }
 
 .token-card:hover {
-    transform: translateY(-8px);
     box-shadow: var(--box-shadow-lg);
 }
 
@@ -464,10 +450,6 @@ section {
     height: 70px;
     margin-bottom: 1.5rem;
     transition: var(--transition-normal);
-}
-
-.token-card:hover .token-coin-container {
-    transform: translateY(-5px) scale(1.1);
 }
 
 .token-coin {
@@ -479,10 +461,6 @@ section {
     transform: translate(-50%, -50%);
     transition: var(--transition-normal);
     filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.3));
-}
-
-.token-card:hover .token-coin {
-    filter: drop-shadow(0 8px 25px rgba(255, 215, 0, 0.5));
 }
 
 /* =========================================
@@ -562,7 +540,6 @@ section {
 
 .social-icon:hover {
     color: var(--primary);
-    transform: translateY(-5px) scale(1.2);
 }
 
 /* =========================================
@@ -887,6 +864,9 @@ section {
     border: 1px solid rgba(0, 0, 0, 0.1);
     transition: var(--transition-normal);
 }
+.form-select {
+    padding: 0.65rem 1rem;
+}
 
 .form-control:focus {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
@@ -932,6 +912,8 @@ section {
     position: relative;
     z-index: 1;
 }
-#subscriptionSuccess, #subscriptionError {
+
+#subscriptionSuccess,
+#subscriptionError {
     font-size: 0.9rem;
 }

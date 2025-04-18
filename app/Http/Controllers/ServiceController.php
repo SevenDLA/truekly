@@ -169,6 +169,7 @@ class ServiceController extends Controller
             'title'            => 'required|string|max:255',
             'description'      => 'required|string|max:255',
             'price'            => 'required|integer',
+            'stock'            => 'required|integer',
         ]);
       
         $service = empty($request->id_servicio)? new Service() : Service::find($request->id_servicio);
@@ -177,6 +178,7 @@ class ServiceController extends Controller
         $service->title       = $request->title;
         $service->description = $request->description;
         $service->price       = $request->price;
+        $service->stock       = $request->stock;
 
         $service->save();
 
@@ -262,7 +264,7 @@ class ServiceController extends Controller
     public function listado_admin(Request $request)
     {
         $services = Service::with('user')->paginate(15);
-        return view('services.admin_list', compact('services'));
+        return view('admin.service', compact('services'));
     }
     
 }

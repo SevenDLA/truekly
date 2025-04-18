@@ -21,4 +21,23 @@ class Compra extends Model
     {
         return $this->belongsTo(Service::class,'service_id');
     }
+
+
+
+
+    const ESTADO = 
+    [
+        'P' => 'EN PROCESO',
+        'T' => 'TERMINADO'
+    ];
+
+
+
+    protected $fillable = [
+        'user_buyer_id',
+        'user_seller_id',
+        'service_id',
+        'status'
+    ];
+
 }

@@ -32,6 +32,13 @@
                     @error('price') <p class="text-danger small">{{ $message }}</p> @enderror
                 </div>
 
+                <!-- Stock -->
+                <div class="mb-3">
+                    <label for="stock" class="form-label fw-bold">Stock</label>
+                    <input type="number" name="stock" class="form-control" id="stock" placeholder="Stock de tu servicio" value="{{ old('stock', $servicio->stock) }}">
+                    @error('stock') <p class="text-danger small">{{ $message }}</p> @enderror
+                </div>
+
                 <!-- Botón de enviar -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary px-4">Guardar</button>

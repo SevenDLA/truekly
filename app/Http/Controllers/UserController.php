@@ -24,7 +24,7 @@ class UserController extends Controller
         $SEX     = User::SEX;
 
 
-        return view('users.user',compact('users','SEX'));
+        return view('admin.user',compact('users','SEX'));
     }
 
     function formulario($oper='', $id='')

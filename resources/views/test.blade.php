@@ -8,9 +8,15 @@
 </head>
 <body>
 
-    <h1>{{$user}}</h1>   
-    <h2>{{$exists}}</h2> 
 
+    @foreach($compras as $compra)
+        <div>
+            <p><strong>Buyer ID:</strong> {{ $compra->buyer->name }}</p>
+            <p><strong>Seller ID:</strong> {{ $compra->seller->name }}</p>
+            <p><strong>Service ID:</strong> {{ $compra->service_id }}</p>
+            <p><strong>Status:</strong> {{ $compra->status }}</p>
+        </div>
+    @endforeach
 
     <!--    PAYPAL WITHDRAW SYSTEM 
     
