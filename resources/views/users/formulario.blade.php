@@ -60,7 +60,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="id" class="form-label">ID</label>
-                                    <input {{ $disabled }} type="text" name="id"
+                                    <input disabled type="text" name="id"
                                         class="form-control @error('id') is-invalid @enderror" id="id"
                                         value="{{ old('id', $user->id) }}" placeholder="Nombre">
                                     @error('id')
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="created_at" class="form-label">Fecha de creación</label>
-                                    <input {{ $disabled }} type="text" name="created_at"
+                                    <input disabled type="text" name="created_at"
                                         class="form-control @error('created_at') is-invalid @enderror" id="created_at"
                                         value="{{ old('created_at', $user->created_at) }}" placeholder="Creado en...">
                                     @error('created_at')
@@ -158,7 +158,7 @@
                                     <label for="date_of_birth" class="form-label">Fecha de nacimiento</label>
                                     <input {{ $disabled }} type="text" name="date_of_birth"
                                         class="form-control @error('date_of_birth') is-invalid @enderror"
-                                        id="date_of_birth" value="{{ old('date_of_birth', $user->date_of_birth) }}"
+                                        id="date_of_birth" value="{{ old('date_of_birth', $user->date_of_birth->format('d/m/Y')) }}"
                                         placeholder="Fecha de nacimiento">
                                     @error('date_of_birth')
                                         <div class="invalid-feedback">
@@ -206,7 +206,7 @@
 
                                 <div class="mb-3">
                                     <label for="updated_at" class="form-label">Última actualización</label>
-                                    <input {{ $disabled }} type="text" name="updated_at"
+                                    <input disabled type="text" name="updated_at"
                                         class="form-control @error('updated_at') is-invalid @enderror" id="updated_at"
                                         value="{{ old('updated_at', $user->updated_at) }}"
                                         placeholder="Actualizado por última vez...">
@@ -217,18 +217,6 @@
                                     @enderror
                                 </div>
 
-
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Contraseña (cifrada)</label>
-                                    <input  type="text" name="password"
-                                        class="form-control id="password"
-                                        value="{{ old('password' , $user->password)}}" placeholder="Contraseña">
-                                    @error('password')
-                                        <div class="invalid-feedback">
-                                            <i class="fas fa-exclamation-circle me-2"></i>{{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
                             </div>
                         </div>
 

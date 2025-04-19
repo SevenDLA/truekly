@@ -151,21 +151,48 @@
 
     <!-- Services Section -->
     <div class="container mt-5 mb-5">
-        <h4 class="highlight-text mb-4">Tus servicios</h4>
-        <div id="servicesList" class="row row-cols-1 row-cols-md-2 g-4"></div>
+        <button id="everyService" class="btn btn-info text-white">Tus servicios</button>
+        <button id="boughtTest" class="btn btn-secondary">Servicios comprados</button>
+        <button id="soldTest" class="btn btn-primary">Servicios vendidos</button>
+        <div id="servicesList" class="row row-cols-1 row-cols-md-2 g-4 mt-2"></div>
     </div>
+
+  
 
     <script>
         $(document).ready(function() {
+            $('#everyService').click(function ()
+            {
+                loadUserServices('all')
+            })
+
+            $('#boughtTest').click(function ()
+            {
+                console.log("clicked bought")
+                loadUserServices("bought")
+            })
+
+            $('#soldTest').click(function ()
+            {
+                loadUserServices("sold")
+            })
+
+
             let userId = "{{ $current_logged_in_user->id }}";
 
             // Load user services
-            function loadUserServices() {
+            function loadUserServices(option) {
                 $.ajax({
                     url: `/user/${userId}/services/ajax`,
                     type: "GET",
                     dataType: "json",
+                    data:
+                    {
+                        option: option
+                    },
                     success: function(services) {
+                        console.log(option)
+                        console.log(services)
                         $("#servicesList").empty();
                         if (services.length === 0) {
                             $("#servicesList").html(
@@ -205,16 +232,16 @@
                         }
 
                     },
-                    error: function(xhr) {
-                        console.error("Error al cargar servicios:", xhr);
-                        $("#servicesList").html(
-                            '<div class="col"><div class="alert alert-danger">Error al cargar los servicios.</div></div>'
-                        );
+                    error: function(xhr, status, error) 
+                    {
+                        console.error("Error loading services:", status, error);
+                        console.log("Response text:", xhr.responseText); // Log the response body
+                        $("#servicesList").html('<div class="col"><div class="alert alert-danger">Error al cargar los servicios.</div></div>');
                     }
                 });
             }
 
-            loadUserServices();
+            loadUserServices('every');
 
             // Profile picture upload
             $('#upload-btn').on('click', function() {

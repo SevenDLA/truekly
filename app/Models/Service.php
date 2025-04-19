@@ -24,4 +24,12 @@ class Service extends Model
         'CIN' => 'Cine',
         'TEC' => 'Tecnología'
     ];
+
+
+    // In Service.php model
+    public function compras()
+    {
+        return $this->hasMany(Compra::class, 'service_id');
+    }
+
 }

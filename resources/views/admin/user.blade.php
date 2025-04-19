@@ -31,7 +31,7 @@
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" placeholder="Buscar usuarios..." value="{{ request('search') }}">
                             <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search"></i>
+                                <i class="bi bi-search"></i>
                             </button>
                         </div>
                     </form>
@@ -81,16 +81,16 @@
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('users.mostrar', $user->id) }}" class="btn btn-sm btn-info" title="Ver">
-                                        <i class="fas fa-eye"></i>
+                                        <i class="bi bi-search"></i>
                                     </a>
                                     <a href="{{ route('users.actualizar', $user->id) }}" class="btn btn-sm btn-warning" title="Editar">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="bi bi-pencil-square"></i>
                                     </a>
                                     <form action="{{ route('users.eliminar', $user->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
-                                            <i class="fas fa-trash-alt"></i>
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -118,35 +118,4 @@
     </div>
 </div>
 
-<!-- Estilos adicionales -->
-<style>
-    .table th {
-        white-space: nowrap;
-    }
-    .table td {
-        vertical-align: middle;
-    }
-    .pagination-custom .pagination {
-        justify-content: flex-end;
-        margin: 0;
-    }
-    .showing-text {
-        font-size: 0.9rem;
-        color: #6c757d;
-    }
-    .badge {
-        font-size: 0.85em;
-        font-weight: 500;
-        min-width: 40px;
-        display: inline-block;
-        text-align: center;
-    }
-    .btn-sm {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>
 @endsection

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Service;
+use App\Models\Compra;
 
 use App\Http\Controllers\UserController;
 
@@ -207,7 +208,40 @@ class ServiceController extends Controller
     public function getUserServicesAjax($userId)
     {
         $user = User::with('services')->findOrFail($userId);
-        return response()->json($user->services);
+
+        $option = request()->query('option');
+
+        switch ($option)
+        {
+
+            case 'bought':
+
+                $compras = Compra::where('user_buyer_id', $userId)
+                    ->with('service') // Eager load the related service
+                    ->get();
+
+                $services = $compras->pluck('service')->unique('id')->values();      // Re-index the collection
+                $response = response()->json($services);
+                
+            break;
+            case 'sold':
+
+                $compras = Compra::where('user_seller_id', $userId)
+                    ->with('service') // Eager load the related service
+                    ->get();
+
+                $services = $compras->pluck('service')->unique('id')->values();      // Re-index the collection
+                $response = response()->json($services);
+
+            break;
+            default:
+
+                $services = $user->services;
+                $response = response()->json($services);
+        }
+
+
+        return $response;
     }
     
 
@@ -266,5 +300,7 @@ class ServiceController extends Controller
         $services = Service::with('user')->paginate(15);
         return view('admin.service', compact('services'));
     }
+    
+
     
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Service;
+use App\Models\Compra;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -269,4 +271,19 @@ class UserController extends Controller
 
     
 
+
+    //Coger compras hechas por el usuario
+    public function user_bought_compras()
+    {
+        $user-> User::find(auth()->user());
+
+        $compras = Compra::with(['seller', 'service'])
+                ->where('user_buyer_id', $user->id)
+                ->get();
+
+        return response()->json([
+            'success' => true,
+            'compras' => $compras
+        ]);
+    }
 }
