@@ -18,9 +18,9 @@ class MessageBox {
 
 $(document).ready(function () {
     $(".update-info").click(function () {
-        let fieldType = $(this).data("type"); // Either 'email' or 'phone'
-        let newValue = $("#" + fieldType).val(); // Get value from input
-        let userId = $(this).data("user-id"); // Get user ID from button
+        let fieldType = $(this).data("type");
+        let newValue = $("#" + fieldType).val();
+        let userId = $(this).data("user-id"); 
 
         console.log(`Updating ${fieldType}:`, newValue); // Debugging
 

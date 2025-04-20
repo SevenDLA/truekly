@@ -160,6 +160,8 @@
   
 
     <script>
+        let userId = "{{ $current_logged_in_user->id }}";
+
         $(document).ready(function() {
             $('#everyService').click(function ()
             {
@@ -169,16 +171,72 @@
             $('#boughtTest').click(function ()
             {
                 console.log("clicked bought")
-                loadUserServices("bought")
+                loadUserCompras("bought")
             })
 
             $('#soldTest').click(function ()
             {
-                loadUserServices("sold")
+                loadUserCompras('sold')
             })
 
 
-            let userId = "{{ $current_logged_in_user->id }}";
+
+
+            function addServices(services, option)
+            {
+                $("#servicesList").empty();
+                        if (services.length === 0) {
+                            $("#servicesList").html(
+                                '<div class="col"><div class="alert alert-info">No hay servicios disponibles.</div></div>'
+                            );
+                        } else {
+                            services.forEach(service => {
+                                let buttons;
+                                switch (option)
+                                {
+                                    case 'bought':
+                                        info = `<span class="tag"><i class="fas fa-coins me-1"></i>Vendedor: ${service.seller_name}</span>`
+                                        buttons = ''
+                                    break;
+                                    case 'sold':
+                                        info = ``
+                                        buttons = ''
+                                    default:
+                                        info = `<span class="tag"><i class="fas fa-coins me-1"></i>${service.price} tokens</span>
+                                                <span class="tag"><i class="fas fa-box me-1"></i>Stock: ${service.stock}</span>
+                                                `
+                                        buttons = `<a class="btn btn-primary flex-fill" href="servicio/${service.id}">
+                                                            <i class="fas fa-edit me-2"></i>Editar
+                                                        </a>
+                                                        <form action="/eliminar_servicio/${service.id}" method="POST" class="flex-fill">
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <button type="submit" class="btn btn-secondary w-100">
+                                                                <i class="fas fa-trash-alt me-2"></i>Eliminar
+                                                            </button>
+                                                        </form>`
+                                }
+                                $("#servicesList").append(`
+                                    <div class="col">
+                                        <div class="profile-card h-100">
+                                            <div class="d-flex flex-column h-100">
+                                                <h5 class="highlight-text">${service.title}</h5>
+                                                <p class="flex-grow-1">${service.description}</p>
+                                                <div class="mt-auto">
+                                                    <div class="d-flex justify-content-between mb-3">
+                                                        ${info}
+                                                    </div>
+                                                    <div class="d-flex gap-2 mt-3">
+                                                        ${buttons}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `);
+                            });
+                        }
+            }
 
             // Load user services
             function loadUserServices(option) {
@@ -191,46 +249,7 @@
                         option: option
                     },
                     success: function(services) {
-                        console.log(option)
-                        console.log(services)
-                        $("#servicesList").empty();
-                        if (services.length === 0) {
-                            $("#servicesList").html(
-                                '<div class="col"><div class="alert alert-info">No hay servicios disponibles.</div></div>'
-                            );
-                        } else {
-                            services.forEach(service => {
-                                $("#servicesList").append(`
-                                    <div class="col">
-                                        <div class="profile-card h-100">
-                                            <div class="d-flex flex-column h-100">
-                                                <h5 class="highlight-text">${service.title}</h5>
-                                                <p class="flex-grow-1">${service.description}</p>
-                                                <div class="mt-auto">
-                                                    <div class="d-flex justify-content-between mb-3">
-                                                        <span class="tag"><i class="fas fa-coins me-1"></i>${service.price} tokens</span>
-                                                        <span class="tag"><i class="fas fa-box me-1"></i>Stock: ${service.stock}</span>
-                                                    </div>
-                                                    <div class="d-flex gap-2 mt-3">
-                                                        <a class="btn btn-primary flex-fill" href="servicio/${service.id}">
-                                                            <i class="fas fa-edit me-2"></i>Editar
-                                                        </a>
-                                                        <form action="/eliminar_servicio/${service.id}" method="POST" class="flex-fill">
-                                                            <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                            <button type="submit" class="btn btn-secondary w-100">
-                                                                <i class="fas fa-trash-alt me-2"></i>Eliminar
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `);
-                            });
-                        }
-
+                        addServices(services)
                     },
                     error: function(xhr, status, error) 
                     {
@@ -239,6 +258,31 @@
                         $("#servicesList").html('<div class="col"><div class="alert alert-danger">Error al cargar los servicios.</div></div>');
                     }
                 });
+            }
+
+            function loadUserCompras(type)
+            {
+                $.ajax
+                ({
+                    url:'/usario/servicio/comprados',
+                    type:'POST',
+                    dataType:'json',
+                    data:
+                    {
+                        type:type
+                    },
+                    headers: 
+                    {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(services)
+                    {
+                        console.log(services)
+                        addServices(services, 'bought')
+                    }
+
+                    
+                })
             }
 
             loadUserServices('every');

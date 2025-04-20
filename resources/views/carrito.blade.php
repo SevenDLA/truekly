@@ -5,16 +5,18 @@
 @section('content')
 @php
     use App\Models\Service;
+    use App\Models\User;
+
     $carrito = session('carrito', []);
 @endphp
-
+<div id="messageBox"></div>
 <div class="container py-5">
     <h2 class="mb-4"><i class="bi bi-cart me-1"></i> Mi Carrito</h2>
     <div class="row">
         <!-- Product List -->
         <div class="col-md-8" id="listadoCarro">
             <script>
-                var listado_productos = [];
+                var listado_servicios = [];
             </script>
             @php
                 $precio_total = 0;
@@ -26,7 +28,7 @@
                 @endphp
 
                 <script>
-                    listado_productos.push(@json($servicio))
+                    listado_servicios.push(@json($servicio))
                 </script>
 
                 @if($servicio)
@@ -88,18 +90,25 @@
                 <hr>
 
                 <button class="btn btn-primary w-100 mt-2 pay-button">Proceder al Pago</button>
+                <button class="btn btn-danger w-100 mt-2 empty-button">Vaciar carrito</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    
+    var currentUser = @json(auth()->user());
+    console.log(currentUser.tokens)
 
+    
     $(document).ready(function()
     {
 
-        $('.delete-button').on('click', function() 
+        function deleteServiceCart(e)
         {
+
+            const button = e.currentTarget;
             let card = $(this).closest('.card');
             console.log("clicked")
             $.ajax(
@@ -112,21 +121,21 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 
-                data: JSON.stringify({ id: parseInt(this.dataset.id)}),
+                data: JSON.stringify({ id: parseInt(button.dataset.id)}),
 
 
                 success: function (response)
                 {
                     console.log(response)
-                    listado_productos.forEach(p => console.log('ID:', p.id, typeof p.id));
+                    listado_servicios.forEach(p => console.log('ID:', p.id, typeof p.id));
                     let precioActual = parseFloat($('#precioTotal').html());
 
-                    let producto = listado_productos.find(p => p.id === response.id_servicio);
-                    let index = listado_productos.findIndex(p => p.id === response.id_servicio);
-                    listado_productos.splice(index, 1);
-                    console.log('Producto:', producto);
+                    let servicio = listado_servicios.find(p => p.id === response.id_servicio);
+                    let index = listado_servicios.findIndex(p => p.id === response.id_servicio);
+                    listado_servicios.splice(index, 1);
+                    console.log('servicio:', servicio);
 
-                    $('#precioTotal').html(precioActual - producto.price)
+                    $('#precioTotal').html(precioActual - servicio.price)
                     card.remove();
 
                     if ($('.servicioEnCarro').length === 0) 
@@ -142,43 +151,116 @@
 
             });
 
-        });
+        }
 
-        $('.pay-button').on('click', function()
+        function payForCart()
         {
-
-            console.log(listado_productos)
-            console.log(typeof(listado_productos))
-
-            listado_productos.forEach((producto, index) => 
+            if(listado_servicios.length <= 0)
             {
-                console.log("User seller: " + producto.user_id);
-                console.log("Price: " + producto.price);
-            });
-
-            $.ajax(
+                showMessage("Tu carrito está vacío", "error")
+            }else if(currentUser.tokens < parseFloat($('#precioTotal').html()))
             {
-                url: '/carrito/nuevo',      // The URL where you want to send the request
-                type: 'POST',               // The HTTP request type
-                data: JSON.stringify(
-                {      // The data to send, stringify the object
-                    productos: listado_productos
-                }),
+                showMessage("Tokens insuficientes", "error")
+            }
+            else
+            {
+                $.ajax(
+                {
+                    url: '/carrito/nuevo',     
+                    type: 'POST',              
+                    data: JSON.stringify(
+                    {   
+                        servicios: listado_servicios
+                    }),
+                    headers:
+                    {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    contentType: 'application/json',  
+                    success: function(response) {  
+                        console.log('Success:', response);  
+                        showMessage("Pago realizado", "success")
+                        $('#precioTotal').html(0)
+                        emptyCart()
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);  
+                    }
+                });
+            }
+            
+
+        }
+
+        function emptyCart()
+        {
+            if(listado_servicios.length <= 0)
+            {
+                showMessage("Tu carrito ya está vacío", "error")
+            }else
+            {
+                $.ajax
+            ({
+                url:'/vaciar/carrito',
+                type:'POST',
                 headers:
                 {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                contentType: 'application/json',  // Ensure the server knows it's JSON
-                success: function(response) {  // Success callback
-                    console.log('Success:', response);  // Handle success here
+                success:function(response)
+                {
+                    $('.servicioEnCarro').remove()
+                    listado_servicios.length = 0;
+                    $('#listadoCarro').empty();
+                    $('#listadoCarro').prepend('<p>Tu carrito está vacío.</p>');
+
+                    
+                    console.log('Cart has been emptied')
                 },
-                error: function(xhr, status, error) {  // Error callback
-                    console.error('Error:', error);  // Handle errors here
+                error: function(xhr, status, error) 
+                {
+                    // Handle error
+                    console.error('Error:', error);
                 }
-            });
+            
+            })
+            }
+            
 
+            
+        }
 
+        function showMessage(message='', type)
+        {
+            console.log(message, type)
+            type == "error" ? bgColor = "red" : bgColor = "green";
+            $('#messageBox')
+                            .text(message) 
+                            .css({
+                                'background-color': bgColor,
+                                'color': 'white',
+                                'font-weight': 'bold',
+                                'text-align': 'center',
+                                'padding': '10px',
+                                'width': '100%'
+                            })
+                            .fadeIn(500) 
+                            .delay(1000)
+                            .fadeOut(500);
+        }
+
+        $('.pay-button').on('click', function()
+        {
+            payForCart()
         }) 
+
+        $('.empty-button').on('click', function()
+        {
+            emptyCart()
+            showMessage("Tu carrito ha sido borrado correctamente", "success")
+        })
+
+        $('.delete-button').on('click', deleteServiceCart);
 
     })
 </script>

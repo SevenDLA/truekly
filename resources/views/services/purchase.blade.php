@@ -44,7 +44,7 @@
                         <!-- Selector de cantidad -->
                         <div class="mb-3">
                             <label for="quantity" class="form-label">Cantidad:</label>
-                            <input type="number" class="form-control" id="quantity" min="1" max="10" value="1">
+                            <input type="number" class="form-control" id="quantity" min="1" max="{{ $service->stock }}" value="1">
                         </div>
 
                         <!-- Botones de acción -->

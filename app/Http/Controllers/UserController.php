@@ -61,68 +61,67 @@ class UserController extends Controller
         return $this->formulario();
     }
 
-    function almacenar(Request $request)
+    public function almacenar(Request $request)
     {
-
-        if ($request->oper == 'supr')
-        {
-
-            $user = User::find($request->id);
+        if ($request->oper == 'supr') {
+            // Eliminación de usuario
+            $user = User::findOrFail($request->id);
             $user->delete();
-
-            $salida = redirect()->route('users.listado');
-        }
-        else
-        {
-            $validacion_sex = '';
-            foreach(User::SEX as $codigo_sex => $texto_sex)
-            {
-                $validacion_sex .= $codigo_sex .',';
-            }
-
-            $validacion_sex = substr($validacion_sex,0,-1);
             
-            $validatedData = $request->validate([
-                'name'            => 'required|string|max:255',
-                'surname'         => 'required|string|max:255',
-                'username'        => 'required|string',
-                'email'           => 'required|string',
-                'sex'             => 'required|in:'.$validacion_sex,
-                'date_of_birth'   => 'required|string',
-                'phone_number'    => 'required|string',
-                'password'    => 'required|string',
-            ]);
-
-            
-            $user = empty($request->id)? new User() : User::find($request->id);
-
-            $user->name          = $request->name;
-            $user->surname       = $request->surname;
-            $user->username      = $request->username;
-            $user->email         = $request->email;
-            $user->sex           = $request->sex;
-            $user->date_of_birth = $request->date_of_birth;
-            $user->phone_number  = $request->phone_number;
-            $user->password  = $request->password;
-
-            $user->save();
-
-            $salida = redirect()->route('users.alta')->with([
-                    'success'  => 'Usuario insertado correctamente.'
-                    ,'formData' => $user
-                ]
-            );
-
-            if($request->oper == 'register')
-            {
-                redirect(route('dashboard', absolute: false));
-            }
-
+            return redirect()->route('users.listado')
+                   ->with('success', 'Usuario eliminado correctamente');
         }
-
-        return $salida;
+    
+        // Validación de campos
+        $validacion_sex = implode(',', array_keys(User::SEX));
+        
+        $rules = [
+            'name'          => 'required|string|max:255',
+            'surname'       => 'required|string|max:255',
+            'username'      => 'required|string|unique:users,username,'.$request->id,
+            'email'         => 'required|email|unique:users,email,'.$request->id,
+            'sex'           => 'required|in:'.$validacion_sex,
+            'date_of_birth' => 'required|date',
+            'phone_number'  => 'required|string|max:20',
+        ];
+    
+        // Reglas condicionales para la contraseña
+        if (empty($request->id)) {
+            $rules['password'] = 'required|string|min:8';
+        } elseif ($request->filled('password')) {
+            $rules['password'] = 'string|min:8';
+        }
+    
+        // Validar los datos
+        $validatedData = $request->validate($rules);
+    
+        // Crear o actualizar usuario
+        $user = empty($request->id) ? new User() : User::findOrFail($request->id);
+    
+        $user->name          = $request->name;
+        $user->surname       = $request->surname;
+        $user->username      = $request->username;
+        $user->email         = $request->email;
+        $user->sex           = $request->sex;
+        $user->date_of_birth = $request->date_of_birth;
+        $user->phone_number  = $request->phone_number;
+    
+        // Actualizar contraseña solo si se proporcionó una nueva
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+    
+        $user->save();
+    
+        // Redirección según la operación
+        if ($request->oper == 'modi') {
+            return redirect()->route('users.mostrar', $user->id)
+                   ->with('success', 'Usuario actualizado correctamente');
+        }
+    
+        return redirect()->route('users.listado')
+               ->with('success', 'Usuario '.($request->id ? 'actualizado' : 'creado').' correctamente');
     }
-
     function perfil ()
     {
         $current_logged_in_user = Auth::user();

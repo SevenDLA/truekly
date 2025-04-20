@@ -18,6 +18,9 @@
                     <i class="fas fa-cogs me-1"></i>
                     Listado de Servicios
                 </div>
+                <a href="{{ route('services.create') }}" class="btn btn-success">
+                    <i class="fas fa-plus me-1"></i> Nuevo Servicio
+                </a>
             </div>
         </div>
         <div class="card-body">
@@ -66,8 +69,8 @@
                         <tr>
                             <td>{{ $service->id }}</td>
                             <td>{{ $service->name }}</td>
-                            <td>{{ $service->description }}</td>
-                            <td>{{ $service->price }}</td>
+                            <td>{{ Str::limit($service->description, 50) }}</td>
+                            <td>{{ number_format($service->price, 2) }} €</td>
                             <td>
                                 <span class="badge bg-{{ $service->is_active ? 'success' : 'secondary' }}">
                                     {{ $service->is_active ? 'Activo' : 'Inactivo' }}
@@ -75,17 +78,17 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('services.mostrar', $service->id) }}" class="btn btn-sm btn-info" title="Ver">
-                                        <i class="bi bi-eye me-1"></i>
+                                    <a href="{{ route('services.show', $service->id) }}" class="btn btn-sm btn-info" title="Ver">
+                                        <i class="bi bi-eye"></i>
                                     </a>
-                                    <a class="btn btn-warning" href="servicio/${service.id}">Edit
-                                        <i class="bi bi-pencil me-1"></i>
+                                    <a href="{{ route('services.edit', $service->id) }}" class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="/eliminar_servicio/${service.id}" method="POST" style="display:inline;">
+                                    <form action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">
-                                            <i class="bi bi-trash me-1"></i>
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -113,7 +116,6 @@
     </div>
 </div>
 
-<!-- Estilos adicionales -->
 <style>
     .table th {
         white-space: nowrap;
@@ -121,17 +123,11 @@
     .table td {
         vertical-align: middle;
     }
-    .pagination-custom .pagination {
-        justify-content: flex-end;
-        margin: 0;
-    }
-    .showing-text {
-        font-size: 0.9rem;
-        color: #6c757d;
-    }
     .badge {
         font-size: 0.85em;
-        font-weight: 500;
+    }
+    .pagination-custom .pagination {
+        margin: 0;
     }
 </style>
 @endsection

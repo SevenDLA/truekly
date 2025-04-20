@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/servicio/{id_servicio?}', [ServiceController::class, 'service_formulario']);
     Route::post('/anhadir_servicio_carrito', [ServiceController::class, 'anhadir_servicio_carrito']);
     Route::post('/quitar_servicio_carrito', [ServiceController::class, 'quitar_servicio_carrito']);
+    Route::post('/servicio/acceptar', [CompraController::class,'pagar_seller']);
 });
 
 Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);
@@ -83,6 +84,10 @@ Route::get('/carrito', function () {
     return view('carrito');
 });
 Route::post('/carrito/nuevo', [CompraController::class, 'crear_compra']);
+Route::post('/vaciar/carrito', [CompraController::class,'vaciar_carrito']);
+
+//Compras
+Route::post('/usario/servicio/comprados', [CompraController::class,'user_servicios']);
 
 // Autenticación
 require __DIR__.'/auth.php';
