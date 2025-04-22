@@ -61,4 +61,10 @@ class User extends Authenticatable
         return $this->hasMany(Compra::class, 'user_seller_id');
     }
 
+     //Relación con las offers como vendedor
+     public function sell_offers()
+     {
+         return $this->hasMany(Offer::class, 'user_seller_id');
+     }    
+
 }
