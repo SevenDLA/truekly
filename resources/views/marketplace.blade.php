@@ -1,5 +1,5 @@
 @extends('layout')
 
-@section('title', 'Comprar Tokens')
+@section('title', 'Marketplace')
 @section('content')
 @endsection

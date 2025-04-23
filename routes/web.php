@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\OfferController;
+
 use Illuminate\Support\Facades\Route;
 
 // Página de inicio
@@ -16,8 +18,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Test usuario
-Route::get('/test', [CompraController::class, 'listado_compras']);
+// Test 
+Route::get('/test', [OfferController::class, 'offer_formulario']);
 
 // Perfil de usuario
 Route::middleware('auth')->group(function () {
@@ -51,6 +53,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/vender', function () {
         return view('sell');
+    });
+
+    Route::get('marketplace', function(){
+        return view ('marketplace');
     });
 });
 

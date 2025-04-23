@@ -12,9 +12,30 @@ class OfferController extends Controller
     //
     public function offer_formulario($id_oferta = '')
     {
-        $oferta = empty($id_oferta) ? new Service() : Service::findOrFail($id_oferta);
+        $oferta = empty($id_oferta) ? new Offer() : Offer::findOrFail($id_oferta);
         $tipo_oper = empty($id_oferta) ? 'Crear oferta' : 'Editar oferta';
 
-        return view('services.service_form', compact('oferta', 'tipo_oper'));
+        return view('offers.offer_form', compact('oferta', 'tipo_oper'));
     }
+
+    public function almacenar_offer(Request $request)
+    {
+        $validatedData = $request->validate([
+            'tokens' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $oferta = empty($request->id_oferta) ? new Offer() : Offer::findOrFail($request->id_servicio);
+
+        $oferta->user_id_seller = Auth::id();
+        $oferta->tokens = $request->tokens;
+        $oferta->price = $request->price;
+
+
+        $oferta->save();
+
+        return redirect()->route('profile.normal')
+               ->with('success', 'Oferta '.($request->id_oferta ? 'actualizado' : 'creado').' correctamente');
+    }
+    
 }

@@ -33,6 +33,11 @@
                         </a>
                     </li>
                     <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium" href="/marketplace">
+                            <i class="bi bi-coin me-1"></i>Marketplace
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
                         <a class="nav-link fw-medium" href="/perfil">
                             <i class="bi bi-person me-1"></i>Perfil
                         </a>
