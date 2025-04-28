@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Offer;
+use Illuminate\Support\Facades\Auth;
+
 
 class OfferController extends Controller
 {
@@ -25,9 +27,9 @@ class OfferController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        $oferta = empty($request->id_oferta) ? new Offer() : Offer::findOrFail($request->id_servicio);
+        $oferta = empty($request->id_oferta) ? new Offer() : Offer::findOrFail($request->id_oferta);
 
-        $oferta->user_id_seller = Auth::id();
+        $oferta->user_seller_id = Auth::id();
         $oferta->tokens = $request->tokens;
         $oferta->price = $request->price;
 
