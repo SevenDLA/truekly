@@ -154,7 +154,8 @@
         <button id="everyService" class="btn btn-info text-white">Tus servicios</button>
         <button id="boughtTest" class="btn btn-secondary">Servicios comprados</button>
         <button id="soldTest" class="btn btn-primary">Servicios vendidos</button>
-        <div id="servicesList" class="row row-cols-1 row-cols-md-2 g-4 mt-2"></div>
+        <button id="userOffers" class="btn btn-warning text-white">Tus ofertas</button>
+        <div id="ajaxList" class="row row-cols-1 row-cols-md-2 g-4 mt-2"></div>
     </div>
 
   
@@ -179,14 +180,34 @@
                 loadUserCompras('sold')
             })
 
+            $('#userOffers').click(function()
+            {
+                getUserOffers();
+            })
 
+            function getUserOffers()
+            {
+                $("#ajaxList").empty();
 
+                $.ajax
+                ({
+                    url: '/usuario/ofertas',
+                    type: 'GET',
+                    dataType: 'json',
+                    sucess: function(response)
+                    {
+                        console.log(response)
+                    }
+                    
+                })
+                
+            }
 
             function addServices(services, option)
             {
-                $("#servicesList").empty();
+                $("#ajaxList").empty();
                         if (services.length === 0) {
-                            $("#servicesList").html(
+                            $("#ajaxList").html(
                                 '<div class="col"><div class="alert alert-info">No hay servicios disponibles.</div></div>'
                             );
                         } else {
@@ -216,7 +237,7 @@
                                                             </button>
                                                         </form>`
                                 }
-                                $("#servicesList").append(`
+                                $("#ajaxList").append(`
                                     <div class="col">
                                         <div class="profile-card h-100">
                                             <div class="d-flex flex-column h-100">
@@ -255,7 +276,7 @@
                     {
                         console.error("Error loading services:", status, error);
                         console.log("Response text:", xhr.responseText); // Log the response body
-                        $("#servicesList").html('<div class="col"><div class="alert alert-danger">Error al cargar los servicios.</div></div>');
+                        $("#ajaxList").html('<div class="col"><div class="alert alert-danger">Error al cargar los servicios.</div></div>');
                     }
                 });
             }

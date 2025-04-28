@@ -39,5 +39,13 @@ class OfferController extends Controller
         return redirect()->route('profile.normal')
                ->with('success', 'Oferta '.($request->id_oferta ? 'actualizado' : 'creado').' correctamente');
     }
+
+    public function coger_ofertas_usuario()
+    {
+        $userID = Auth::id();
+        $ofertas = Oferta::where('user_seller_id', $userId)->get();
+
+        return response()->json($ofertas);
+    }
     
 }

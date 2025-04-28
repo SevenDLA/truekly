@@ -20,7 +20,7 @@ Route::get('/dashboard', function () {
 
 // Test 
 Route::get('/test/{id_oferta?}', [OfferController::class, 'offer_formulario']);
-Route::post('/nueva_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
+Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
 
 // Perfil de usuario
 Route::middleware('auth')->group(function () {
@@ -95,6 +95,9 @@ Route::post('/vaciar/carrito', [CompraController::class,'vaciar_carrito']);
 
 //Compras
 Route::post('/usario/servicio/comprados', [CompraController::class,'user_servicios']);
+
+//Ofertas
+Route::get('/usuario/ofertas', [OfferController::class, 'coger_ofertas_usuario']);
 
 // Autenticación
 require __DIR__.'/auth.php';
