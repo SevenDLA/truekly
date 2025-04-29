@@ -42,8 +42,8 @@ class OfferController extends Controller
 
     public function coger_ofertas_usuario()
     {
-        $userID = Auth::id();
-        $ofertas = Oferta::where('user_seller_id', $userId)->get();
+        $userId = Auth::id();
+        $ofertas = Offer::where('user_seller_id', $userId)->get();
 
         return response()->json($ofertas);
     }

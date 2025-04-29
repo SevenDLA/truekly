@@ -194,7 +194,7 @@
                     url: '/usuario/ofertas',
                     type: 'GET',
                     dataType: 'json',
-                    sucess: function(response)
+                    success: function(response)
                     {
                         console.log(response)
                     }
