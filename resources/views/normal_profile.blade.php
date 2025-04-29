@@ -203,7 +203,7 @@
                             $("#ajaxList").append
                             (
                                 `<div class="col">
-                                        <div class="profile-card h-100 w-50">
+                                        <div class="profile-card h-75 w-50">
                                             <div class="d-flex flex-column h-100">
                                                 <h2> Tokens: ${oferta.tokens} </h2>
                                                 <h2> Precio: ${oferta.price} €  </h2>
@@ -236,7 +236,13 @@
                                 {
                                     case 'bought':
                                         info = `<span class="tag"><i class="fas fa-coins me-1"></i>Vendedor: ${service.seller_name}</span>`
-                                        buttons = ''
+                                        buttons = `<form action="/pagar/vendedor/${service.compra_id}" method="POST" class="flex-fill">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <button type="submit" class="btn btn-success w-100">
+                                                                Acceptar
+                                                            </button>
+                                                    </form>
+                                                   <a class="btn btn-danger flex-fill">Rechazar</a>`
                                     break;
                                     case 'sold':
                                         info = ``

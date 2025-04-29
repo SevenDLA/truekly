@@ -92,13 +92,14 @@ class CompraController extends Controller
         return response()->json($compras);
     }
     
-    
-
-    function pagar_seller($id_compra)
+    public function pagar_seller($id_compra)
     {
         $compra = Compra::find($id_compra);
         $servicio_vendido = Service::find($compra->service_id);
         $user_seller = User::find($compra->user_seller_id);
         $user_seller->tokens = $user_seller->tokens + $servicio_vendido->price;
+        $user_seller->save();
+        
+        return view('/welcome');
     }
 }
