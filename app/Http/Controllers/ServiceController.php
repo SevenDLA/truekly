@@ -11,33 +11,49 @@ use Illuminate\Support\Facades\Auth;
 class ServiceController extends Controller
 {
     public function listado(Request $request)
-    {
-        $query = Service::query();
+     {
+         // Obtener los parámetros de filtrado
+         $maxPrice = $request->input('maxPrice');
+         $categories = $request->input('categories', []);
+         $userFilter = $request->input('user');
+ 
+         // Consulta base
+         $query = Service::with('user');
+ 
+         // Aplicar filtros
+         if ($maxPrice && $maxPrice > 0) { // Solo aplicar filtro si el precio máximo es mayor que 0
+             $query->where('price', '<=', $maxPrice);
+         }
+         if (!empty($categories)) {
+             $query->whereIn('category', $categories);
+         }
+         if ($userFilter) {
+             $query->where('user_id', $userFilter); // Filtrar por ID de usuario
+         }
+ 
+         // Paginar los resultados
+         $services = $query->paginate(9);
+ 
+         // Obtener todos los usuarios para el filtro de usuario
+         $users = User::all();
+ 
+         // Devolver la vista parcial si es una solicitud AJAX
+         if ($request->ajax()) {
+             return view('services.partials.service_list', compact('services'))->render();
+         }
+ 
+         // Devolver la vista completa si no es AJAX
+         return view('services.service', compact('services', 'maxPrice', 'categories', 'userFilter', 'users'));
+     }
 
-        // Filtros
-        if ($request->has('search')) {
-            $query->where('name', 'like', '%'.$request->search.'%')
-                  ->orWhere('description', 'like', '%'.$request->search.'%');
-        }
-
-        if ($request->has('filter')) {
-            if ($request->filter == 'active') {
-                $query->where('is_active', true);
-            } elseif ($request->filter == 'inactive') {
-                $query->where('is_active', false);
-            }
-        }
-
-        $services = $query->paginate(15);
-
-        return view('admin.service', compact('services'));
-    }
-
-    public function mostrar($id)
-    {
-        $service = Service::findOrFail($id);
-        return $this->formulario('cons', $id);
-    }
+     public function mostrar($id)
+     {
+         // Fetch the service by its ID
+         $service = Service::findOrFail($id);
+ 
+         // Pass the service to the view
+         return view('services.purchase', compact('service'));
+     }
 
     public function actualizar($id)
     {

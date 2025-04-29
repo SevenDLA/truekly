@@ -20,8 +20,8 @@
 
                         <div class="mb-3">
                                 <label for="price" class="form-label fw-bold">Precio (€)</label>
-                                <input type="number" name="price" class="form-control" id="price" placeholder="Precio (€)" value="{{ old('precio', $oferta->precio) }}">
-                                @error('tokens') <p class="text-danger small">{{ $message }}</p> @enderror
+                                <input type="number" name="price" class="form-control" id="price" placeholder="Precio (€)" value="{{ old('price', $oferta->price) }}">
+                                @error('price') <p class="text-danger small">{{ $message }}</p> @enderror
                         </div>
 
                         <!-- Botón de enviar -->

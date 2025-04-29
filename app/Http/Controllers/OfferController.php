@@ -47,5 +47,12 @@ class OfferController extends Controller
 
         return response()->json($ofertas);
     }
+
+    //public function coger_todas_ofertas_()
+    //{
+    //    $ofertas = Offer::all();
+    //
+    //    return response()->json($ofertas);
+    //}
     
 }

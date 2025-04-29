@@ -197,6 +197,24 @@
                     success: function(response)
                     {
                         console.log(response)
+
+                        response.forEach(function(oferta)
+                        {
+                            $("#ajaxList").append
+                            (
+                                `<div class="col">
+                                        <div class="profile-card h-100 w-50">
+                                            <div class="d-flex flex-column h-100">
+                                                <h2> Tokens: ${oferta.tokens} </h2>
+                                                <h2> Precio: ${oferta.price} €  </h2>
+                                                <a class="btn btn-primary flex-fill" href="test/${oferta.id}">
+                                                    <i class="fas fa-edit me-2"></i>Editar
+                                                </a>
+                                            </div>
+                                        </div>
+                                </div>`
+                            )
+                        })
                     }
                     
                 })
@@ -206,7 +224,8 @@
             function addServices(services, option)
             {
                 $("#ajaxList").empty();
-                        if (services.length === 0) {
+                        if (services.length === 0) 
+                        {
                             $("#ajaxList").html(
                                 '<div class="col"><div class="alert alert-info">No hay servicios disponibles.</div></div>'
                             );
