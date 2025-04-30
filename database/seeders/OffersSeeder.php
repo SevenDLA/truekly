@@ -23,15 +23,15 @@ class OffersSeeder extends Seeder
                 'user_seller_id' => $janeId,
                 'tokens'         => 100,
                 'price'          => 500,
-                'created_at'     => Carbon::now(),
-                'updated_at'     => Carbon::now(),
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
             [
                 'user_seller_id' => $janeId,
                 'tokens'         => 200,
                 'price'          => 900,
-                'created_at'     => Carbon::now(),
-                'updated_at'     => Carbon::now(),
+                'created_at'  => now(),
+                'updated_at'  => now(),
             ],
         ]);
     }

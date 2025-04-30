@@ -76,6 +76,17 @@
 </section>
 
 <script>
+    const carrito = @json(session('carrito', []));
+    console.log(carrito);
+    console.log(typeof carrito)
+    Object.entries(carrito).forEach(([id, item]) => {
+    console.log('Product ID:', id);
+    console.log('Quantity:', item.quantity);
+});
+</script>
+
+
+<script>
     
     $(document).ready(function () 
     {
