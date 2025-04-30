@@ -48,11 +48,11 @@ class OfferController extends Controller
         return response()->json($ofertas);
     }
 
-    public function coger_todas_ofertas_()
+    public function coger_todas_ofertas()
     {
         $ofertas = Offer::all();
     
-        return view('ofertas.index', compact('ofertas'));
+        return view('marketplace', compact('ofertas'));
     }
     
 }

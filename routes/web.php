@@ -59,6 +59,8 @@ Route::middleware('auth')->group(function () {
     Route::get('marketplace', function(){
         return view ('marketplace');
     });
+
+    Route::get('/marketplace', [OfferController::class, 'coger_todas_ofertas'])->name('offers.listado');
 });
 
 // Administración

@@ -8,7 +8,10 @@
 <ul>
     @foreach ($ofertas as $oferta)
         <li>
-            
+            <strong>ID oferta: {{ $oferta->id }} </strong>
+            <p>Cantidad de tokens: {{ $oferta->tokens }} </p>
+            <p>Precio a vender: {{ $oferta->price }} </p>
+            <p>Nombre del seller: {{ $oferta->seller->username }}</p>
         </li>
     @endforeach
 </ul>
