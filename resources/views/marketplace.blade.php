@@ -12,6 +12,7 @@
             <p>Cantidad de tokens: {{ $oferta->tokens }} </p>
             <p>Precio a vender: {{ $oferta->price }} </p>
             <p>Nombre del seller: {{ $oferta->seller->username }}</p>
+            <a class ="btn btn-success">Comprar tokens</a>
         </li>
     @endforeach
 </ul>
