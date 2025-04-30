@@ -19,7 +19,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Test 
-Route::get('/test/{id_oferta?}', [OfferController::class, 'offer_formulario']);
+Route::get('/oferta/{id_oferta?}', [OfferController::class, 'offer_formulario']);
 Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
 
 // Perfil de usuario

@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="container text-center">
         <a href="javascript:history.back()" class="btn btn-link">&larr; Regresar</a>
-        <h2 class="mt-3">Intercambia tus tokens por dinero</h2>
+        <h2 class="mt-3">Intercambia tus tokens por dinero o <a href="/oferta">haz una oferta para el marketplace</a></h2>
 
         <div class="card mx-auto mt-3 p-4 shadow" style="max-width: 400px;">
             <div class="d-flex justify-content-center">

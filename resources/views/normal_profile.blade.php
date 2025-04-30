@@ -161,7 +161,10 @@
   
 
     <script>
+        const ESTADO = @json(App\Models\Compra::ESTADO);
         let userId = "{{ $current_logged_in_user->id }}";
+
+        console.log(ESTADO)
 
         $(document).ready(function() {
             $('#everyService').click(function ()
@@ -207,7 +210,7 @@
                                             <div class="d-flex flex-column h-100">
                                                 <h2> Tokens: ${oferta.tokens} </h2>
                                                 <h2> Precio: ${oferta.price} €  </h2>
-                                                <a class="btn btn-primary flex-fill" href="test/${oferta.id}">
+                                                <a class="btn btn-primary flex-fill" href="/oferta/${oferta.id}">
                                                     <i class="fas fa-edit me-2"></i>Editar
                                                 </a>
                                             </div>
@@ -325,9 +328,12 @@
                     {
                         console.log(services)
                         addServices(services, 'bought')
+                    },
+                    error: function(xhr, status, error) 
+                    {
+                        console.error('Error occurred:', status, error);
                     }
 
-                    
                 })
             }
 

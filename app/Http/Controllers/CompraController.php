@@ -81,11 +81,15 @@ class CompraController extends Controller
             ->where($type, auth()->id())
             ->get();
     
-        $compras->transform(function ($compra) {
+        $compras->transform(function ($compra) 
+        {
+            $estado = Compra::ESTADO[$compra->status] ?? 'Unknown';  // Map status to readable value
+
             $compra->service->compra_id = $compra->id;
             $compra->service->seller_name = $compra->seller->username;
-            $compra->service->buyer_name = $compra->buyer->username; 
-    
+            $compra->service->buyer_name = $compra->buyer->username;
+            $compra->service->estado = $estado;
+            
             return $compra->service;
         });
     
