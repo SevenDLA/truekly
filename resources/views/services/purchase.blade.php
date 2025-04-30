@@ -35,9 +35,9 @@
                         <h2 class="card-title text-primary">{{ $service->title }}</h2>
                         <p class="card-text text-muted">{{ $service->short_description }}</p>
                         <h4 class="text-success">Precio: ${{ number_format($service->price, 2) }}</h4>
-                        <p class="text-secondary">Disponible: 
-                            <span class="{{ $service->available ? 'text-success' : 'text-danger' }}">
-                                {{ $service->available ? 'En stock' : 'Agotado' }}
+                        <p class="text-secondary">Stock: 
+                            <span class="{{ $service->stock>0 ? 'text-success' : 'text-danger' }}">
+                                {{ $service->stock>0 ? $service->stock : 'Agotado' }}
                             </span>
                         </p>
 
