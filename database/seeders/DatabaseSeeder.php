@@ -22,9 +22,10 @@ class DatabaseSeeder extends Seeder
         */
 
         $this->call([
-            UsersSeeder::class,  // Add any other seeders you want to run
+            UsersSeeder::class, 
             ServicesSeeder::class,
-            TokensSeeder::class
+            TokensSeeder::class,
+            OffersSeeder::class
         ]);
 
         

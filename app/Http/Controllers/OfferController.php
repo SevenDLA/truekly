@@ -22,9 +22,12 @@ class OfferController extends Controller
 
     public function almacenar_offer(Request $request)
     {
+        $user = auth()->user();
+        $maxTokens = $user->tokens;
+
         $validatedData = $request->validate([
-            'tokens' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
+            'tokens' => ['required', 'numeric', 'min:0', 'max:' . $maxTokens],
+            'price' => ['required', 'numeric', 'min:0'],
         ]);
 
         $oferta = empty($request->id_oferta) ? new Offer() : Offer::findOrFail($request->id_oferta);

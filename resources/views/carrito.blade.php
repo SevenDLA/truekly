@@ -235,6 +235,7 @@
             console.log(message, type)
             type == "error" ? bgColor = "red" : bgColor = "green";
             $('#messageBox')
+                            .stop(true, true)
                             .text(message) 
                             .css({
                                 'background-color': bgColor,
