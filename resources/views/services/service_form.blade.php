@@ -7,7 +7,7 @@
         <div class="card shadow-lg p-4 rounded">
             <h2 class="text-center mb-4">{{ $tipo_oper }}</h2>
 
-            <form method="POST" action="{{ route('service.store') }}">
+            <form method="POST" action="{{ route('service.store') }}" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id_servicio" value="{{ $servicio->id }}" />
 
@@ -16,6 +16,13 @@
                     <label for="title" class="form-label fw-bold">Título</label>
                     <input type="text" name="title" class="form-control" id="title" placeholder="Título del servicio" value="{{ old('title', $servicio->title) }}">
                     @error('title') <p class="text-danger small">{{ $message }}</p> @enderror
+                </div>
+
+                <!-- Imagen -->
+                <div class="mb-3">
+                    <label for="image" class="form-label fw-bold">Imagen</label>
+                    <input type="file" name="image" class="form-control" id="image">
+                    @error('image') <p class="text-danger small">{{ $message }}</p> @enderror
                 </div>
 
                 <!-- Descripción -->

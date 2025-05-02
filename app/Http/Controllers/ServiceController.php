@@ -131,7 +131,7 @@ class ServiceController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'image' => 'nullable|string'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $service = empty($request->id_servicio) ? new Service() : Service::findOrFail($request->id_servicio);
@@ -141,7 +141,12 @@ class ServiceController extends Controller
         $service->description = $request->description;
         $service->price = $request->price;
         $service->stock = $request->stock;
-        $service->image = $request->image ?: asset('images/default.jpg');
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public'); // Store the image in the public directory
+            $service->image = $imagePath; // Save the image path in the database
+        } else {
+            $service->image = 'images/default.jpg'; // Default image
+        }
 
         $service->save();
 

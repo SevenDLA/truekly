@@ -23,8 +23,8 @@
             <div class="card-body text-center d-flex flex-column">
                 <h5 class="card-title text-primary">{{ $service->title }}</h5>
                 <div class="text-center p-3">
-                    <img src="{{ asset('images/default.jpg') }}" alt="Imagen del servicio"
-                        class="mx-auto d-block img-fluid" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-md);">
+                    <img src="{{ asset('storage/' . $service->image ?? 'images/default.jpg') }}" alt="Imagen del servicio"
+                         class="mx-auto d-block img-fluid" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-md);">
                 </div>
                 <p class="card-text text-muted flex-grow-1">{{ Str::limit($service->description, 80) }}</p>
                 <h6 class="text-success">Precio: ${{ $service->price }}</h6>
