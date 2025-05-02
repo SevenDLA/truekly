@@ -87,19 +87,17 @@ class ServiceController extends Controller
         }
 
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'is_active' => 'sometimes|boolean',
             'image' => 'nullable|string'
         ]);
 
         $service = empty($request->id) ? new Service() : Service::findOrFail($request->id);
 
-        $service->name = $request->name;
+        $service->title = $request->title;
         $service->description = $request->description;
         $service->price = $request->price;
-        $service->is_active = $request->has('is_active');
         $service->image = $request->image;
         
         if (empty($request->id)) {
@@ -139,12 +137,11 @@ class ServiceController extends Controller
         $service = empty($request->id_servicio) ? new Service() : Service::findOrFail($request->id_servicio);
 
         $service->user_id = Auth::id();
-        $service->name = $request->title;
+        $service->title = $request->title;
         $service->description = $request->description;
         $service->price = $request->price;
         $service->stock = $request->stock;
         $service->image = $request->image;
-        $service->is_active = true;
 
         $service->save();
 
@@ -234,7 +231,7 @@ class ServiceController extends Controller
         {
             $carrito[$id_servicio] = [
                 'id'        => $servicio->id,
-                'name'      => $servicio->name,
+                'title'      => $servicio->title,
                 'price'     => $servicio->price,
                 'image'     => $servicio->image,
                 'quantity'  => $cantidad + 1

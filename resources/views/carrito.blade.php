@@ -45,7 +45,7 @@
 
                         <div class="row g-0 align-items-center">
                             <div class="col-md-2 text-center p-2">
-                                <img src="https://via.placeholder.com/80" class="img-fluid rounded" alt="Service Image">
+                                <img src="{{ asset($service->image ?? 'images/default.jpg') }}" class="img-fluid rounded" alt="Service Image">
                             </div>
                             <div class="col-md-7">
                                 <div class="card-body">
@@ -79,8 +79,8 @@
             <div class="card p-4 shadow-sm">
                 <h5 class="mb-3">Resumen del Pedido</h5>
                 <div class="mb-2 d-flex justify-content-between">
-                    <span>Subtotal</span>
-                    <span id="precioTotal">{{ $precio_total }} tokens</span>
+                    <span>Subtotal (tokens)</span>
+                    <span id="precioTotal">{{ $precio_total }}</span>
                 </div>
                 <div class="mb-2 d-flex justify-content-between">
                     <span>Descuento</span>
