@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Service;
 use App\Models\Compra;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -209,24 +210,47 @@ class ServiceController extends Controller
         $id_servicio = $request->input('id');
         $servicio = Service::findOrFail($id_servicio);
         $carrito = session('carrito', []);
+        $max_cantidad = 2;
 
-        if (array_key_exists($id_servicio, $carrito)) {
-            return response()->json(["error" => 'Servicio ya en el carrito']);
+        if(isset($carrito[$id_servicio]['quantity']))
+        {
+            $cantidad = $carrito[$id_servicio]['quantity'];
+        }
+        else
+        {
+            $cantidad = DB::table('compras')
+            ->where('service_id', $id_servicio)  
+            ->where('status', 'P')               
+            ->where('user_buyer_id', Auth::id())   
+            ->count(); 
         }
 
-        $carrito[$id_servicio] = [
-            'id' => $servicio->id,
-            'name' => $servicio->name,
-            'price' => $servicio->price,
-            'image' => $servicio->image
-        ];
-        
-        session(['carrito' => $carrito]);
 
-        return response()->json([
-            "exito" => 'Servicio añadido correctamente',
-            "carrito" => $carrito
-        ]);
+        if ($cantidad >= $max_cantidad ) 
+        {
+            $response_data = ["error" => 'Superado la cantidad máxima de servicios: ' . $max_cantidad];
+        }
+        else
+        {
+            $carrito[$id_servicio] = [
+                'id'        => $servicio->id,
+                'name'      => $servicio->name,
+                'price'     => $servicio->price,
+                'image'     => $servicio->image,
+                'quantity'  => $cantidad + 1
+            ];
+            
+            session(['carrito' => $carrito]);
+    
+            $response_data = 
+            [
+                "exito"     => 'Servicio añadido correctamente',
+                "carrito"   => $carrito
+            ];
+        }
+
+
+        return response()->json($response_data);
     }
 
     public function quitar_servicio_carrito(Request $request)
