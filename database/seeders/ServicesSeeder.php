@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class ServicesSeeder extends Seeder
 {
@@ -28,6 +27,7 @@ class ServicesSeeder extends Seeder
                 'price'       => 500,
                 'stock'       => 10,
                 'category'    => 'Tecnología',
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -38,6 +38,7 @@ class ServicesSeeder extends Seeder
                 'price'       => 300,
                 'stock'       => 15,
                 'category'    => 'Tecnología',
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -48,6 +49,7 @@ class ServicesSeeder extends Seeder
                 'price'       => 400,
                 'stock'       => 8,
                 'category'    => 'Tecnología',
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -58,6 +60,7 @@ class ServicesSeeder extends Seeder
                 'price'       => 700,
                 'stock'       => 5,
                 'category'    => 'Tecnología',
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -68,6 +71,7 @@ class ServicesSeeder extends Seeder
                 'price'       => 600,
                 'stock'       => 7,
                 'category'    => 'Tecnología',
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -81,6 +85,7 @@ class ServicesSeeder extends Seeder
                 'description' => 'High-quality blog posts and articles for your website.',
                 'price'       => 100,
                 'stock'       => 20,
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -90,6 +95,7 @@ class ServicesSeeder extends Seeder
                 'description' => 'Manage and grow your social media presence.',
                 'price'       => 200,
                 'stock'       => 10,
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -99,6 +105,7 @@ class ServicesSeeder extends Seeder
                 'description' => 'Professional video editing for YouTube and social media.',
                 'price'       => 250,
                 'stock'       => 12,
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -108,6 +115,7 @@ class ServicesSeeder extends Seeder
                 'description' => 'High-quality photography for events and products.',
                 'price'       => 350,
                 'stock'       => 9,
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -117,10 +125,10 @@ class ServicesSeeder extends Seeder
                 'description' => 'Create and manage effective email marketing campaigns.',
                 'price'       => 150,
                 'stock'       => 14,
+                'image'       => 'images/default.jpg',  
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
         ]);
     }
-
 }

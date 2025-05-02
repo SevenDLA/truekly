@@ -141,7 +141,7 @@ class ServiceController extends Controller
         $service->description = $request->description;
         $service->price = $request->price;
         $service->stock = $request->stock;
-        $service->image = $request->image;
+        $service->image = $request->image ?: asset('images/default.jpg');
 
         $service->save();
 

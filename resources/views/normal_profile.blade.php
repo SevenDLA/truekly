@@ -270,6 +270,7 @@
                                         <div class="profile-card h-100">
                                             <div class="d-flex flex-column h-100">
                                                 <h5 class="highlight-text">${service.title}</h5>
+                                                <img src = "${service.image}"></img>
                                                 <p class="flex-grow-1">${service.description}</p>
                                                 <div class="mt-auto">
                                                     <div class="d-flex justify-content-between mb-3">
