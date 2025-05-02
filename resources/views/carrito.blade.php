@@ -258,7 +258,6 @@
         $('.empty-button').on('click', function()
         {
             emptyCart()
-            showMessage("Tu carrito ha sido borrado correctamente", "success")
         })
 
         $('.delete-button').on('click', deleteServiceCart);

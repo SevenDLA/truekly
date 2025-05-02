@@ -264,7 +264,8 @@ class ServiceController extends Controller
 
             return response()->json([
                 'exito' => 'Servicio eliminado del carrito',
-                'carrito' => $carrito
+                'carrito' => $carrito,
+                'id_servicio'=> $id_servicio
             ]);
         }
 
