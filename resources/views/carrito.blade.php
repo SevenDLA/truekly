@@ -213,6 +213,7 @@
                     listado_servicios.length = 0;
                     $('#listadoCarro').empty();
                     $('#listadoCarro').prepend('<p>Tu carrito está vacío.</p>');
+                    $('#precioTotal').html(0)
 
                     
                     console.log('Cart has been emptied')
