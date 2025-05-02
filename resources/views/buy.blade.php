@@ -3,6 +3,8 @@
 @section('content')
 <div id="messageBox" class="">
 </div>
+
+<h1>Seller is:{{ $seller }}</h1>
 <div class="d-flex justify-content-between gap-3">
     {{-- Left side: Order Review --}}
     <div class="w-50 p-3 border rounded bg-light">
@@ -15,6 +17,7 @@
             <div class="ms-3 text-center">
                 <strong>Cantidad: {{$cantidad_tokens}}</strong>
                 <p>Precio: {{ $precio_tokens }}€</p>
+                <p>Vendedor: {{ $seller ? $seller : 'Truekly' }}</p>
             </div>
         </div>
     </div>
@@ -30,12 +33,17 @@
 
 
 <script src="https://www.paypal.com/sdk/js?client-id=AVqE7HfPwxBTL0QUys1Lr43kd1RqJgJGDQL_yemYan2WLcJHy5kJ9P_3EX-FY8Ia-yQBQMeb0SXIRN23&currency=USD" data-sdk-integration-source="button-factory"></script>
-<script>
 
-    function purchaseCompleted(){
-        $('#paymentDiv').html('Works');
-        $('#messageBox').html('')
-    }
+
+<script>
+    let seller = "{{ $seller }}"
+    console.log(typeof(seller))
+    seller.length > 0 ? seller=seller : seller = "Truekly"
+    console.log(seller)
+
+
+
+
 
     paypal.Buttons({
         style: {
@@ -54,41 +62,74 @@
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                console.log(details);
-
-                $('#messageBox')
-                            .html('Tu compra ha sido realizada!') // Add the message
-                            .removeClass('d-none') // Remove the "d-none" class (if using Bootstrap)
-                            .addClass('d-flex justify-content-center align-items-center fw-bold text-white bg-success w-100 p-2') // Add styling classes
-                            .hide() // Hide the div initially
-                            .fadeIn(500) // Fade in the div over 500ms
-                            .delay(2000) // Keep it visible for 2 seconds
-                            .fadeOut(500, function() {
-                                // Optional: Reset the div after fading out
-                                $(this).removeClass().addClass('d-none').html('');
-                            });
-
-                // Update the user's tokens after successful payment
-                const newTokens = {{ auth()->user()->tokens }} + {{ $cantidad_tokens }};
-                console.log('New Tokens:', newTokens);
-
-                // Send an AJAX request to update the user's tokens in the database
-                $.ajax({
-                    url: '/actualizar-tokens',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        tokens: newTokens
-                    },
-                    success: function(response) {
-                        console.log('Tokens updated successfully')
-                    },
-                    error: function(error) {
-                        console.error('Error updating tokens:', error);
-                    }
-                });
+                buyFromCompany(details)
             });
         }
     }).render('#paypal-button-container');
+
+
+
+
+
+    function buyFromCompany(details)
+    {
+
+        console.log(details);
+
+        $('#messageBox')
+                    .html('Tu compra ha sido realizada!') // Add the message
+                    .removeClass('d-none') // Remove the "d-none" class (if using Bootstrap)
+                    .addClass('d-flex justify-content-center align-items-center fw-bold text-white bg-success w-100 p-2') // Add styling classes
+                    .hide() // Hide the div initially
+                    .fadeIn(500) // Fade in the div over 500ms
+                    .delay(2000) // Keep it visible for 2 seconds
+                    .fadeOut(500, function() {
+                        // Optional: Reset the div after fading out
+                        $(this).removeClass().addClass('d-none').html('');
+                    });
+
+        // Update the user's tokens after successful payment
+        const newTokens = {{ auth()->user()->tokens }} + {{ $cantidad_tokens }};
+        console.log('New Tokens:', newTokens);
+
+        // Send an AJAX request to update the user's tokens in the database
+        $.ajax({
+            url: '/actualizar-tokens',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                tokens: newTokens
+            },
+            success: function(response) {
+                console.log('Tokens updated successfully')
+            },
+            error: function(error) {
+                console.error('Error updating tokens:', error);
+            }
+        });
+
+    }
+
+
+
+
+
+
+
+    function buyFromSeller(details)
+    {
+        console.log(details);
+
+
+    }
+
+
+
+
+    function purchaseCompleted(){
+        $('#paymentDiv').html('Works');
+        $('#messageBox').html('')
+    }
+
 </script>
 @endsection

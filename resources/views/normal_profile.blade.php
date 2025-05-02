@@ -268,13 +268,13 @@
                                 break;
                         }
 
-                        // Corrected the img src here
                         $("#ajaxList").append(`
                             <div class="col">
                                 <div class="profile-card h-100">
                                     <div class="d-flex flex-column h-100">
                                         <h5 class="highlight-text">${service.title}</h5>
-                                        <img src="{{ asset('storage') }}/${service.image}" alt="Service Image" style="width: 500px; height: 250px; object-fit: cover;">
+                                        <img src="{{ asset('storage') }}/${service.image}" alt="Service Image" style="width: 500px; height: 250px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                        <br>
                                         <p class="flex-grow-1">${service.description}</p>
                                         <div class="mt-auto">
                                             <div class="d-flex justify-content-between mb-3">
@@ -288,6 +288,7 @@
                                 </div>
                             </div>
                         `);
+
 
                     });
                 }

@@ -46,9 +46,10 @@ Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);
 
 // Compra y venta de tokens
 Route::middleware('auth')->group(function () {
-    Route::get('/comprar/{cantidad_tokens}/{precio_tokens}', function ($cantidad_tokens, $precio_tokens) {
-        return view('buy', compact('cantidad_tokens', 'precio_tokens'));
+    Route::get('/comprar/{cantidad_tokens}/{precio_tokens}/{seller?}', function ($cantidad_tokens, $precio_tokens, $seller = null) {
+        return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller'));
     });
+    
 
     Route::post('/actualizar-tokens', [UserController::class, 'updateTokens'])->name('update.tokens');
 
