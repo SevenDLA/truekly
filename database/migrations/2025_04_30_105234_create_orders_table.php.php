@@ -17,11 +17,6 @@ return new class extends Migration
             $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('seller_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('offer_id')->constrained('offers')->onDelete('cascade');
-
-            $table->decimal('total_price', 10, 2);
-            $table->decimal('truekly_fee', 10, 2);
-            $table->decimal('seller_earnings', 10, 2);
-
             $table->timestamps();
         });
 
