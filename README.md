@@ -207,11 +207,13 @@ Accede a la app en: **[http://127.0.0.1:8000](http://127.0.0.1:8000/)**
 ---
 
 ## Documentos
+- [Fase de Diseño](https://github.com/user-attachments/files/20027627/Truekly.pdf)
+
 - [Diagrama de Clases](https://github.com/user-attachments/files/20027564/DiagramaDeClases.pdf)
 
 - [Casos de Uso](https://github.com/user-attachments/files/20027562/CasoUsos.pdf)
 
-- [Tests](https://github.com/user-attachments/files/20027564/DiagramaDeClases.pdf)
+- [Tests Unitarios](https://github.com/user-attachments/files/20027564/DiagramaDeClases.pdf)
 
 ---
 
