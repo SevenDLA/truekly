@@ -1,23 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayPal Payout System</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
+@extends('layout')
+
+@section('title', 'Mi Perfil')
+
+@section('content')
+
+
+
     
 
-    @foreach($compras as $compra)
-        <div>
-            <p><strong>Buyer ID:</strong> {{ $compra->buyer->name }}</p>
-            <p><strong>Seller ID:</strong> {{ $compra->seller->name }}</p>
-            <p><strong>Service ID:</strong> {{ $compra->service_id }}</p>
-            <p><strong>Status:</strong> {{ $compra->status }}</p>
-        </div>
-    @endforeach
+    <script src="https://www.paypal.com/sdk/js?client-id=AVqE7HfPwxBTL0QUys1Lr43kd1RqJgJGDQL_yemYan2WLcJHy5kJ9P_3EX-FY8Ia-yQBQMeb0SXIRN23&currency=EUR"></script>
 
+<div id="paypal-button-container"></div>
+
+<script>
+    console.log("{{$offer->user_seller_id}}")
+    console.log("Testing")
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: "{{ $offer->price }}" // Pass the offer price dynamically
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Send AJAX request to capture payment
+                $.ajax({
+                    url: "{{ route('paypal.captureOfferPayment') }}",
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        offer_id: "{{ $offer->id }}",
+                        token: data.orderID
+                    },
+                    success: function(response) {
+                        alert('Payment successful!');
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.error('Payment error:', error);
+                    }
+                });
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
     <!--    PAYPAL WITHDRAW SYSTEM 
     
     <h2>PayPal Payout System</h2>
@@ -100,3 +130,5 @@
 
     </script>
                     -->
+
+@endsection

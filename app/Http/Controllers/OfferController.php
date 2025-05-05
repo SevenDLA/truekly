@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Offer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 class OfferController extends Controller
@@ -35,6 +36,9 @@ class OfferController extends Controller
         $oferta->user_seller_id = Auth::id();
         $oferta->tokens = $request->tokens;
         $oferta->price = $request->price;
+        if (empty($request->id_oferta)) {
+            $oferta->status = 'P';
+        }
 
 
         $oferta->save();
@@ -58,4 +62,9 @@ class OfferController extends Controller
         return view('marketplace', compact('ofertas'));
     }
     
+    public function ver_oferta($id_oferta)
+    {
+        $offer = Offer::findOrFail($id_oferta);
+        return view('test', compact('offer'));
+    }
 }

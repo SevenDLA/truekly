@@ -22,7 +22,8 @@ class OffersSeeder extends Seeder
             [
                 'user_seller_id' => $janeId,
                 'tokens'         => 100,
-                'price'          => 500,
+                'price'          => 50,
+                'status'         => 'P',
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],
@@ -30,6 +31,8 @@ class OffersSeeder extends Seeder
                 'user_seller_id' => $janeId,
                 'tokens'         => 200,
                 'price'          => 900,
+                'status'         => 'P',
+
                 'created_at'  => now(),
                 'updated_at'  => now(),
             ],

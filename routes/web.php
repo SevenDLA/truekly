@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PayPalController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Test 
-Route::get('/oferta/{id_oferta?}', [OfferController::class, 'offer_formulario']);
-Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
+Route::get('/testing/{id_oferta}', [OfferController::class, 'ver_oferta']);
+Route::get('/test', function () {
+    return view('test');
+});
 
 // Perfil de usuario
 Route::middleware('auth')->group(function () {
@@ -76,8 +79,8 @@ Route::middleware('auth')->group(function () {
 
 // Gestión de usuarios
 Route::get('/admin/user/{id}', [UserController::class, 'mostrar'])->name('users.mostrar');
-Route::get('/admin/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
-Route::get('/admin/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
+//Route::pu('/admin/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::delete('/admin/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
 Route::get('/users/nuevo', [UserController::class, 'alta'])->name('users.alta');
 Route::post('/users/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
 
@@ -102,6 +105,18 @@ Route::post('/pagar/vendedor/{id_compra}', [CompraController::class,'pagar_selle
 
 //Ofertas
 Route::get('/usuario/ofertas', [OfferController::class, 'coger_ofertas_usuario']);
+Route::get('/oferta/{id_oferta?}', [OfferController::class, 'offer_formulario']);
+Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
+
+// PayPal
+Route::post('/paypal/capture-offer-payment', [PayPalController::class, 'captureOfferPayment'])->name('paypal.captureOfferPayment');
+Route::post('/paypal/buy-offer', [PayPalController::class, 'buyOffer'])->name('paypal.buyOffer');
+Route::get('/paypal/success', [PayPalController::class, 'captureOfferPayment'])->name('paypal.success');
+Route::get('/paypal/cancel', function () {
+    return 'Payment canceled';
+})->name('paypal.cancel');
+Route::post('/paypal/send/payout', [PayPalController::class, 'sendPayout'])->name('send.payout');
+
 
 // Autenticación
 require __DIR__.'/auth.php';

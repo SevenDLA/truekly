@@ -78,85 +78,86 @@
     }
 
 
+    $(document).ready(function () {
     paypal.Buttons({
-        onInit: function(data, actions) {
+        onInit: function (data, actions) {
             actions.disable(); // Initially disable the button
 
-            $('#tokens').on('input', function() {
+            $('#tokens').on('input', function () {
                 let tokens = parseFloat($(this).val());
-                let valid = validateErrors(tokens);
+                let valid = validateErrors(tokens); // Assumes validateErrors() is defined elsewhere
                 if (valid) {
-                    $()
-                    actions.enable(); // Enable button if valid
+                    actions.enable();
                 } else {
-                    actions.disable(); // Disable button if invalid
+                    actions.disable();
                 }
             });
         },
 
-        createOrder: function(data, actions) {
-            let tokens = parseFloat($('#tokens').val());
-
-            if (tokens < 250) {
-                alert("Debes intercambiar al menos 250 tokens.");
-                return actions.reject(); // Prevent payment if invalid
-            }
-
+        createOrder: function (data, actions) {
+            // Create a dummy order with 1 EUR to satisfy PayPal
             return actions.order.create({
                 purchase_units: [{
                     amount: {
-                        value: $('#euros').val(),
-                        currency_code: "EUR"
+                        value: '1.00' // Placeholder, the real payout is handled via AJAX
                     }
                 }]
             });
         },
 
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                console.log("Transaction completed by " + details.payer.name.given_name);
+        onApprove: function (data, actions) {
+            let tokens = parseFloat($('#tokens').val());
+            let euros = parseFloat($('#euros').val());
 
-                let tokens = parseFloat($('#tokens').val());
+            let paypalEmail = prompt("Introduce tu correo de PayPal para recibir el pago:");
 
-                // Send AJAX request to update user's tokens in the database
-                $.ajax({
-                    url: "{{ route('update.tokens') }}", // Replace with your actual route
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}", // Laravel CSRF token for security
-                        tokens: {{Auth::user()->tokens}}-tokens
-                    },
-                    success: function(response) {
-                        $('#messageBox')
-                            .text("Has vendido tus tokens sin ningún problema") 
-                            .css({
-                                'background-color': 'green',
-                                'color': 'white',
-                                'font-weight': 'bold',
-                                'text-align': 'center',
-                                'padding': '10px',
-                                'width': '100%'
-                            })
-                            .show();
+            if (!paypalEmail || !paypalEmail.includes("@")) {
+                alert("Correo de PayPal no válido.");
+                return;
+            }
 
-                        // Reload after 5 seconds
-                        setTimeout(function() {
-                            location.reload();
-                        }, 5000);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error updating tokens:", error);
-                        alert("Hubo un error actualizando los tokens. Intenta de nuevo.");
-                    }
-                });
+            // Send payout request to backend
+            return $.ajax({
+                url: "{{ route('send.payout') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tokens: tokens,
+                    euros: euros,
+                    paypal_email: paypalEmail
+                },
+                success: function (response) {
+                    $('#messageBox')
+                        .text("¡Payout enviado exitosamente!")
+                        .css({
+                            'background-color': 'green',
+                            'color': 'white',
+                            'font-weight': 'bold',
+                            'text-align': 'center',
+                            'padding': '10px',
+                            'width': '100%'
+                        })
+                        .show();
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 5000);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al procesar payout:", error);
+                    alert("Hubo un error enviando el payout. Intenta de nuevo.");
+                }
             });
         },
 
-        onError: function(err) {
-            console.error("Error processing payout:", err);
-            alert("Payout failed. Please try again.");
+        onError: function (err) {
+            console.error("Error triggering payout:", err);
+            alert("Error inesperado. Intenta de nuevo.");
         }
     }).render('#paypal-button-container');
+});
+
+
 
 
     $('#tokens').on('keydown', function(event) {
