@@ -36,7 +36,6 @@
 
 
 <script>
-    console.log("Test")
     let seller = "{{ $seller }}"
     console.log(typeof(seller))
     seller.length > 0 ? seller=seller : seller = "Truekly"
