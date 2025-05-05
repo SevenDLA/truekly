@@ -49,4 +49,172 @@ Bienvenido a **Truekly**, la plataforma donde el **trueque** de habilidades y se
 
 - 📝 **Sistema de Valoraciones:** Los usuarios podrán dejar valoraciones sobre los servicios que recibieron, lo que ayudará a crear una red de confianza y a mejorar la calidad del intercambio.
 
-> Hecho con pasión por Darren Angelo Lajara Corpuz y Seven de León Amador 🚀
+---
+
+## 🚀 Requisitos previos
+
+### 🐘 PHP 8.1 y extensiones
+
+Instala PHP y sus extensiones:
+
+```bash
+sudo apt install software-properties-common -y
+sudo add-apt-repository ppa:ondrej/php -y
+sudo apt update
+sudo apt install php php-cli php-mbstring php-xml php-bcmath php-curl php-zip unzip curl -y
+````
+
+Confirma la instalación:
+
+```bash
+php -v
+```
+
+---
+
+### 📦 Composer
+
+Instala Composer:
+
+```bash
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+Verifica la instalación:
+
+```bash
+composer --version
+```
+
+---
+
+### 🐬 MySQL
+
+Instala MySQL y la extensión de PHP:
+
+```bash
+sudo apt install mysql-server php-mysql -y
+```
+
+---
+
+### 🟢 Node.js y npm
+
+Instala Node.js:
+
+```bash
+sudo apt install nodejs npm -y
+```
+
+Verifica las versiones:
+
+```bash
+node -v
+npm -v
+```
+
+---
+
+### 🧬 Git
+
+Instala Git:
+
+```bash
+sudo apt install git -y
+```
+
+Confirma la instalación:
+
+```bash
+git --version
+```
+
+---
+
+## ⚙️ Instalación del proyecto
+
+1. Configura la base de datos:
+
+```sql
+sudo mysql
+
+CREATE DATABASE truekly;
+CREATE USER 'truekly'@'localhost' IDENTIFIED BY 'DawSegundo77+';
+GRANT ALL PRIVILEGES ON *.* TO 'truekly'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+2. Clona el repositorio:
+
+```bash
+git clone https://github.com/SevenDLA/truekly.git
+```
+
+3. Accede al directorio del proyecto:
+
+```bash
+cd truekly
+```
+
+4. Otorga permisos a los archivos:
+
+```bash
+sudo chmod 777 -R ./*
+```
+
+5. Instala las dependencias:
+
+```bash
+composer install
+npm install
+npm run build
+```
+
+6. Copia el archivo de entorno:
+
+```bash
+cp .env.example .env
+```
+
+7. Genera la clave de aplicación:
+
+```bash
+php artisan key:generate
+```
+
+8. Ejecuta las migraciones y seeders:
+
+```bash
+php artisan migrate:refresh --seed
+```
+
+9. Enlaza el almacenamiento para imágenes:
+
+```bash
+php artisan storage:link
+```
+
+10. Inicia el servidor local:
+
+```bash
+php artisan serve
+```
+
+Accede a la app en: **[http://127.0.0.1:8000](http://127.0.0.1:8000/)**
+
+---
+
+## Documentos
+- [Fase de Diseño](https://github.com/user-attachments/files/20027627/Truekly.pdf)
+
+- [Diagrama de Clases](https://github.com/user-attachments/files/20027564/DiagramaDeClases.pdf)
+
+- [Casos de Uso](https://github.com/user-attachments/files/20027562/CasoUsos.pdf)
+
+- [Tests Unitarios](https://github.com/user-attachments/files/20027564/DiagramaDeClases.pdf)
+
+---
+
+> Hecho por Darren Angelo Lajara Corpuz y Seven de León Amador
