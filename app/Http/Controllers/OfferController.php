@@ -57,5 +57,12 @@ class OfferController extends Controller
     
         return view('marketplace', compact('ofertas'));
     }
+
+    public function ver_oferta($id_oferta)
+    {
+        $oferta = Offer::findOrFail($id_oferta);
+
+        return view('test', compact('oferta'));
+    }
     
 }

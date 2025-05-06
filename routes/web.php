@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PayPalController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Test 
-Route::get('/oferta/{id_oferta?}', [OfferController::class, 'offer_formulario']);
-Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
+Route::get('/test/{id_oferta}', [OfferController::class, 'ver_oferta']);
 
 // Perfil de usuario
 Route::middleware('auth')->group(function () {
@@ -102,6 +102,17 @@ Route::post('/pagar/vendedor/{id_compra}', [CompraController::class,'pagar_selle
 
 //Ofertas
 Route::get('/usuario/ofertas', [OfferController::class, 'coger_ofertas_usuario']);
+Route::get('/oferta/{id_oferta?}', [OfferController::class, 'offer_formulario']);
+Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
+
+
+//Paypal
+Route::get('/paypal/order/{offerId}', [PayPalController::class, 'createOrder']);
+Route::post('/paypal/capture/{offerId}', [PayPalController::class, 'captureOrder']);
+
+Route::get('/check-env', function () {
+    return config('paypal.client_id');
+});
 
 // Autenticación
 require __DIR__.'/auth.php';

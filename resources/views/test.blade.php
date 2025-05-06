@@ -1,22 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PayPal Payout System</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    
+@extends('layout')
 
-    @foreach($compras as $compra)
-        <div>
-            <p><strong>Buyer ID:</strong> {{ $compra->buyer->name }}</p>
-            <p><strong>Seller ID:</strong> {{ $compra->seller->name }}</p>
-            <p><strong>Service ID:</strong> {{ $compra->service_id }}</p>
-            <p><strong>Status:</strong> {{ $compra->status }}</p>
-        </div>
-    @endforeach
+@section('title', 'Marketplace')
+@section('content')
+    
+    <h1>{{ $oferta->seller->username }}</h1>
+    <h1>Buy Offer</h1>
+    <div id="paypal-button-container"></div>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AVqE7HfPwxBTL0QUys1Lr43kd1RqJgJGDQL_yemYan2WLcJHy5kJ9P_3EX-FY8Ia-yQBQMeb0SXIRN23&currency=EUR"></script>
+<script>
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return fetch(`/paypal/order/{{ $oferta->id }}`)
+                .then(res => res.json())
+                .then(data => {
+                    return data.orderID;
+                });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                return fetch(`/paypal/capture/{{ $oferta->id }}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Payment successful!');
+                        window.location.href = '/order/confirmation';
+                    } else {
+                        throw new Error(data.message || 'Capture failed');
+                    }
+                });
+            }).catch(err => {
+                alert('Payment capture failed: ' + err.message);
+                console.error(err);
+            });
+        }
+    }).render('#paypal-button-container');
+</script>
+    
+</html>
 
     <!--    PAYPAL WITHDRAW SYSTEM 
     
@@ -100,3 +130,4 @@
 
     </script>
                     -->
+@endsection
