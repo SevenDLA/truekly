@@ -156,7 +156,28 @@
     }
 
 
+    function updateOfferStatus()
+    {
+        $.ajax({
+            url: '',
+            method: 'POST',
+            data:
+            {
+                _token: '{{ csrf_token() }}',
+                newStatus : 'T',
+                offerId: "$offer->id"
 
+            },
+            success: function(response)
+            {
+                console.log('Estado de la oferta actualizada con éxito');
+            },
+            error: function(error)
+            {
+                console.error('Error actualizando: ', error);
+            }
+        })
+    }
 
     function updateUserTokens()
     {

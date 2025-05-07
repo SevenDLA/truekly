@@ -54,8 +54,9 @@ class OfferController extends Controller
     public function coger_todas_ofertas()
     {
         $ofertas = Offer::all();
-    
-        return view('marketplace', compact('ofertas'));
+        $ESTADO = Offer::ESTADO;
+
+        return view('marketplace', compact('ofertas', 'ESTADO'));
     }
 
     public function ver_oferta($id_oferta)
@@ -76,6 +77,7 @@ class OfferController extends Controller
             $offer = User::find($id_oferta);
         else
             $offer = null;    
+
         return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller', 'offer'));
     }
 }
