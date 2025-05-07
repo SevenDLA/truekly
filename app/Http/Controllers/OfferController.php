@@ -65,12 +65,17 @@ class OfferController extends Controller
         return view('test', compact('oferta'));
     }
     
-    public function show($cantidad_tokens, $precio_tokens, $id_seller = null)
+    public function show($cantidad_tokens, $precio_tokens, $id_seller = null, $id_oferta = null)
     {
         if($id_seller)
             $seller = User::find($id_seller);
         else
             $seller = null;
-        return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller'));
+
+        if($id_oferta)
+            $offer = User::find($id_oferta);
+        else
+            $offer = null;    
+        return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller', 'offer'));
     }
 }

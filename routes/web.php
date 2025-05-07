@@ -46,7 +46,7 @@ Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);
 
 // Compra y venta de tokens
 Route::middleware('auth')->group(function () {
-    Route::get('/comprar/{cantidad_tokens}/{precio_tokens}/{id_seller?}', [OfferController::class, 'show'])->name('offer.show');
+    Route::get('/comprar/{cantidad_tokens}/{precio_tokens}/{id_seller?}/{id_oferta?}', [OfferController::class, 'show'])->name('offer.show');
 
     
 
