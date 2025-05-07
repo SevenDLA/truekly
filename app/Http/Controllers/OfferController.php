@@ -69,7 +69,8 @@ class OfferController extends Controller
     {
         if($id_seller)
             $seller = User::find($id_seller);
-
+        else
+            $seller = null;
         return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller'));
     }
 }

@@ -4,7 +4,7 @@
 <div id="messageBox" class="">
 </div>
 
-<h1>Seller is:{{ $seller }}</h1>
+
 <div class="d-flex justify-content-between gap-3">
     {{-- Left side: Order Review --}}
     <div class="w-50 p-3 border rounded bg-light">
@@ -17,7 +17,7 @@
             <div class="ms-3 text-center">
                 <strong>Cantidad: {{$cantidad_tokens}}</strong>
                 <p>Precio: {{ $precio_tokens }}€</p>
-                <p>Vendedor: {{ $seller ? $seller : 'Truekly' }}</p>
+                <p>Vendedor: {{ $seller ? $seller->username : 'Truekly' }}</p>
             </div>
         </div>
     </div>
@@ -32,18 +32,10 @@
 
 
 
-<script src="https://www.paypal.com/sdk/js?client-id=AVqE7HfPwxBTL0QUys1Lr43kd1RqJgJGDQL_yemYan2WLcJHy5kJ9P_3EX-FY8Ia-yQBQMeb0SXIRN23&currency=USD" data-sdk-integration-source="button-factory"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AVqE7HfPwxBTL0QUys1Lr43kd1RqJgJGDQL_yemYan2WLcJHy5kJ9P_3EX-FY8Ia-yQBQMeb0SXIRN23&currency=EUR" data-sdk-integration-source="button-factory"></script>
 
 
 <script>
-    let seller = "{{ $seller }}"
-    console.log(typeof(seller))
-    seller.length > 0 ? seller=seller : seller = "Truekly"
-    console.log(seller)
-
-
-
-
 
     paypal.Buttons({
         style: {
@@ -62,18 +54,78 @@
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                buyFromCompany(details)
+                const cantidad = data.purchase_units[0].amount.value
+                let seller = @json($seller);
+                if(seller)
+                {
+                    buyFromSeller(details, cantidad)
+                }
+                else
+                {
+                    buyFromCompany(details)
+                }
             });
         }
     }).render('#paypal-button-container');
 
 
 
+    function buyFromSeller(details, cantidad)
+    {
+        $.ajax({
+                    url: "{{ route('send.paypal.payout') }}",  // Replace with the actual route for sending a PayPal payout
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}", // Laravel CSRF token for security
+                        receiverEmail: "{{ $seller ? $seller->email : 'default@example.com' }}",
+                        amount: cantidad,  // Amount to send in EUR
+                        note: 'Gracias por tus tokens!'  // Optional note
+                    },
+                    success: function(response) {
+                        // Check if the payout was successful
+                        if (response.batch_header && response.batch_header.batch_status === 'PENDING') {
+                            $('#messageBox')
+                                .text("Tu pago está pendiente de procesarse.") 
+                                .css({
+                                    'background-color': 'orange',
+                                    'color': 'white',
+                                    'font-weight': 'bold',
+                                    'text-align': 'center',
+                                    'padding': '10px',
+                                    'width': '100%'
+                                })
+                                .show();
+                            
+                                updateUserTokens()
 
+                            // Optionally, reload or perform other actions after a successful payout creation
+                            setTimeout(function() {
+                                location.reload();
+                            }, 5000);
+                        } else {
+                            $('#messageBox')
+                                .text("Hubo un error con el pago.") 
+                                .css({
+                                    'background-color': 'red',
+                                    'color': 'white',
+                                    'font-weight': 'bold',
+                                    'text-align': 'center',
+                                    'padding': '10px',
+                                    'width': '100%'
+                                })
+                                .show();
+                            console.log(response)
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error processing payout:", error);
+                        alert("Hubo un error al procesar el pago. Intenta nuevamente.");
+                    }
+                });
+    }
 
     function buyFromCompany(details)
     {
-
         console.log(details);
 
         $('#messageBox')
@@ -88,6 +140,14 @@
                         $(this).removeClass().addClass('d-none').html('');
                     });
 
+        updateUserTokens()
+    }
+
+
+
+
+    function updateUserTokens()
+    {
         // Update the user's tokens after successful payment
         const newTokens = {{ auth()->user()->tokens }} + {{ $cantidad_tokens }};
         console.log('New Tokens:', newTokens);
@@ -107,20 +167,6 @@
                 console.error('Error updating tokens:', error);
             }
         });
-
-    }
-
-
-
-
-
-
-
-    function buyFromSeller(details)
-    {
-        console.log(details);
-
-
     }
 
 
