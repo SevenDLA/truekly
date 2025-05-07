@@ -95,6 +95,7 @@
                     success: function(response) {
                         // Check if the payout was successful
                         if (response.batch_header && response.batch_header.batch_status === 'PENDING') {
+                            updateUserTokens()
                             $('#messageBox')
                                 .text("Tu pago está pendiente de procesarse.") 
                                 .css({
