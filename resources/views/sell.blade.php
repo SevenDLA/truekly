@@ -122,6 +122,25 @@
                                     'width': '100%'
                                 })
                                 .show();
+                            
+                            const newTokens = {{ auth()->user()->tokens }} - tokens ;
+                            console.log('New Tokens:', newTokens);
+
+                            // Send an AJAX request to update the user's tokens in the database
+                            $.ajax({
+                                url: '/actualizar-tokens',
+                                method: 'POST',
+                                data: {
+                                    _token: '{{ csrf_token() }}',
+                                    tokens: newTokens
+                                },
+                                success: function(response) {
+                                    console.log('Tokens updated successfully')
+                                },
+                                error: function(error) {
+                                    console.error('Error updating tokens:', error);
+                                }
+                            });
 
                             // Optionally, reload or perform other actions after a successful payout creation
                             setTimeout(function() {
