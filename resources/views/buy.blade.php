@@ -95,7 +95,6 @@
                     success: function(response) {
                         // Check if the payout was successful
                         if (response.batch_header && response.batch_header.batch_status === 'PENDING') {
-                            updateUserTokens()
                             $('#messageBox')
                                 .text("Tu pago está pendiente de procesarse.") 
                                 .css({
@@ -109,11 +108,12 @@
                                 .show();
                             
                                 updateUserTokens()
+                                updateOfferStatus()
 
                             // Optionally, reload or perform other actions after a successful payout creation
                             setTimeout(function() {
-                                location.reload();
-                            }, 5000);
+                                window.location.href="{{ route('profile.normal') }}";
+                            }, 3000);
                         } else {
                             $('#messageBox')
                                 .text("Hubo un error con el pago.") 
@@ -159,13 +159,12 @@
     function updateOfferStatus()
     {
         $.ajax({
-            url: '',
+            url: "{{ route('offer.status.update') }}",
             method: 'POST',
             data:
             {
                 _token: '{{ csrf_token() }}',
-                newStatus : 'T',
-                offerId: "$offer->id"
+                offerId: "{{ $offer->id }}"
 
             },
             success: function(response)
@@ -201,9 +200,6 @@
             }
         });
     }
-
-
-
 
     function purchaseCompleted(){
         $('#paymentDiv').html('Works');
