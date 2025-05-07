@@ -54,16 +54,27 @@
         },
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
-                const cantidad = data.purchase_units[0].amount.value
-                let seller = @json($seller);
-                if(seller)
+
+                
+                if (details.purchase_units && details.purchase_units.length > 0) 
                 {
-                    buyFromSeller(details, cantidad)
-                }
-                else
+                    // Safely access the amount from the first purchase unit
+                    const cantidad = details.purchase_units[0].amount.value;
+                    console.log("Amount: ", cantidad);
+
+                    let seller = @json($seller);
+                    console.log("Seller email: ", seller ? seller.email : "No seller");
+
+                    // Perform your payout operation here...
+                    buyFromSeller(details, cantidad);
+                } 
+                else 
                 {
-                    buyFromCompany(details)
+                    console.error("purchase_units is empty or missing.");
                 }
+
+
+
             });
         }
     }).render('#paypal-button-container');
