@@ -36,14 +36,14 @@
 <script>
     function calcularEuros() {
         let tokens = parseFloat($('#tokens').val());
-            let euroValue = tokens * 0.05;
-            $('#euros').val(euroValue.toFixed(2));
+        let euroValue = tokens * 0.05;
+        $('#euros').val(euroValue.toFixed(2));
     }
 
     function showMessage(message='') {
-        message==''?$('#tokens').css('border-color', 'black'):$('#tokens').css('border-color', 'red');
-        $('#tokensMessageBox').css('color', 'red')
-        $('#tokensMessageBox').html(message)
+        message == '' ? $('#tokens').css('border-color', 'black') : $('#tokens').css('border-color', 'red');
+        $('#tokensMessageBox').css('color', 'red');
+        $('#tokensMessageBox').html(message);
     }
 
     function validateErrors(tokens) {
@@ -60,7 +60,7 @@
                 message: 'Tiene que haber como mínimo, 250 tokens'
             },
             {
-                check: parseFloat(tokens) <= {{ Auth::user()->tokens }}, // Check if tokens is not more than the user's available tokens
+                check: parseFloat(tokens) <= {{ Auth::user()->tokens }}, // Check if tokens are not more than the user's available tokens
                 message: 'Tokens insuficientes'
             }
         ];
@@ -69,14 +69,12 @@
             if (!condition.check) {
                 isValid = false;
                 message = condition.message;
-                console.log({{Auth::user()->tokens}})
                 break;
             }
         }
         showMessage(message);
         return isValid;
     }
-
 
     paypal.Buttons({
         onInit: function(data, actions) {
@@ -86,29 +84,10 @@
                 let tokens = parseFloat($(this).val());
                 let valid = validateErrors(tokens);
                 if (valid) {
-                    $()
                     actions.enable(); // Enable button if valid
                 } else {
                     actions.disable(); // Disable button if invalid
                 }
-            });
-        },
-
-        createOrder: function(data, actions) {
-            let tokens = parseFloat($('#tokens').val());
-
-            if (tokens < 250) {
-                alert("Debes intercambiar al menos 250 tokens.");
-                return actions.reject(); // Prevent payment if invalid
-            }
-
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: $('#euros').val(),
-                        currency_code: "EUR"
-                    }
-                }]
             });
         },
 
@@ -117,36 +96,55 @@
                 console.log("Transaction completed by " + details.payer.name.given_name);
 
                 let tokens = parseFloat($('#tokens').val());
+                let receiverEmail = '{{ auth()->user()->email }}';
 
-                // Send AJAX request to update user's tokens in the database
+                // Send AJAX request to your Laravel backend to initiate the PayPal payout
                 $.ajax({
-                    url: "{{ route('update.tokens') }}", // Replace with your actual route
+                    url: "{{ route('send.paypal.payout') }}",  // Replace with the actual route for sending a PayPal payout
                     type: "POST",
                     data: {
                         _token: "{{ csrf_token() }}", // Laravel CSRF token for security
-                        tokens: {{Auth::user()->tokens}}-tokens
+                        receiverEmail: receiverEmail,
+                        amount: $('#euros').val(),  // Amount to send in EUR
+                        note: 'Gracias por tus tokens!'  // Optional note
                     },
                     success: function(response) {
-                        $('#messageBox')
-                            .text("Has vendido tus tokens sin ningún problema") 
-                            .css({
-                                'background-color': 'green',
-                                'color': 'white',
-                                'font-weight': 'bold',
-                                'text-align': 'center',
-                                'padding': '10px',
-                                'width': '100%'
-                            })
-                            .show();
+                        // Check if the payout was successful
+                        if (response.batch_header && response.batch_header.batch_status === 'PENDING') {
+                            $('#messageBox')
+                                .text("Tu pago está pendiente de procesarse.") 
+                                .css({
+                                    'background-color': 'orange',
+                                    'color': 'white',
+                                    'font-weight': 'bold',
+                                    'text-align': 'center',
+                                    'padding': '10px',
+                                    'width': '100%'
+                                })
+                                .show();
 
-                        // Reload after 5 seconds
-                        setTimeout(function() {
-                            location.reload();
-                        }, 5000);
+                            // Optionally, reload or perform other actions after a successful payout creation
+                            setTimeout(function() {
+                                location.reload();
+                            }, 5000);
+                        } else {
+                            $('#messageBox')
+                                .text("Hubo un error con el pago.") 
+                                .css({
+                                    'background-color': 'red',
+                                    'color': 'white',
+                                    'font-weight': 'bold',
+                                    'text-align': 'center',
+                                    'padding': '10px',
+                                    'width': '100%'
+                                })
+                                .show();
+                            console.log(response)
+                        }
                     },
                     error: function(xhr, status, error) {
-                        console.error("Error updating tokens:", error);
-                        alert("Hubo un error actualizando los tokens. Intenta de nuevo.");
+                        console.error("Error processing payout:", error);
+                        alert("Hubo un error al procesar el pago. Intenta nuevamente.");
                     }
                 });
             });
@@ -157,6 +155,8 @@
             alert("Payout failed. Please try again.");
         }
     }).render('#paypal-button-container');
+</script>
+
 
 
     $('#tokens').on('keydown', function(event) {

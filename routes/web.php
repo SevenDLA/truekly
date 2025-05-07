@@ -107,8 +107,8 @@ Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name(
 
 
 //Paypal
-Route::get('/paypal/order/{offerId}', [PayPalController::class, 'createOrder']);
-Route::post('/paypal/capture/{offerId}', [PayPalController::class, 'captureOrder']);
+Route::post('/send-paypal-payout', [PayPalController::class, 'sendPaypalPayout'])->name('send.paypal.payout');
+
 
 Route::get('/check-env', function () {
     return config('paypal.client_id');

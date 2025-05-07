@@ -27,7 +27,7 @@ class UsersSeeder extends Seeder
                 'date_of_birth' => '1990-05-15',
                 'phone_number'  => '1234567890',
                 'password'      => Hash::make('password123'),
-                'tokens'        => 1000,
+                'tokens'        => 10000,
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ],
