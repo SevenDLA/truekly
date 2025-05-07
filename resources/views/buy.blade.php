@@ -15,7 +15,7 @@
         <div class="d-flex align-items-center justify-content-center border p-2 rounded bg-white">
             <img src="{{ asset('images/coin.png') }}" alt="Tokens" class="img-fluid" style="width: 80px; height: 80px;">
             <div class="ms-3 text-center">
-                <strong>Cantidad: {{$cantidad_tokens}}</strong>
+                <strong>Cantidad: {{$cantidad_tokens}} tokens</strong>
                 <p>Precio: {{ $precio_tokens }}€</p>
                 <p>Vendedor: {{ $seller ? $seller->username : 'Truekly' }}</p>
             </div>
