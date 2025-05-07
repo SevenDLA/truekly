@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_seller_id')->constrained('users')->onDelete('cascade');
             $table->integer ('tokens');
             $table->integer ('price');
+            $table->char    ('status', 1);
             $table->timestamps();
         });
     }
