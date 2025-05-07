@@ -14,6 +14,7 @@
 @else
     <!-- Lista de servicios -->
     @foreach ($services as $service)
+    @if(!Auth::check() || (Auth::check() && $service->user_id != Auth::user()->id))
     <div id="SERVICE{{ $service->id }}" class="col-md-4 col-sm-6 mb-4 service-item"
         data-price="{{ $service->price }}"
         data-category="{{ $service->category }}"
@@ -41,6 +42,7 @@
             </div>
         </div>
     </div>
+    @endif
     @endforeach
 @endif
 
