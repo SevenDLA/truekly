@@ -12,4 +12,10 @@ class Offer extends Model
     {
         return $this->belongsTo(User::class, 'user_seller_id');
     }
+
+    const ESTADO = 
+    [
+        'E' => 'EN VENTA',
+        'V' => 'VENDIDO'
+    ];
 }
