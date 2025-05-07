@@ -80,4 +80,13 @@ class OfferController extends Controller
 
         return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller', 'offer'));
     }
+
+    public function actualizar_estado_oferta(Request $request)
+    {
+        $oferta = Offer::findOrFail($request->offerId);
+
+        $oferta->status = ($oferta->status == 'V') ? 'E' : 'V';
+
+        $oferta->save();
+    }
 }
