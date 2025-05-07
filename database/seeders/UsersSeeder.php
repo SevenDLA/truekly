@@ -35,7 +35,7 @@ class UsersSeeder extends Seeder
                 'name'          => 'Jane',
                 'surname'       => 'Smith',
                 'username'      => 'janesmith',
-                'email'         => 'janesmith@example.com',
+                'email'         => 'sb-lfwzw41141216@personal.example.com',
                 'sex'           => 'M',
                 'date_of_birth' => '1995-08-22',
                 'phone_number'  => '0987654321',
