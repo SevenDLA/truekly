@@ -17,28 +17,27 @@
             <div class="navbar-nav ms-auto me-auto">
                 <ul class="nav nav-underline d-flex align-items-center">
                     <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="#" data-bs-toggle="modal"
-                            data-bs-target="#nosotrosModal">
+                        <a class="nav-link fw-medium {{ Request::is('nosotros*') ? 'border-bottom border-3' : '' }}" href="#" data-bs-toggle="modal" data-bs-target="#nosotrosModal">
                             <i class="bi bi-info-circle me-1"></i>Nosotros
                         </a>
                     </li>
                     <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="/carrito">
+                        <a class="nav-link fw-medium {{ Request::is('carrito*') ? 'border-bottom border-3' : '' }}" href="/carrito">
                             <i class="bi bi-cart me-1"></i>Carrito
                         </a>
                     </li>
                     <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="/servicios">
+                        <a class="nav-link fw-medium {{ Request::is('servicios*') ? 'border-bottom border-3' : '' }}" href="/servicios">
                             <i class="bi bi-briefcase me-1"></i>Servicios
                         </a>
                     </li>
                     <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="/marketplace">
+                        <a class="nav-link fw-medium {{ Request::is('marketplace*') ? 'border-bottom border-3' : '' }}" href="/marketplace">
                             <i class="bi bi-coin me-1"></i>Marketplace
                         </a>
                     </li>
                     <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="/perfil">
+                        <a class="nav-link fw-medium {{ Request::is('perfil*') ? 'border-bottom border-3' : '' }}" href="/perfil">
                             <i class="bi bi-person me-1"></i>Perfil
                         </a>
                     </li>

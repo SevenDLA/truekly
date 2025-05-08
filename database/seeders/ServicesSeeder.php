@@ -25,7 +25,7 @@ class ServicesSeeder extends Seeder
                 'title'       => 'Web Development',
                 'description' => 'Professional website development using Laravel.',
                 'price'       => 500,
-                'stock'       => 10,
+                'stock'       => 2,
                 'category'    => 'Tecnología',
                 'image'       => 'images/default.jpg',  
                 'created_at'  => now(),

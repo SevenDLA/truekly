@@ -158,35 +158,47 @@
         <div id="ajaxList" class="row row-cols-1 row-cols-md-2 g-4 mt-2"></div>
     </div>
 
-  
-
     <script>
         const ESTADO = @json(App\Models\Compra::ESTADO);
         let userId = "{{ $current_logged_in_user->id }}";
-
-        console.log(ESTADO)
+        let currentView = 'services'; // Track current view
 
         $(document).ready(function() {
-            $('#everyService').click(function ()
-            {
-                loadUserServices('all')
+            function updateActiveButton(clickedButton) {
+                $('.btn').removeClass('active');
+                $(clickedButton).addClass('active');
+            }
+
+            $('#everyService').click(function () {
+                if (currentView === 'services') return;
+                currentView = 'services';
+                updateActiveButton(this);
+                loadUserServices('all');
             })
 
-            $('#boughtTest').click(function ()
-            {
-                console.log("clicked bought")
-                loadUserCompras("bought")
+            $('#boughtTest').click(function () {
+                if (currentView === 'bought') return;
+                currentView = 'bought';
+                updateActiveButton(this);
+                loadUserCompras("bought");
             })
 
-            $('#soldTest').click(function ()
-            {
-                loadUserCompras('sold')
+            $('#soldTest').click(function () {
+                if (currentView === 'sold') return;
+                currentView = 'sold';
+                updateActiveButton(this);
+                loadUserCompras('sold');
             })
 
-            $('#userOffers').click(function()
-            {
+            $('#userOffers').click(function() {
+                if (currentView === 'offers') return;
+                currentView = 'offers';
+                updateActiveButton(this);
                 getUserOffers();
             })
+            
+            // Mark initial button as active
+            $('#everyService').addClass('active');
 
             function getUserOffers()
             {
@@ -200,6 +212,13 @@
                     success: function(response)
                     {
                         console.log(response)
+
+                        if (response.length === 0) {
+                            $("#ajaxList").html(
+                                '<div class="col"><div class="alert alert-info">No hay ofertas disponibles.</div></div>'
+                            );
+                            return;
+                        }
 
                         response.forEach(function(oferta)
                         {
@@ -461,4 +480,11 @@
             });
         });
     </script>
+
+    <style>
+        .btn.active {
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+            transform: translateY(1px);
+        }
+    </style>
 @endsection

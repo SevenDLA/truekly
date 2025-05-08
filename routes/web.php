@@ -6,6 +6,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PayPalController;
+use App\Http\Controllers\CarritoController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -92,6 +93,7 @@ Route::get('/carrito', function () {
 });
 Route::post('/carrito/nuevo', [CompraController::class, 'crear_compra']);
 Route::post('/vaciar/carrito', [CompraController::class,'vaciar_carrito']);
+Route::post('/actualizar_cantidad_carrito', [CarritoController::class, 'actualizarCantidad'])->middleware('auth');
 
 //Compras
 Route::post('/usario/servicio/compras', [CompraController::class,'user_servicios']);

@@ -64,13 +64,11 @@ class OfferTest extends TestCase
     #[Test]
     public function it_can_list_all_offers()
     {
-        Offer::factory()->count(5)->create();
-
         $response = $this->get(route('offers.listado'));
 
         $response->assertStatus(200);
         $response->assertViewIs('marketplace');
         $response->assertViewHas('ofertas');
-        $this->assertGreaterThanOrEqual(1, $response->viewData('ofertas')->count());
+        $this->assertGreaterThanOrEqual(1, count($response->viewData('ofertas')));
     }
 }

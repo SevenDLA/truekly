@@ -21,7 +21,7 @@
             <!-- Imagen del servicio -->
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
-                    <img src="{{ asset($service->image ?? 'images/default.jpg') }}" 
+                    <img src="{{ $service->image ? asset('storage/' . $service->image) : asset('images/default.jpg') }}" 
                          alt="Imagen de {{ $service->title }}" 
                          class="card-img-top img-fluid" 
                          style="height: 400px; object-fit: cover;">

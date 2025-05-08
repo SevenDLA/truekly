@@ -1,81 +1,55 @@
-<nav class="navbar navbar-expand-lg p-2 p-md-3 sticky-top">
-    <div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-2 p-md-3">
+    <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="/">
-            <img src="{{ asset('images/truekly.png') }}" class="img-fluid logo" alt="Truekly" style="max-height: 40px;">
+            <img src="{{ asset('images/truekly.png') }}" class="img-fluid" alt="Truekly" style="max-height: 40px;">
         </a>
 
         <!-- Botón del menú móvil -->
-        <div class="d-flex align-items-center">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="bi bi-list text-white fs-2"></i>
-            </button>
-        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-list fs-4"></i>
+        </button>
 
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav ms-auto me-auto">
-                <ul class="nav nav-underline d-flex align-items-center">
-                    <!-- Users Link -->
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium" href="/admin">
-                            <i class="bi bi-house me-1"></i>Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item mx-1">
-                        <a href="{{ route('users.listado') }}"
-                            class="nav-link fw-medium @if (request()->routeIs('users.listado')) active @endif">
-                            <i class="bi bi-people me-1"></i>
-                            Usuarios
-                        </a>
-                    </li>
-                    <!-- Services Link -->
-                    <li class="nav-item mx-1">
-                        <a href="{{ route('services.admin.listado') }}"
-                            class="nav-link fw-medium @if (request()->routeIs('services.admin.listado')) active @endif">
-                            <i class="bi bi-briefcase me-1"></i>
-                            Servicios
-                        </a>
-                    </li>
-                </ul>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Menú principal -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-medium @if(request()->is('admin')) active @endif" href="/admin">
+                        <i class="bi bi-house me-1"></i>Inicio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium @if(request()->routeIs('users.listado')) active @endif" 
+                       href="{{ route('users.listado') }}">
+                        <i class="bi bi-people me-1"></i>Usuarios
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium @if(request()->routeIs('services.admin.listado')) active @endif" 
+                       href="{{ route('services.admin.listado') }}">
+                        <i class="bi bi-briefcase me-1"></i>Servicios
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Elementos de autenticación -->
+            <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
+                @guest
+                    <a class="btn btn-outline-light w-100 w-lg-auto" href="/login">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>
+                        <span class="d-none d-lg-inline">Iniciar sesión</span>
+                    </a>
+                @endguest
+                
+                @auth
+                    <button type="button" class="btn btn-outline-light w-100 w-lg-auto" 
+                            data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="bi bi-box-arrow-in-left me-1"></i>
+                        <span class="d-none d-lg-inline">Cerrar sesión ({{ Auth::user()->username }})</span>
+                    </button>
+                @endauth
             </div>
-
-            <!-- Formulario de búsqueda y login -->
-            @guest
-                <!-- Botón de login para escritorio -->
-                <div class="d-none d-lg-flex align-items-center mt-3 mt-lg-0">
-                    <a class="btn btn-login ms-2" href="/login">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>
-                        <span class="d-none d-md-inline">Iniciar sesión</span>
-                    </a>
-                </div>
-
-                <!-- Botón de login para móvil -->
-                <div class="d-lg-none mt-3 text-center">
-                    <a class="btn btn-login w-100" href="/login">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>
-                        Iniciar sesión
-                    </a>
-                </div>
-            @endguest
-
-            @auth
-                <!-- Cerrar sesión para escritorio -->
-                <div class="d-none d-lg-flex align-items-center mt-3 mt-lg-0">
-                    <button type="button" class="btn btn-login ms-2" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                        <i class="bi bi-box-arrow-in-left me-1"></i>
-                        <span class="d-none d-md-inline">Cerrar sesión (&#64;{{ Auth::user()->username }})</span>
-                    </button>
-                </div>
-
-                <!-- Cerrar sesión para móvil -->
-                <div class="d-lg-none mt-3 text-center">
-                    <button type="button" class="btn btn-login w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                        <i class="bi bi-box-arrow-in-left me-1"></i>
-                        Cerrar sesión (&#64;{{ Auth::user()->username }})
-                    </button>
-                </div>
-            @endauth
         </div>
     </div>
 </nav>

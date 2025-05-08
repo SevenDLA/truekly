@@ -21,3 +21,12 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Vistas compiladas
+/storage/framework/views/*.php
+
+# Carpetas temporales
+/z
+/temp
+*.tmp
+*.temp

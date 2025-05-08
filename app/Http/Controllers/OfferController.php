@@ -12,6 +12,33 @@ use Illuminate\Support\Facades\DB;
 
 class OfferController extends Controller
 {
+    public function index(Request $request)
+    {
+        $ofertas = Oferta::with('seller')
+            ->where('status', 'E')
+            ->when($request->maxPrice, function($query, $maxPrice) {
+                return $query->where('price', '<=', $maxPrice);
+            })
+            ->when($request->minTokens, function($query, $minTokens) {
+                return $query->where('tokens', '>=', $minTokens);
+            })
+            ->when($request->seller, function($query, $sellerId) {
+                return $query->where('seller_id', $sellerId);
+            })
+            ->get();
+    
+        if ($request->ajax()) {
+            return view('marketplace.partials.offer_list', [
+                'ofertas' => $ofertas,
+                'ESTADO' => Oferta::ESTADO
+            ])->render();
+        }
+    
+        return view('marketplace', [
+            'ofertas' => $ofertas,
+            'ESTADO' => Oferta::ESTADO
+        ]);
+    }
     //
     public function offer_formulario($id_oferta = '')
     {
