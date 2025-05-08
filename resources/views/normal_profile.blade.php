@@ -321,7 +321,7 @@
             {
                 $.ajax
                 ({
-                    url:'/usario/servicio/comprados',
+                    url:'/usario/servicio/compras',
                     type:'POST',
                     dataType:'json',
                     data:
@@ -345,6 +345,7 @@
                 })
             }
 
+            //Coger todos los servicios creados por el usuario
             loadUserServices('every');
 
             // Profile picture upload

@@ -96,7 +96,7 @@ Route::post('/carrito/nuevo', [CompraController::class, 'crear_compra']);
 Route::post('/vaciar/carrito', [CompraController::class,'vaciar_carrito']);
 
 //Compras
-Route::post('/usario/servicio/comprados', [CompraController::class,'user_servicios']);
+Route::post('/usario/servicio/compras', [CompraController::class,'user_servicios']);
 Route::post('/pagar/vendedor/{id_compra}', [CompraController::class,'pagar_seller']);
 
 //Ofertas
