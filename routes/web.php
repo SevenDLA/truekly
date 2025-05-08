@@ -19,8 +19,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// Test 
-Route::get('/test/{id_oferta}', [OfferController::class, 'ver_oferta']);
 
 // Perfil de usuario
 Route::middleware('auth')->group(function () {
@@ -109,10 +107,12 @@ Route::post('/actualizar/oferta/status', [OfferController::class, 'actualizar_es
 //Paypal
 Route::post('/send-paypal-payout', [PayPalController::class, 'sendPaypalPayout'])->name('send.paypal.payout');
 
-
+//Testing
 Route::get('/check-env', function () {
     return config('paypal.client_id');
 });
+Route::get('/test/{id_oferta}', [OfferController::class, 'ver_oferta']);
+
 
 // Autenticación
 require __DIR__.'/auth.php';
