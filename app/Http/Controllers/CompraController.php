@@ -15,9 +15,13 @@ class CompraController extends Controller
         $servicios = $request->input('servicios');
 
         $all_compra = [];
+        
         foreach ($servicios as $servicio) 
         {   
-            $compra_data = 
+            $quantity = session('carrito.' . $servicio['id'] . '.quantity', 1);
+            for ($i = 0; $i < $quantity; $i++)
+            {
+                $compra_data = 
             [
                 'user_buyer_id'  => auth()->id(),            
                 'user_seller_id' => $servicio['user_id'],   
@@ -37,6 +41,8 @@ class CompraController extends Controller
             $user_buyer = User::find(auth()->id());
             $user_buyer->tokens = $user_buyer->tokens - $service->price;
             $user_buyer->save();
+            }
+            
         }
 
         

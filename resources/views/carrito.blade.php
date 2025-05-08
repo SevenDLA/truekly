@@ -9,6 +9,7 @@
 
     $carrito = session('carrito', []);
 @endphp
+<button id="seeServices">See services</button>
 <div id="messageBox"></div>
 <div class="container py-5">
     <h2 class="mb-4"><i class="bi bi-cart me-1"></i> Mi Carrito</h2>
@@ -27,6 +28,7 @@
                 @php
                     $servicio = Service::find($id);
                     $quantity = $data['quantity'];
+                    $servicio->quantity = $quantity;
                 @endphp
 
                 <script>
@@ -155,6 +157,11 @@
             });
 
         }
+        
+        function see_service_list()
+        {
+            console.log(listado_servicios)
+        }
 
         function payForCart()
         {
@@ -266,6 +273,10 @@
 
         $('.delete-button').on('click', deleteServiceCart);
 
+
+        $('#seeServices').on('click', function() {
+            see_service_list()
+    });
     })
 </script>
 @endsection
