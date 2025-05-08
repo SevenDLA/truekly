@@ -20,11 +20,13 @@
             </script>
             @php
                 $precio_total = 0;
+                
             @endphp
 
-            @forelse ($carrito as $id => $precio)
+            @forelse ($carrito as $id => $data)
                 @php
                     $servicio = Service::find($id);
+                    $quantity = $data['quantity'];
                 @endphp
 
                 <script>
@@ -34,9 +36,8 @@
                 @if($servicio)
 
                     @php
-                        $precio_total += $servicio->price;
+                        $precio_total += $servicio->price * $quantity
                     @endphp
-
                     <div class="card mb-4 position-relative servicioEnCarro">
                         <!-- Delete Button -->
                         <button class="btn btn-outline-danger btn-sm rounded-circle d-flex align-items-center justify-content-center position-absolute top-0 end-0 m-2 delete-button" style="width: 30px; height: 30px;" data-id="{{ $servicio->id }}">
@@ -49,13 +50,13 @@
                             </div>
                             <div class="col-md-7">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-1">{{ $servicio->title }}</h5>
+                                    <h5 class="card-title mb-1">{{ $servicio->title }} x{{$quantity}}</h5>
                                     <p class="text-muted mb-2">{{ $servicio->description }}</p>
                                     <small class="text-secondary">ID: {{ $servicio->id }}</small>
                                 </div>
                             </div>
                             <div class="col-md-3 text-end pe-3">
-                                <p class="mb-1 fw-bold">{{ $servicio->price }} tokens</p>
+                                <p class="mb-1 fw-bold">{{ $servicio->price * $quantity}} tokens</p>
                                 <select class="form-select form-select-sm w-auto d-inline-block">
                                     <option selected>1</option>
                                     <option>2</option>
@@ -97,7 +98,9 @@
 </div>
 
 <script>
-    
+    const carrito = @json(session('carrito', []));
+    console.log(carrito)
+
     var currentUser = @json(auth()->user());
     console.log(currentUser.tokens)
 
@@ -135,7 +138,7 @@
                     listado_servicios.splice(index, 1);
                     console.log('servicio:', servicio);
 
-                    $('#precioTotal').html(precioActual - servicio.price)
+                    $('#precioTotal').html(precioActual - (servicio.price * response.quantity))
                     card.remove();
 
                     if ($('.servicioEnCarro').length === 0) 

@@ -259,6 +259,7 @@ class ServiceController extends Controller
     {
         $id_servicio = $request->input('id');
         $carrito = session('carrito', []);
+        $quantity = $carrito[$id_servicio]['quantity'];
 
         if (array_key_exists($id_servicio, $carrito)) {
             unset($carrito[$id_servicio]);
@@ -267,7 +268,8 @@ class ServiceController extends Controller
             return response()->json([
                 'exito' => 'Servicio eliminado del carrito',
                 'carrito' => $carrito,
-                'id_servicio'=> $id_servicio
+                'id_servicio'=> $id_servicio,
+                'quantity'   => $quantity
             ]);
         }
 
