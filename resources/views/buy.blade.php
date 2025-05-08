@@ -90,7 +90,8 @@
                         _token: "{{ csrf_token() }}", // Laravel CSRF token for security
                         receiverEmail: "{{ $seller ? $seller->email : 'default@example.com' }}",
                         amount: cantidad,  // Amount to send in EUR
-                        note: 'Gracias por tus tokens!'  // Optional note
+                        note: 'Gracias por tus tokens!',
+                        comision: 'Hay'
                     },
                     success: function(response) {
                         // Check if the payout was successful
@@ -108,7 +109,7 @@
                                 .show();
                             
                                 updateUserTokens()
-                                updateOfferStatus()
+                                
 
                             // Optionally, reload or perform other actions after a successful payout creation
                             setTimeout(function() {

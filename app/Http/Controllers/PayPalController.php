@@ -16,8 +16,17 @@ class PayPalController extends Controller
         $amount = $request->input('amount');
         $note = $request->input('note', 'Gracias!');  // Default note if none provided
         $comision = $request->input('comision');
-        $comision = $comision ? 0.1 : 0;
-        $total = $amount - ($amount * $comision);
+        if (!empty($comision))
+        {
+            $amount = str_replace(',', '.',$amount);
+            $amount = floatval($amount);
+            $total = $amount - ($amount * 0.1);
+        }
+        else
+        {
+            $total = $amount;
+        }
+
         // Paso 1: Coger Access Token
         $tokenResponse = Http::withBasicAuth(
             config('paypal.client_id'),
