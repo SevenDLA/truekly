@@ -10,6 +10,8 @@ use App\Models\Service;
 
 class CompraController extends Controller
 {
+
+    //Crear una compra por cada servicio del carrito.
     public function crear_compra(Request $request)
     {
         $servicios = $request->input('servicios');
@@ -53,12 +55,18 @@ class CompraController extends Controller
             ]);
     }
     
+
+
+
     public function vaciar_carrito()
     {
 
         session(['carrito' => []]);
 
     }
+
+
+
 
     function almacenar_compra($compra_data)
     {
@@ -72,6 +80,10 @@ class CompraController extends Controller
         $compra->save();
     }
 
+
+
+
+    //Conseguir todas las compras en la BBDD.
     function listado_compras()
     {
         $compras = Compra::all();
@@ -79,17 +91,19 @@ class CompraController extends Controller
         return view('test', compact('compras'));
     }
     
+
+    //Conseguir servicios del usuario ya sean los comprados o vendidos
     function user_servicios(Request $request)
     {
         $type = $request->type == 'bought' ? 'user_buyer_id' : 'user_seller_id';
     
-        $compras = Compra::with(['service', 'seller', 'buyer'])  // Eager load service, seller, and buyer
+        $compras = Compra::with(['service', 'seller', 'buyer'])  
             ->where($type, auth()->id())
             ->get();
     
         $compras->transform(function ($compra) 
         {
-            $estado = Compra::ESTADO[$compra->status] ?? 'Unknown';  // Map status to readable value
+            $estado = Compra::ESTADO[$compra->status] ?? 'Unknown';  
 
             $compra->service->compra_id = $compra->id;
             $compra->service->seller_name = $compra->seller->username;
@@ -102,6 +116,9 @@ class CompraController extends Controller
         return response()->json($compras);
     }
     
+    
+
+    //Pagar los tokens al vendedor
     public function pagar_seller($id_compra)
     {
         $compra = Compra::find($id_compra);
