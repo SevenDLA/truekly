@@ -109,7 +109,7 @@
                                 .show();
                             
                                 updateUserTokens()
-                                
+                                updateOfferStatus()
 
                             // Optionally, reload or perform other actions after a successful payout creation
                             setTimeout(function() {
