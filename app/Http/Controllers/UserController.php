@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 
 
@@ -50,10 +51,12 @@ class UserController extends Controller
 
     }
 
-    function eliminar($id)
+    public function eliminar($id)
     {
-        return $this->formulario('supr', $id);
-
+        $user = User::findOrFail($id);
+        $user->delete();
+    
+        return redirect()->route('users.listado')->with('success', 'Usuario eliminado correctamente');
     }
 
     function alta()

@@ -75,8 +75,8 @@ Route::middleware('auth')->group(function () {
 
 // Gestión de usuarios
 Route::get('/admin/user/{id}', [UserController::class, 'mostrar'])->name('users.mostrar');
-Route::get('/admin/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
-Route::get('/admin/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
+//Route::pu('/admin/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::delete('/admin/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
 Route::get('/users/nuevo', [UserController::class, 'alta'])->name('users.alta');
 Route::post('/users/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
 

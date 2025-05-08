@@ -77,16 +77,16 @@
     }
 
     paypal.Buttons({
-        onInit: function(data, actions) {
+        onInit: function (data, actions) {
             actions.disable(); // Initially disable the button
 
-            $('#tokens').on('input', function() {
+            $('#tokens').on('input', function () {
                 let tokens = parseFloat($(this).val());
-                let valid = validateErrors(tokens);
+                let valid = validateErrors(tokens); // Assumes validateErrors() is defined elsewhere
                 if (valid) {
                     actions.enable(); // Enable button if valid
                 } else {
-                    actions.disable(); // Disable button if invalid
+                    actions.disable();
                 }
             });
         },
@@ -169,9 +169,9 @@
             });
         },
 
-        onError: function(err) {
-            console.error("Error processing payout:", err);
-            alert("Payout failed. Please try again.");
+        onError: function (err) {
+            console.error("Error triggering payout:", err);
+            alert("Error inesperado. Intenta de nuevo.");
         }
     }).render('#paypal-button-container');
 </script>

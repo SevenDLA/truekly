@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string  ('password');                        // Crea una columna 'password'
             $table->integer ('tokens')              ->default(0);// Crea una columna 'tokens' con valor predeterminado 0
             $table->string  ('profile_pic')         ->nullable();  // Crea una columna 'profile_pic' que puede tener valor nulo.
+            $table->timestamp('email_verified_at')->nullable();  // Crea una columna 'email_verified_at' que puede tener valor nulo
+            $table->string  ('remember_token')->nullable();      // Crea una columna 'remember_token' que puede tener valor nulo
             $table->timestamps();                                // Crea las columnas 'created_at' y 'updated_at'
         });
 
