@@ -95,33 +95,47 @@ class CompraController extends Controller
     //Conseguir servicios del usuario ya sean los comprados o vendidos
     function user_servicios(Request $request)
     {
+        // Determine if we're fetching bought or sold services based on the request
         $type = $request->type == 'bought' ? 'user_buyer_id' : 'user_seller_id';
     
-        $compras = Compra::with(['service', 'seller', 'buyer'])  
+        // Fetch the purchases with their related models
+        $compras = Compra::with(['service', 'seller', 'buyer'])
             ->where($type, auth()->id())
             ->get();
     
-        $compras->transform(function ($compra) 
-        {
-            $estado = Compra::ESTADO[$compra->status] ?? 'Unknown';  
-
-            $compra->service->compra_id = $compra->id;
-            $compra->service->seller_name = $compra->seller->username;
-            $compra->service->buyer_name = $compra->buyer->username;
-            $compra->service->estado = $estado;
+        // Transform the collection, but ensure that each compra is handled separately
+        $compras->transform(function ($compra) {
+            // Get the estado from the predefined constants
+            $estado = Compra::ESTADO[$compra->status] ?? 'Unknown';  // Default to 'Unknown' if status is not found
+    
+            // Create a copy of the service to avoid shared reference issues
+            $service = $compra->service->replicate();  // `replicate()` creates a new instance of the service
             
-            return $compra->service;
+            // Modify the service for this specific compra
+            $service->compra_id = $compra->id;  // Set unique compra_id for this specific compra
+            $service->estado = $estado;
+    
+            // Handle missing seller/buyer gracefully
+            $service->seller_name = $compra->seller ? $compra->seller->username : 'Unknown Seller';
+            $service->buyer_name = $compra->buyer ? $compra->buyer->username : 'Unknown Buyer';
+            
+            // Return the transformed service for this compra
+            return $service;
         });
     
+        // Return the transformed services as a JSON response
         return response()->json($compras);
     }
     
     
 
+
     //Pagar los tokens al vendedor
     public function pagar_seller($id_compra)
     {
         $compra = Compra::find($id_compra);
+        $compra->status = 'T';
+        $compra->save();
         $servicio_vendido = Service::find($compra->service_id);
         $user_seller = User::find($compra->user_seller_id);
         $user_seller->tokens = $user_seller->tokens + $servicio_vendido->price;
