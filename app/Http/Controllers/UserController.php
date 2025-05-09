@@ -90,6 +90,7 @@ class UserController extends Controller
             'date_of_birth'   => ['required', 'date_format:d/m/Y'],
             'phone_number'    => ['required', 'numeric', 'digits:10'],
             'password'        => $request->id ? ['nullable', 'string', 'min:8'] : ['required', 'string', 'min:8'],
+            'tokens'          => ['numeric']
         ];
 
         // Custom error messages
@@ -110,6 +111,7 @@ class UserController extends Controller
             'phone_number.digits'       => 'El número de teléfono debe tener exactamente 10 dígitos.',
             'password.required'         => 'La contraseña es obligatoria.',
             'password.min'              => 'La contraseña debe tener al menos 8 caracteres.',
+            'tokens.numeric'            => 'Los tokens son numéricos.'
         ];
 
         // Validate the request data
@@ -126,6 +128,7 @@ class UserController extends Controller
         $user->sex           = $request->sex;
         $user->date_of_birth = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d'); // Format conversion
         $user->phone_number  = $request->phone_number;
+        $user->tokens        = $request->tokens;
 
         // Update password if provided
         if ($request->filled('password')) {
