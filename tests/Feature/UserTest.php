@@ -1,13 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
 use PHPUnit\Framework\Attributes\Test;
 
 class UserTest extends TestCase
 {
-    // use RefreshDatabase;
+    use \Tests\RefreshTestDatabase;
 
     #[Test]
     public function it_can_create_an_account()

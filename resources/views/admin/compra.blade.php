@@ -60,6 +60,7 @@
                                 <th>Comprado por</th>
                                 <th>Vendido por</th>
                                 <th>Precio</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                         
                             </tr>
@@ -72,6 +73,9 @@
                                     <td>{{ $compra->buyer->username }}</td>
                                     <td>{{ $compra->seller->username }}</td>
                                     <td>{{ $compra->service->price }} tokens</td>
+                                    <td style="color: {{ $compra->status == 'P' ? 'orange' : 'green' }}">
+                                        {{ $ESTADO[$compra->status] }}
+                                    </td>
                   
                                     <td>
                                         <div class="d-flex gap-2">

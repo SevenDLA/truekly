@@ -5,6 +5,11 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\UsersSeeder;
+use Database\Seeders\ServicesSeeder;
+use Database\Seeders\TokensSeeder;
+use Database\Seeders\OffersSeeder;
+use Database\Seeders\ComprasSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,7 +30,8 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class, 
             ServicesSeeder::class,
             TokensSeeder::class,
-            OffersSeeder::class
+            OffersSeeder::class,
+            ComprasSeeder::class
         ]);
 
         

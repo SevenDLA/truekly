@@ -41,6 +41,13 @@
                             <i class="bi bi-person me-1"></i>Perfil
                         </a>
                     </li>
+                    @hasrole('admin')
+                    <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium {{ Request::is('admin*') ? 'border-bottom border-3' : '' }}" href="/admin">
+                            <i class="bi bi-shield-lock me-1"></i>Admin
+                        </a>
+                    </li>
+                    @endrole
                 </ul>
             </div>
 

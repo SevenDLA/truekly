@@ -49,9 +49,19 @@
 
                         <!-- Botones de acción -->
                         <div class="d-grid gap-2 mt-auto">
-                            <button class="btn btn-primary btn-lg" id="anhadir_button">
-                                <i class="bi bi-cart-plus"></i> Añadir al carrito
-                            </button>
+                            @if(Auth::check() && Auth::user()->id == $service->user_id)
+                                <button class="btn btn-primary btn-lg" disabled>
+                                    <i class="bi bi-cart-plus"></i> Eres el creador
+                                </button>
+                            @elseif($service->stock > 0)
+                                <button class="btn btn-primary btn-lg" id="anhadir_button">
+                                    <i class="bi bi-cart-plus"></i> Añadir al carrito
+                                </button>
+                            @else
+                                <button class="btn btn-secondary btn-lg" disabled>
+                                    <i class="bi bi-cart-x"></i> Sin stock
+                                </button>
+                            @endif
                             <button class="btn btn-secondary btn-lg">
                                 <a href="/servicios"><i class="bi bi-arrow-left"></i> Seguir comprando</a>
                             </button>

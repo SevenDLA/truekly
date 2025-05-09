@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Offer;
 use App\Models\User;
@@ -8,7 +7,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 class OfferTest extends TestCase
 {
-    // use RefreshDatabase;
+    use \Tests\RefreshTestDatabase;
 
     #[Test]
     public function it_can_create_an_offer()

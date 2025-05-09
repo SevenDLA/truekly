@@ -60,6 +60,3 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 });
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-    })->middleware('auth');

@@ -14,11 +14,10 @@
 @else
     <!-- Lista de servicios -->
     @foreach ($services as $service)
-    @if(!Auth::check() || (Auth::check() && $service->user_id != Auth::user()->id))
     <div id="SERVICE{{ $service->id }}" class="col-md-4 col-sm-6 mb-4 service-item"
         data-price="{{ $service->price }}"
         data-category="{{ $service->category }}"
-        data-user="{{ $service->user->name }} {{ $service->user->surname }}">
+        data-user="{{ $service->user->username }}">
         
         <div class="card shadow-sm h-100">
             <div class="card-body text-center d-flex flex-column">
@@ -29,20 +28,25 @@
                 </div>
                 <p class="card-text text-muted flex-grow-1">{{ Str::limit($service->description, 80) }}</p>
                 <h6 class="text-success">Precio: ${{ $service->price }}</h6>
-                <small class="text-secondary">Publicado por: {{ $service->user->name }} {{ $service->user->surname }}</small>
+                <small class="text-secondary">Publicado por: {{ $service->user->username }}</small>
                 <div class="mt-3">
                     <a href="/servicio/ver/{{ $service->id }}" class="btn btn-primary btn-sm">Ver más</a>
                 </div>
             </div>
+            @if(Auth::check() && Auth::user()->id == $service->user_id)
             <div class="card-footer bg-light text-center">
-                @if(Auth::check() && Auth::user()->id == $service->user_id)
-                    <a href="/servicio/editar/{{ $service->id }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
-                    <a href="/servicio/eliminar/{{ $service->id }}" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</a>
-                @endif
-            </div>
+                    <a href="/servicio/{{ $service->id }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
+                    <form action="eliminar_servicio/{{ $service->id }}" method="POST" class="flex-fill">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro?')">
+                            <i class="bi bi-trash me-2"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            @endif
         </div>
     </div>
-    @endif
     @endforeach
 @endif
 

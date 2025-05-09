@@ -36,6 +36,7 @@
                                 Panel de administración
                             </a>
                         @endrole
+                        <p></p>
 
                     </div>
                 </div>
@@ -280,9 +281,10 @@
                                             <form action="/eliminar_servicio/${service.id}" method="POST" class="flex-fill">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <button type="submit" class="btn btn-secondary w-100">
+                                                <button type="submit" class="btn btn-secondary w-100" onclick="return confirm('¿Estás seguro?')">
                                                     <i class="fas fa-trash-alt me-2"></i>Eliminar
                                                 </button>
+                                                
                                             </form>`;
                                 break;
                         }
@@ -442,7 +444,7 @@
                 let userId = $(this).data('user-id');
 
                 if (!value) {
-                    alert('Por favor, introduce un valor válido.');
+                    
                     return;
                 }
 
@@ -459,9 +461,7 @@
                         if (response.success) {
                             $(`#user-${type}`).text(value);
                             $(`#${type}`).val('');
-                            alert('¡Información actualizada con éxito!');
                         } else {
-                            alert(response.error || 'Error al actualizar la información');
                         }
                     },
                     error: function(xhr) {

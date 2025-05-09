@@ -86,10 +86,10 @@ class CompraController extends Controller
     //Conseguir todas las compras en la BBDD.
     function listado_admin()
     {
-        
+        $ESTADO  = Compra::ESTADO;
         $compras = Compra::paginate(7);
 
-        return view('admin.compra', compact('compras'));
+        return view('admin.compra', compact('compras', 'ESTADO'));
     }
     
 
