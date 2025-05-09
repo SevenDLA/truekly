@@ -56,27 +56,23 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Compra</th>
-                                <th>Email</th>
-                                <th>Tokens</th>
+                                <th>Servicio</th>
+                                <th>Comprado por</th>
+                                <th>Vendido por</th>
+                                <th>Precio</th>
                                 <th>Acciones</th>
+                        
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($compras as $compra)
                                 <tr>
                                     <td>{{ $compra->id }}</td>
-                                    <td>{{ $compra->name }}</td>
-                                    <td>{{ $compra->surname }}</td>
-                                    <td>{{ $compra->compraname }}</td>
-                                    <td>{{ $compra->email }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $compra->tokens > 0 ? 'success' : 'secondary' }}">
-                                            {{ $compra->tokens }}
-                                        </span>
-                                    </td>
+                                    <td>{{ $compra->service->title }}</td>
+                                    <td>{{ $compra->buyer->username }}</td>
+                                    <td>{{ $compra->seller->username }}</td>
+                                    <td>{{ $compra->service->price }} tokens</td>
+                  
                                     <td>
                                         <div class="d-flex gap-2">
                                             <button class="btn btn-sm btn-info" title="Ver">
