@@ -116,5 +116,9 @@ Route::get('/check-env', function () {
 Route::get('/test/{id_oferta}', [OfferController::class, 'ver_oferta']);
 
 
+//Admin
+Route::get('/users/{user}', [UserController::class, 'mostrar'])->name('users.mostrar');
+Route::get('/users/{user}/edit', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::delete('/users/{user}', [UserController::class, 'eliminar'])->name('users.eliminar');
 // Autenticación
 require __DIR__.'/auth.php';
