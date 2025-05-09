@@ -233,6 +233,15 @@ class ServiceController extends Controller
         return view('services.edit_service', compact('servicio'));
     }
 
+    public function show($id)
+    {
+        // Find the service by its ID
+        $service = Service::findOrFail($id);
+
+        // Pass the service data to the view
+        return view('services.purchase', compact('service'));
+    }
+
     // Métodos AJAX
     public function getUserServicesAjax($userId)
     {

@@ -41,7 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/servicio/acceptar', [CompraController::class,'pagar_seller']);
 });
 
-Route::get('servicio/ver/{id_servicio}', [ServiceController::class,'mostrar']);
 
 // Compra y venta de tokens
 Route::middleware('auth')->group(function () {
@@ -102,6 +101,8 @@ Route::delete('/admin/user/{user}', [UserController::class, 'eliminar'])->name('
 // Servicios
 Route::get('/servicios', [ServiceController::class, 'listado'])->name('services.listado');
 Route::get('/servicio/{id}', [ServiceController::class, 'mostrar'])->name('services.mostrar');
+Route::get('/servicio/ver/{id}', [ServiceController::class, 'show'])->name('servicio.show');
+
 
 
 // Actualización de usuario vía AJAX
