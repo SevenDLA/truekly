@@ -64,67 +64,89 @@ class UserController extends Controller
         return $this->formulario();
     }
 
+
+    
     public function almacenar(Request $request)
     {
         if ($request->oper == 'supr') {
             // Eliminación de usuario
             $user = User::findOrFail($request->id);
             $user->delete();
-            
+
             return redirect()->route('users.listado')
-                   ->with('success', 'Usuario eliminado correctamente');
+                ->with('success', 'Usuario eliminado correctamente');
         }
-    
+
         // Validación de campos
         $validacion_sex = implode(',', array_keys(User::SEX));
-        
+
+        // Define validation rules
         $rules = [
-            'name'          => 'required|string|max:255',
-            'surname'       => 'required|string|max:255',
-            'username'      => 'required|string|unique:users,username,'.$request->id,
-            'email'         => 'required|email|unique:users,email,'.$request->id,
-            'sex'           => 'required|in:'.$validacion_sex,
-            'date_of_birth' => 'required|date',
-            'phone_number'  => 'required|string|max:20',
+            'name'            => ['required', 'string', 'max:255'],
+            'surname'         => ['required', 'string', 'max:255'],
+            'username'        => ['required', 'string', 'max:255', 'unique:users,username,' . $request->id],
+            'email'           => ['required', 'email', 'unique:users,email,' . $request->id],
+            'sex'             => ['required', 'in:' . $validacion_sex],
+            'date_of_birth'   => ['required', 'date_format:d/m/Y'],
+            'phone_number'    => ['required', 'numeric', 'digits:10'],
+            'password'        => $request->id ? ['nullable', 'string', 'min:8'] : ['required', 'string', 'min:8'],
         ];
-    
-        // Reglas condicionales para la contraseña
-        if (empty($request->id)) {
-            $rules['password'] = 'required|string|min:8';
-        } elseif ($request->filled('password')) {
-            $rules['password'] = 'string|min:8';
-        }
-    
-        // Validar los datos
-        $validatedData = $request->validate($rules);
-    
-        // Crear o actualizar usuario
+
+        // Custom error messages
+        $messages = [
+            'name.required'             => 'El nombre es obligatorio.',
+            'surname.required'          => 'Los apellidos son obligatorios.',
+            'username.required'         => 'El nombre de usuario es obligatorio.',
+            'username.unique'           => 'Este nombre de usuario ya está en uso.',
+            'email.required'            => 'El correo electrónico es obligatorio.',
+            'email.email'               => 'Introduce un correo electrónico válido.',
+            'email.unique'              => 'Este correo ya está registrado.',
+            'sex.required'              => 'El sexo es obligatorio.',
+            'sex.in'                    => 'Selecciona una opción válida para el sexo.',
+            'date_of_birth.required'    => 'La fecha de nacimiento es obligatoria.',
+            'date_of_birth.date_format' => 'La fecha de nacimiento debe tener el formato DD/MM/AAAA.',
+            'phone_number.required'     => 'El número de teléfono es obligatorio.',
+            'phone_number.numeric'      => 'El número de teléfono debe contener solo números.',
+            'phone_number.digits'       => 'El número de teléfono debe tener exactamente 10 dígitos.',
+            'password.required'         => 'La contraseña es obligatoria.',
+            'password.min'              => 'La contraseña debe tener al menos 8 caracteres.',
+        ];
+
+        // Validate the request data
+        $validatedData = $request->validate($rules, $messages);
+
+        // Create or update user
         $user = empty($request->id) ? new User() : User::findOrFail($request->id);
-    
+
+        // Update user fields
         $user->name          = $request->name;
         $user->surname       = $request->surname;
         $user->username      = $request->username;
         $user->email         = $request->email;
         $user->sex           = $request->sex;
-        $user->date_of_birth = $request->date_of_birth;
+        $user->date_of_birth = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d'); // Format conversion
         $user->phone_number  = $request->phone_number;
-    
-        // Actualizar contraseña solo si se proporcionó una nueva
+
+        // Update password if provided
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
-    
+
+        // Save the user
         $user->save();
-    
-        // Redirección según la operación
+
+        // Redirect after save based on the operation type (create or update)
         if ($request->oper == 'modi') {
             return redirect()->route('users.mostrar', $user->id)
-                   ->with('success', 'Usuario actualizado correctamente');
+                ->with('success', 'Usuario actualizado correctamente');
         }
-    
+
         return redirect()->route('users.listado')
-               ->with('success', 'Usuario '.($request->id ? 'actualizado' : 'creado').' correctamente');
+            ->with('success', 'Usuario ' . ($request->id ? 'actualizado' : 'creado') . ' correctamente');
     }
+
+
+
     function perfil ()
     {
         $current_logged_in_user = Auth::user();
