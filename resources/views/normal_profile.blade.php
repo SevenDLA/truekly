@@ -242,73 +242,75 @@
                 
             }
 
-            function addServices(services, option) {
-    $("#ajaxList").empty();
-    if (services.length === 0) {
-        $("#ajaxList").html(
-            '<div class="col"><div class="alert alert-info">No hay servicios disponibles.</div></div>'
-        );
-    } else {
-        services.forEach(service => {
-            let buttons;
-            let info;
+            function addServices(services, option) 
+            {
+                $("#ajaxList").empty();
+                if (services.length === 0) {
+                    $("#ajaxList").html(
+                        '<div class="col"><div class="alert alert-info">No hay servicios disponibles.</div></div>'
+                    );
+                } else {
+                    services.forEach(service => {
+                        let buttons;
+                        let info;
 
-            // Switch to determine the info and buttons based on the option
-            switch (option) {
-                case 'bought':
-                    info = `<span class="tag"><i class="fas fa-coins me-1"></i>Vendedor: ${service.seller_name}</span>`;
-                    buttons = `<form action="/pagar/vendedor/${service.compra_id}" method="POST" class="flex-fill">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <button type="submit" class="btn btn-success w-100">
-                                        Aceptar
-                                    </button>
-                                </form>
-                            <a class="btn btn-danger flex-fill">Rechazar</a>`;
-                    break;
-                case 'sold':
-                    info = ``;
-                    buttons = '';
-                    break;
-                default:
-                    info = `<span class="tag"><i class="fas fa-coins me-1"></i>${service.price} tokens</span>
-                            <span class="tag"><i class="fas fa-box me-1"></i>Stock: ${service.stock}</span>`;
-                    buttons = `<a class="btn btn-primary flex-fill" href="servicio/${service.id}">
-                                    <i class="fas fa-edit me-2"></i>Editar
-                                </a>
-                                <form action="/eliminar_servicio/${service.id}" method="POST" class="flex-fill">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <button type="submit" class="btn btn-secondary w-100">
-                                        <i class="fas fa-trash-alt me-2"></i>Eliminar
-                                    </button>
-                                </form>`;
-                    break;
-            }
+                        // Switch to determine the info and buttons based on the option
+                        switch (option) {
+                            case 'bought':
+                                info = `<span class="tag"><i class="fas fa-coins me-1"></i>Vendedor: ${service.seller_name}</span>`;
+                                buttons = `<form action="/pagar/vendedor/${service.compra_id}" method="POST" class="flex-fill">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-success w-100">
+                                                    Aceptar
+                                                </button>
+                                            </form>
+                                        `;
+                                break;
+                            case 'sold':
+                                info = `<span class="tag"><i class="fas fa-coins me-1"></i>Comprado por: ${service.buyer_name}</span>
+                                        <span class="tag"><i class="fas fa-coins me-1"></i>Estado: ${service.estado}</span>`;
+                                buttons = '';
+                                break;
+                            default:
+                                info = `<span class="tag"><i class="fas fa-coins me-1"></i>${service.price} tokens</span>
+                                        <span class="tag"><i class="fas fa-box me-1"></i>Stock: ${service.stock}</span>`;
+                                buttons = `<a class="btn btn-primary flex-fill" href="servicio/${service.id}">
+                                                <i class="fas fa-edit me-2"></i>Editar
+                                            </a>
+                                            <form action="/eliminar_servicio/${service.id}" method="POST" class="flex-fill">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-secondary w-100">
+                                                    <i class="fas fa-trash-alt me-2"></i>Eliminar
+                                                </button>
+                                            </form>`;
+                                break;
+                        }
 
-            // Now append the HTML content for the service
-            $("#ajaxList").append(`
-                <div class="col">
-                    <div class="profile-card h-100">
-                        <div class="d-flex flex-column h-100">
-                            <h5 class="highlight-text">${service.title}</h5>
-                            <img src="{{ asset('storage') }}/${service.image}" alt="Service Image" style="width: 500px; height: 250px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-                            <br>
-                            <p class="flex-grow-1">${service.description}</p>
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between mb-3">
-                                    ${info}
-                                </div>
-                                <div class="d-flex gap-2 mt-3">
-                                    ${buttons}
+                        // Now append the HTML content for the service
+                        $("#ajaxList").append(`
+                            <div class="col">
+                                <div class="profile-card h-100">
+                                    <div class="d-flex flex-column h-100">
+                                        <h5 class="highlight-text">${service.title}</h5>
+                                        <img src="{{ asset('storage') }}/${service.image}" alt="Service Image" style="width: 500px; height: 250px; object-fit: cover; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                        <br>
+                                        <p class="flex-grow-1">${service.description}</p>
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between mb-3">
+                                                ${info}
+                                            </div>
+                                            <div class="d-flex gap-2 mt-3">
+                                                ${buttons}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            `);
-        });
-    }
-}
+                        `);
+                    });
+                }
+            }
 
             
 
@@ -354,7 +356,7 @@
                     success: function(services)
                     {
                         console.log(services)
-                        addServices(services, 'bought')
+                        addServices(services, type)
                     },
                     error: function(xhr, status, error) 
                     {
