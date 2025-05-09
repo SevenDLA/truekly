@@ -213,7 +213,7 @@ Accede a la app en: **[http://127.0.0.1:8000](http://127.0.0.1:8000/)**
 
 - [Casos de Uso](https://github.com/user-attachments/files/20027562/CasoUsos.pdf)
 
-- [Tests Unitarios](https://github.com/user-attachments/files/20027564/DiagramaDeClases.pdf)
+- [Test Unitarios](https://github.com/user-attachments/files/20128250/Test.Unitarios.pdf)
 
 ---
 
