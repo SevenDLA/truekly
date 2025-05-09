@@ -74,10 +74,11 @@ Route::middleware('auth')->group(function () {
 
 // Gestión de usuarios
 Route::get('/admin/user/{id}', [UserController::class, 'mostrar'])->name('users.mostrar');
-//Route::pu('/admin/user/actualizar/{id}', [UserController::class, 'actualizar'])->name('users.actualizar');
-Route::delete('/admin/user/eliminar/{id}', [UserController::class, 'eliminar'])->name('users.eliminar');
-Route::get('/users/nuevo', [UserController::class, 'alta'])->name('users.alta');
-Route::post('/users/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
+Route::get('/admin/user/nuevo', [UserController::class, 'alta'])->name('users.alta');
+Route::post('admin/user/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
+Route::get('admin/users/{user}', [UserController::class, 'mostrar'])->name('users.mostrar');
+Route::get('/admin/{user}/edit', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::delete('/admin/user/{user}', [UserController::class, 'eliminar'])->name('users.eliminar');
 
 // Servicios
 Route::get('/servicios', [ServiceController::class, 'listado'])->name('services.listado');
@@ -115,10 +116,5 @@ Route::get('/check-env', function () {
 });
 Route::get('/test/{id_oferta}', [OfferController::class, 'ver_oferta']);
 
-
-//Admin
-Route::get('/users/{user}', [UserController::class, 'mostrar'])->name('users.mostrar');
-Route::get('/users/{user}/edit', [UserController::class, 'actualizar'])->name('users.actualizar');
-Route::delete('/users/{user}', [UserController::class, 'eliminar'])->name('users.eliminar');
 // Autenticación
 require __DIR__.'/auth.php';
