@@ -161,7 +161,7 @@ cd truekly
 4. Otorga permisos a los archivos:
 
 ```bash
-sudo chmod 777 -R ./*
+sudo chmod 755 -R ./*
 ```
 
 5. Instala las dependencias:
