@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/listado', [UserController::class, 'listado'])->name('users.listado');
     Route::get('/admin/servicios', [ServiceController::class, 'listado_admin'])->name('services.admin.listado');
+    Route::get('/admin/compras', [CompraController::class, 'listado_admin'])->name('admin.compras.listado');
 });
 
 // Gestión de usuarios
@@ -87,6 +88,16 @@ Route::post('admin/service/nuevo', [ServiceController::class, 'admin_almacenar']
 Route::get('admin/services/{service}', [ServiceController::class, 'mostrar'])->name('admin.services.mostrar');
 Route::get('/admin/service/{service}/edit', [ServiceController::class, 'actualizar'])->name('admin.services.actualizar');
 Route::delete('/admin/service/{service}', [ServiceController::class, 'eliminar'])->name('admin.service.eliminar');
+
+// Gestión de compras
+Route::get('/admin/user/{id}', [UserController::class, 'mostrar'])->name('users.mostrar');
+Route::get('/admin/user/nuevo', [UserController::class, 'alta'])->name('users.alta');
+Route::post('admin/user/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
+Route::get('admin/users/{user}', [UserController::class, 'mostrar'])->name('users.mostrar');
+Route::get('/admin/user/{user}/edit', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::delete('/admin/user/{user}', [UserController::class, 'eliminar'])->name('users.eliminar');
+
+
 
 // Servicios
 Route::get('/servicios', [ServiceController::class, 'listado'])->name('services.listado');
