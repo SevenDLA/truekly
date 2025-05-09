@@ -95,9 +95,10 @@
                                                 class="btn btn-sm btn-warning" title="Editar">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <form action="{{ route('users.eliminar', $user->id) }}" method="GET"
+                                            <form action="{{ route('users.eliminar', $user->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
+                                                @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger"
                                                     onclick="return confirm('¿Estás seguro?')">
                                                     <i class="bi bi-trash"></i>
