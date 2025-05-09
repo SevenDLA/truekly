@@ -120,4 +120,15 @@ class OfferController extends Controller
 
         $oferta->save();
     }
+
+    public function listado_admin()
+    {
+
+     
+        $ESTADO  = Offer::ESTADO;
+        $ofertas = Offer::paginate(7);
+
+        return view('admin.offer', compact('ofertas', 'ESTADO'));
+     
+    }
 }

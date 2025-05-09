@@ -37,6 +37,12 @@
                         <i class="bi bi-bag me-1"></i>Compras
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-medium @if(request()->routeIs('admin.offers.listado')) active @endif" 
+                       href="{{ route('admin.offers.listado') }}">
+                        <i class="bi bi-bag me-1"></i>Ofertas
+                    </a>
+                </li>
             </ul>
 
             <!-- Elementos de autenticación -->

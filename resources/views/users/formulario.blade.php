@@ -51,7 +51,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('users.almacenar') }}" method="POST">
+                    <form action="{{ route('users.almacenar') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="oper" value="{{ $oper }}" />
                         <input type="hidden" name="id" value="{{ $user->id }}" />
@@ -145,7 +145,7 @@
                                 
                                 <div class="mb-3">
                                     <label for="profile_pic" class="form-label">Foto de perfil</label>
-                                    <input {{ $disabled }} type="text" name="profile_pic" 
+                                    <input {{ $disabled }} type="file" name="profile_pic" 
                                            class="form-control @error('profile_pic') is-invalid @enderror" 
                                            id="profile_pic" value="{{ old('profile_pic', $user->profile_pic) }}">
                                     @error('profile_pic')<div class="invalid-feedback">{{ $message }}</div>@enderror

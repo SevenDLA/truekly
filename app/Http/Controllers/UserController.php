@@ -90,10 +90,10 @@ class UserController extends Controller
             'date_of_birth'   => ['required', 'date_format:d/m/Y'],
             'phone_number'    => ['required', 'numeric', 'digits:10'],
             'password'        => $request->id ? ['nullable', 'string', 'min:8'] : ['required', 'string', 'min:8'],
-            'tokens'          => ['numeric']
+            'tokens'          => ['numeric'],
+            'profile_pic'     => ['nullable', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
 
-        // Custom error messages
         $messages = [
             'name.required'             => 'El nombre es obligatorio.',
             'surname.required'          => 'Los apellidos son obligatorios.',
@@ -111,34 +111,59 @@ class UserController extends Controller
             'phone_number.digits'       => 'El número de teléfono debe tener exactamente 10 dígitos.',
             'password.required'         => 'La contraseña es obligatoria.',
             'password.min'              => 'La contraseña debe tener al menos 8 caracteres.',
-            'tokens.numeric'            => 'Los tokens son numéricos.'
+            'tokens.numeric'            => 'Los tokens son numéricos.',
+            'profile_pic.image'         => 'El archivo debe ser una imagen.',
+            'profile_pic.mimes'         => 'La imagen debe ser de tipo jpeg, png, jpg o gif.',
+            'profile_pic.max'           => 'La imagen no puede ser mayor a 2MB.',
         ];
 
-        // Validate the request data
         $validatedData = $request->validate($rules, $messages);
 
-        // Create or update user
+        // Crear o actualizar usuario
         $user = empty($request->id) ? new User() : User::findOrFail($request->id);
 
-        // Update user fields
         $user->name          = $request->name;
         $user->surname       = $request->surname;
         $user->username      = $request->username;
         $user->email         = $request->email;
         $user->sex           = $request->sex;
-        $user->date_of_birth = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d'); // Format conversion
+        $user->date_of_birth = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d');
         $user->phone_number  = $request->phone_number;
         $user->tokens        = $request->tokens;
 
-        // Update password if provided
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
 
-        // Save the user
+
+        // Subida de imagen (profile_pic)
+        try {
+            if ($request->hasFile('profile_pic')) {
+                $file = $request->file('profile_pic');
+
+                // Eliminar imagen anterior si existe
+                if (!empty($user->profile_pic) && Storage::disk('public')->exists($user->profile_pic)) {
+                    Log::info("Eliminando imagen anterior: " . $user->profile_pic);
+                    Storage::disk('public')->delete($user->profile_pic);
+                }
+
+                // Generar nombre único
+                $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+                // Guardar imagen
+                $path = $file->storeAs('profile_pictures', $filename, 'public');
+
+                Log::info("Imagen guardada correctamente en: " . $path);
+
+                // Actualizar campo en el usuario
+                $user->profile_pic = $path;
+            }
+        } catch (\Exception $e) {
+            Log::error("Error al subir la imagen: " . $e->getMessage());
+        }
+
         $user->save();
 
-        // Redirect after save based on the operation type (create or update)
         if ($request->oper == 'modi') {
             return redirect()->route('users.mostrar', $user->id)
                 ->with('success', 'Usuario actualizado correctamente');
@@ -147,6 +172,7 @@ class UserController extends Controller
         return redirect()->route('users.listado')
             ->with('success', 'Usuario ' . ($request->id ? 'actualizado' : 'creado') . ' correctamente');
     }
+
 
 
 
