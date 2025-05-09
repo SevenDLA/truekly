@@ -55,40 +55,32 @@
                     <table class="table table-striped table-hover table-bordered">
                         <thead class="table-dark">
                             <tr>
-                                <th>ID</th>
+                                <th>ID Compra</th>
+                                <th>ID Servicio</th>
                                 <th>Servicio</th>
                                 <th>Comprado por</th>
                                 <th>Vendido por</th>
                                 <th>Precio</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                        
+                                <th>Fecha compra</th>
+                                <th>Estado</th>                        
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($compras as $compra)
                                 <tr>
                                     <td>{{ $compra->id }}</td>
+                                    <td>{{ $compra->service->id }}
                                     <td>{{ $compra->service->title }}</td>
                                     <td>{{ $compra->buyer->username }}</td>
                                     <td>{{ $compra->seller->username }}</td>
                                     <td>{{ $compra->service->price }} tokens</td>
+                                    <td>{{ $compra->created_at }}</td>
                                     <td style="color: {{ $compra->status == 'P' ? 'orange' : 'green' }}">
-                                        {{ $ESTADO[$compra->status] }}
-                                    </td>
-                  
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <button class="btn btn-sm btn-info" title="Ver">
-                                                <i class="bi bi-search"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-warning" title="Editar">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro?')">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
+                                        @if ($compra->status == 'P')
+                                            {{ $ESTADO[$compra->status] }}
+                                        @else
+                                            COMPLETADO EL {{ $compra->updated_at }}
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
