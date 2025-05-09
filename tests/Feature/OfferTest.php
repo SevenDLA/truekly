@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 use App\Models\Offer;
 use App\Models\User;
@@ -7,10 +8,10 @@ use PHPUnit\Framework\Attributes\Test;
 
 class OfferTest extends TestCase
 {
-    use \Tests\RefreshTestDatabase;
+    use DatabaseTransactions;
 
     #[Test]
-    public function it_can_create_an_offer()
+    public function puede_crear_una_oferta()
     {
         $user = User::factory()->create(['tokens' => 500]);
 
@@ -33,7 +34,7 @@ class OfferTest extends TestCase
     }
 
     #[Test]
-    public function it_can_edit_an_offer()
+    public function puede_editar_una_oferta()
     {
         $user = User::factory()->create(['tokens' => 500]);
         $offer = Offer::factory()->create([
@@ -61,10 +62,20 @@ class OfferTest extends TestCase
     }
 
     #[Test]
-    public function it_can_list_all_offers()
+    public function puede_listar_todas_las_ofertas()
     {
-        $response = $this->get(route('offers.listado'));
+        $user = User::factory()->create();
+        $this->actingAs($user); // Add authentication
 
+        // Create a test offer
+        Offer::factory()->create([
+            'user_seller_id' => $user->id,
+            'tokens' => 100,
+            'price' => 50,
+            'status' => 'P',
+        ]);
+
+        $response = $this->get(route('offers.listado'));
         $response->assertStatus(200);
         $response->assertViewIs('marketplace');
         $response->assertViewHas('ofertas');

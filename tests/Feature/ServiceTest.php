@@ -2,23 +2,24 @@
 
 use Tests\TestCase;
 use App\Models\Service;
-use App\Models\User;
+use App\Models\User; 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use PHPUnit\Framework\Attributes\Test;
 
 class ServiceTest extends TestCase
 {
-    use \Tests\RefreshTestDatabase;
+    use DatabaseTransactions;
 
     #[Test]
-    public function it_can_add_a_service()
+    public function puede_agregar_un_servicio()
     {
         $user = User::factory()->create();
 
         $this->actingAs($user);
 
         $serviceData = [
-            'title' => 'Test Service',
-            'description' => 'This is a test service.',
+            'title' => 'Servicio de Prueba',
+            'description' => 'Este es un servicio de prueba.',
             'price' => 100,
             'stock' => 10,
         ];
@@ -27,8 +28,8 @@ class ServiceTest extends TestCase
 
         $response->assertRedirect(route('profile.normal'));
         $this->assertDatabaseHas('services', [
-            'title' => 'Test Service',
-            'description' => 'This is a test service.',
+            'title' => 'Servicio de Prueba',
+            'description' => 'Este es un servicio de prueba.',
             'price' => 100,
             'stock' => 10,
             'user_id' => $user->id,
@@ -36,7 +37,7 @@ class ServiceTest extends TestCase
     }
 
     #[Test]
-    public function it_can_edit_a_service()
+    public function puede_editar_un_servicio()
     {
         $user = User::factory()->create();
         $service = Service::factory()->create(['user_id' => $user->id]);
@@ -44,8 +45,8 @@ class ServiceTest extends TestCase
         $this->actingAs($user);
 
         $updatedData = [
-            'title' => 'Updated Service',
-            'description' => 'This is an updated test service.',
+            'title' => 'Servicio Actualizado',
+            'description' => 'Este es un servicio de prueba actualizado.',
             'price' => 150,
             'stock' => 5,
         ];
@@ -55,15 +56,15 @@ class ServiceTest extends TestCase
         $response->assertRedirect(route('profile.normal'));
         $this->assertDatabaseHas('services', [
             'id' => $service->id,
-            'title' => 'Updated Service',
-            'description' => 'This is an updated test service.',
+            'title' => 'Servicio Actualizado',
+            'description' => 'Este es un servicio de prueba actualizado.',
             'price' => 150,
             'stock' => 5,
         ]);
     }
 
     #[Test]
-    public function it_can_delete_a_service()
+    public function puede_eliminar_un_servicio()
     {
         $user = User::factory()->create();
         $service = Service::factory()->create(['user_id' => $user->id]);
@@ -77,7 +78,7 @@ class ServiceTest extends TestCase
     }
 
     #[Test]
-    public function it_can_list_all_services()
+    public function puede_listar_todos_los_servicios()
     {
         $response = $this->get(route('services.listado'));
 

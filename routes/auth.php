@@ -18,22 +18,27 @@ Route::middleware('guest')->group(function () {
 
     Route::post('nuevo/registro', [RegisteredUserController::class, 'store'])
         ->name('enviar.registrarse');
+        
+    // Add a redirect for old register route
+    Route::get('register', function() {
+        return redirect('/registrarse');
+    });
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('olvidar-contrasena', [PasswordResetLinkController::class, 'create'])
+    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
-    Route::post('olvidar-contrasena', [PasswordResetLinkController::class, 'store'])
+    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
         ->name('password.email');
 
-    Route::get('cambiar-contrasena/{token}', [NewPasswordController::class, 'create'])
+    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');
 
-    Route::post('cambiar-contrasena', [NewPasswordController::class, 'store'])
+    Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
 });
 
@@ -49,10 +54,10 @@ Route::middleware('auth')->group(function () {
         ->middleware('throttle:6,1')
         ->name('verification.send');
 
-    Route::get('confirmar-contrasena', [ConfirmablePasswordController::class, 'show'])
+    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
 
-    Route::post('confirmar-contrasena', [ConfirmablePasswordController::class, 'store']);
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 

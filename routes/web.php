@@ -7,6 +7,7 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 use Illuminate\Support\Facades\Route;
 

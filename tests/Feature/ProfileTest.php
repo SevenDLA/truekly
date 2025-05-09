@@ -2,7 +2,7 @@
 
 use App\Models\User;
 
-test('profile page is displayed', function () {
+test('se muestra la página de perfil', function () {
     $user = User::factory()->create();
 
     $response = $this
@@ -12,14 +12,14 @@ test('profile page is displayed', function () {
     $response->assertOk();
 });
 
-test('profile information can be updated', function () {
+test('se puede actualizar la información del perfil', function () {
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
         ->patch('/profile', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Usuario Prueba',
+            'email' => 'unique.test.'.time().'@example.com',
         ]);
 
     $response
@@ -28,18 +28,18 @@ test('profile information can be updated', function () {
 
     $user->refresh();
 
-    $this->assertSame('Test User', $user->name);
-    $this->assertSame('test@example.com', $user->email);
+    $this->assertSame('Usuario Prueba', $user->name);
+    $this->assertSame('unique.test.'.time().'@example.com', $user->email);
     $this->assertNull($user->email_verified_at);
 });
 
-test('email verification status is unchanged when the email address is unchanged', function () {
+test('el estado de verificación de email permanece sin cambios cuando el email es el mismo', function () {
     $user = User::factory()->create();
 
     $response = $this
         ->actingAs($user)
         ->patch('/profile', [
-            'name' => 'Test User',
+            'name' => 'Usuario Prueba',
             'email' => $user->email,
         ]);
 
@@ -50,7 +50,7 @@ test('email verification status is unchanged when the email address is unchanged
     $this->assertNotNull($user->refresh()->email_verified_at);
 });
 
-test('user can delete their account', function () {
+test('el usuario puede eliminar su cuenta', function () {
     $user = User::factory()->create();
 
     $response = $this
@@ -67,7 +67,7 @@ test('user can delete their account', function () {
     $this->assertNull($user->fresh());
 });
 
-test('correct password must be provided to delete account', function () {
+test('se debe proporcionar la contraseña correcta para eliminar la cuenta', function () {
     $user = User::factory()->create();
 
     $response = $this
