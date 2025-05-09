@@ -77,12 +77,21 @@ Route::get('/admin/user/{id}', [UserController::class, 'mostrar'])->name('users.
 Route::get('/admin/user/nuevo', [UserController::class, 'alta'])->name('users.alta');
 Route::post('admin/user/nuevo', [UserController::class, 'almacenar'])->name('users.almacenar');
 Route::get('admin/users/{user}', [UserController::class, 'mostrar'])->name('users.mostrar');
-Route::get('/admin/{user}/edit', [UserController::class, 'actualizar'])->name('users.actualizar');
+Route::get('/admin/user/{user}/edit', [UserController::class, 'actualizar'])->name('users.actualizar');
 Route::delete('/admin/user/{user}', [UserController::class, 'eliminar'])->name('users.eliminar');
+
+// Gestión de servicios
+Route::get('/admin/service/{id}', [ServiceController::class, 'admin_mostrar'])->name('admin.services.mostrar');
+Route::get('/admin/service/nuevo', [ServiceController::class, 'alta'])->name('admin.services.alta');
+Route::post('admin/service/nuevo', [ServiceController::class, 'admin_almacenar'])->name('admin.services.almacenar');
+Route::get('admin/services/{service}', [ServiceController::class, 'mostrar'])->name('admin.services.mostrar');
+Route::get('/admin/service/{service}/edit', [ServiceController::class, 'actualizar'])->name('admin.services.actualizar');
+Route::delete('/admin/service/{service}', [ServiceController::class, 'eliminar'])->name('admin.service.eliminar');
 
 // Servicios
 Route::get('/servicios', [ServiceController::class, 'listado'])->name('services.listado');
 Route::get('/servicio/{id}', [ServiceController::class, 'mostrar'])->name('services.mostrar');
+
 
 // Actualización de usuario vía AJAX
 Route::middleware('auth')->post('/update-user-info', [UserController::class, 'updateUserInfo']);

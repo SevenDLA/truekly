@@ -18,9 +18,6 @@
                     <i class="fas fa-cogs me-1"></i>
                     Listado de Servicios
                 </div>
-                <a href="{{ route('services.create') }}" class="btn btn-success">
-                    <i class="fas fa-plus me-1"></i> Nuevo Servicio
-                </a>
             </div>
         </div>
         <div class="card-body">
@@ -57,10 +54,11 @@
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>
-                            <th>Nombre</th>
+                            <th>Título</th>
+                            <th>Creador</th>
                             <th>Descripción</th>
+                            <th>Categoría</th>
                             <th>Precio</th>
-                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -68,23 +66,21 @@
                         @forelse ($services as $service)
                         <tr>
                             <td>{{ $service->id }}</td>
-                            <td>{{ $service->name }}</td>
+                            <td>{{ $service->title}}
+                            <td>{{ $service->user->username }}</td>
                             <td>{{ Str::limit($service->description, 50) }}</td>
-                            <td>{{ number_format($service->price, 2) }} €</td>
-                            <td>
-                                <span class="badge bg-{{ $service->is_active ? 'success' : 'secondary' }}">
-                                    {{ $service->is_active ? 'Activo' : 'Inactivo' }}
-                                </span>
-                            </td>
+                            <td>{{ $service->category }}</td>
+                            <td>{{ number_format($service->price, 2) }} tokens</td>
+                            
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('services.show', $service->id) }}" class="btn btn-sm btn-info" title="Ver">
+                                    <a href="{{ route('admin.services.mostrar', $service->id) }}" class="btn btn-sm btn-info" title="Ver">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('services.edit', $service->id) }}" class="btn btn-sm btn-warning" title="Editar">
+                                    <a href="{{ route('admin.services.actualizar', $service->id) }}" class="btn btn-sm btn-warning" title="Editar">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('admin.service.eliminar', $service->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este servicio?')">

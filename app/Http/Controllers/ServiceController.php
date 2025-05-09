@@ -49,11 +49,16 @@ class ServiceController extends Controller
 
      public function mostrar($id)
      {
+        return $this->formulario('cons', $id);
+     }
+
+     public function admin_mostrar($id)
+     {
          // Fetch the service by its ID
          $service = Service::findOrFail($id);
  
          // Pass the service to the view
-         return view('services.purchase', compact('service'));
+         return $this->formulario('cons', $id);
      }
 
     public function actualizar($id)
@@ -63,7 +68,10 @@ class ServiceController extends Controller
 
     public function eliminar($id)
     {
-        return $this->formulario('supr', $id);
+        $service = Service::findOrFail($id);
+        $service->delete();
+
+        return redirect()->route('services.admin.listado')->with('success', 'Usuario eliminado correctamente');
     }
 
     public function alta()
@@ -77,7 +85,7 @@ class ServiceController extends Controller
         return view('admin.service_form', compact('service', 'oper'));
     }
 
-    public function almacenar(Request $request)
+    public function admin_almacenar(Request $request)
     {
         if ($request->oper == 'supr') {
             $service = Service::findOrFail($request->id);
@@ -86,12 +94,33 @@ class ServiceController extends Controller
                    ->with('success', 'Servicio eliminado correctamente');
         }
 
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|string'
-        ]);
+        $rules = [
+            'title'       => ['required', 'string', 'max:75'],
+            'description' => ['required', 'string'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'stock'       => ['required', 'integer', 'min:0'],
+            'image'       => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ];
+
+        $messages = [
+            'title.required'         => 'El título es obligatorio.',
+            'title.string'           => 'El título debe ser una cadena de texto.',
+            'title.max'              => 'El título no debe exceder los 75 caracteres.',
+            'description.required'   => 'La descripción es obligatoria.',
+            'description.string'     => 'La descripción debe ser una cadena de texto.',
+            'price.required'         => 'El precio es obligatorio.',
+            'price.numeric'          => 'El precio debe ser un valor numérico.',
+            'price.min'              => 'El precio no puede ser negativo.',
+            'stock.required'         => 'El stock es obligatorio.',
+            'stock.integer'          => 'El stock debe ser un número entero.',
+            'stock.min'              => 'El stock no puede ser negativo.',
+            'image.image'            => 'El archivo debe ser una imagen.',
+            'image.mimes'            => 'La imagen debe ser de tipo jpeg, png, jpg o gif.',
+            'image.max'              => 'La imagen no puede ser mayor a 2MB.',
+        ];
+
+    // Validate the request
+    $validatedData = $request->validate($rules, $messages);
 
         $service = empty($request->id) ? new Service() : Service::findOrFail($request->id);
 
@@ -107,11 +136,11 @@ class ServiceController extends Controller
         $service->save();
 
         if ($request->oper == 'modi') {
-            return redirect()->route('services.mostrar', $service->id)
+            return redirect()->route('admin.services.mostrar', $service->id)
                    ->with('success', 'Servicio actualizado correctamente');
         }
 
-        return redirect()->route('services.listado')
+        return redirect()->route('services.admin.listado')
                ->with('success', 'Servicio '.($request->id ? 'actualizado' : 'creado').' correctamente');
     }
 
@@ -126,13 +155,36 @@ class ServiceController extends Controller
 
     public function almacenar_servicio(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        // Validation rules
+        $rules = [
+            'title'       => ['required', 'string', 'max:75'],
+            'description' => ['required', 'string'],
+            'price'       => ['required', 'numeric', 'min:0'],
+            'stock'       => ['required', 'integer', 'min:0'],
+            'image'       => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ];
+
+        // Custom error messages
+        $messages = [
+            'title.required'         => 'El título es obligatorio.',
+            'title.string'           => 'El título debe ser una cadena de texto.',
+            'title.max'              => 'El título no debe exceder los 75 caracteres.',
+            'description.required'   => 'La descripción es obligatoria.',
+            'description.string'     => 'La descripción debe ser una cadena de texto.',
+            'price.required'         => 'El precio es obligatorio.',
+            'price.numeric'          => 'El precio debe ser un valor numérico.',
+            'price.min'              => 'El precio no puede ser negativo.',
+            'stock.required'         => 'El stock es obligatorio.',
+            'stock.integer'          => 'El stock debe ser un número entero.',
+            'stock.min'              => 'El stock no puede ser negativo.',
+            'image.image'            => 'El archivo debe ser una imagen.',
+            'image.mimes'            => 'La imagen debe ser de tipo jpeg, png, jpg o gif.',
+            'image.max'              => 'La imagen no puede ser mayor a 2MB.',
+        ];
+
+        // Validate the request
+        $validatedData = $request->validate($rules, $messages);
+
 
         $service = empty($request->id_servicio) ? new Service() : Service::findOrFail($request->id_servicio);
 
