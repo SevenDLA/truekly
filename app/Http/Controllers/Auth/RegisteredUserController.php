@@ -40,7 +40,7 @@ class RegisteredUserController extends Controller
         'email'           => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
         'sex'             => ['required', 'in:' . $validacion_sex],
         'date_of_birth'   => ['required', 'date_format:Y-m-d'],
-        'phone_number'    => ['required', 'numeric', 'digits:10'],
+        'phone_number'    => ['required', 'numeric', 'digits:9'],
         'password'        => ['required', 'confirmed', Rules\Password::defaults()],
     ];
 
@@ -58,7 +58,7 @@ class RegisteredUserController extends Controller
         'date_of_birth.date_format' => 'La fecha de nacimiento debe tener el formato YYYY-MM-DD.',
         'phone_number.required'     => 'El número de teléfono es obligatorio.',
         'phone_number.numeric'      => 'El número de teléfono debe contener solo números.',
-        'phone_number.digits'       => 'El número de teléfono debe tener exactamente 10 dígitos.',
+        'phone_number.digits'       => 'El número de teléfono debe tener exactamente 9 dígitos.',
         'password.required'         => 'La contraseña es obligatoria.',
         'password.confirmed'        => 'La confirmación de la contraseña no coincide.',
         'password.min'              => 'La contraseña debe tener al menos 8 caracteres.'
