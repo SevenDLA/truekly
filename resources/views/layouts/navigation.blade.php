@@ -1,64 +1,45 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-2 p-md-3">
-    <div class="container-fluid">
+<nav class="navbar navbar-dark bg-dark sticky-top p-2 p-md-3">
+       <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="/">
             <img src="{{ asset('images/truekly.png') }}" class="img-fluid" alt="Truekly" style="max-height: 40px;">
         </a>
 
-        <!-- Botón del menú móvil -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
-                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="bi bi-list fs-4"></i>
-        </button>
+        <div class="d-flex flex-grow-1 justify-content-center">
+            <div class="navbar-nav ms-auto me-auto">
+                <ul class="nav nav-underline d-flex align-items-center flex-nowrap overflow-auto">
+                    <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium {{ Request::is('admin') ? 'border-bottom border-3' : '' }}" href="/admin">
+                            <i class="bi bi-house"></i><span class="d-none d-xl-inline ms-1">Inicio</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium {{ Request::routeIs('users.listado') ? 'border-bottom border-3' : '' }}" href="{{ route('users.listado') }}">
+                            <i class="bi bi-people"></i><span class="d-none d-xl-inline ms-1">Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium {{ Request::routeIs('services.admin.listado') ? 'border-bottom border-3' : '' }}" href="{{ route('services.admin.listado') }}">
+                            <i class="bi bi-briefcase"></i><span class="d-none d-xl-inline ms-1">Servicios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium {{ Request::routeIs('admin.compras.listado') ? 'border-bottom border-3' : '' }}" href="{{ route('admin.compras.listado') }}">
+                            <i class="bi bi-bag"></i><span class="d-none d-xl-inline ms-1">Compras</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mx-1">
+                        <a class="nav-link fw-medium {{ Request::routeIs('admin.offers.listado') ? 'border-bottom border-3' : '' }}" href="{{ route('admin.offers.listado') }}">
+                            <i class="bi bi-tag"></i><span class="d-none d-xl-inline ms-1">Ofertas</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <!-- Menú principal -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link fw-medium @if(request()->is('admin')) active @endif" href="/admin">
-                        <i class="bi bi-house me-1"></i>Inicio
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium @if(request()->routeIs('users.listado')) active @endif" 
-                       href="{{ route('users.listado') }}">
-                        <i class="bi bi-people me-1"></i>Usuarios
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium @if(request()->routeIs('services.admin.listado')) active @endif" 
-                       href="{{ route('services.admin.listado') }}">
-                        <i class="bi bi-briefcase me-1"></i>Servicios
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium @if(request()->routeIs('admin.compras.listado')) active @endif" 
-                       href="{{ route('admin.compras.listado') }}">
-                        <i class="bi bi-bag me-1"></i>Compras
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link fw-medium @if(request()->routeIs('admin.offers.listado')) active @endif" 
-                       href="{{ route('admin.offers.listado') }}">
-                        <i class="bi bi-bag me-1"></i>Ofertas
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Elementos de autenticación -->
-            <div class="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
-                @guest
-                    <a class="btn btn-outline-light w-100 w-lg-auto" href="/login">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>
-                        <span class="d-none d-lg-inline">Iniciar sesión</span>
-                    </a>
-                @endguest
-                
+            <div class="d-flex align-items-center">
                 @auth
-                    <button type="button" class="btn btn-outline-light w-100 w-lg-auto" 
-                            data-bs-toggle="modal" data-bs-target="#logoutModal">
-                        <i class="bi bi-box-arrow-in-left me-1"></i>
-                        <span class="d-none d-lg-inline">Cerrar sesión ({{ Auth::user()->username }})</span>
+                    <button type="button" class="btn btn-login btn-sm" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="bi bi-box-arrow-in-left"></i><span class="d-none d-xl-inline ms-1">Salir</span>
                     </button>
                 @endauth
             </div>

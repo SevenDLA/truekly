@@ -75,7 +75,7 @@ class OfferController extends Controller
         $oferta->price  = $validatedData['price'];
 
         if (empty($request->id_oferta)) {
-            $oferta->status = 'P'; // P = Pendiente
+            $oferta->status = 'E'; // P = Pendiente
         }
 
         $oferta->save();
@@ -115,9 +115,11 @@ class OfferController extends Controller
             $seller = null;
 
         if($id_oferta)
-            $offer = User::find($id_oferta);
+            $offer = Offer::find($id_oferta);
         else
             $offer = null;    
+
+
 
         return view('buy', compact('cantidad_tokens', 'precio_tokens', 'seller', 'offer'));
     }

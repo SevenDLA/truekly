@@ -1,92 +1,60 @@
-<nav class="navbar navbar-expand-lg p-2 p-md-3 sticky-top">
-    <div class="container">
+<nav class="navbar p-2 p-md-3 sticky-top">
+    <div class="container flex-column flex-lg-row align-items-center">
         <!-- Logo -->
         <a class="navbar-brand" href="/">
             <img src="{{ asset('images/truekly.png') }}" class="img-fluid logo" alt="Truekly" style="max-height: 40px;">
         </a>
 
-        <!-- Botón del menú móvil -->
-        <div class="d-flex align-items-center">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="bi bi-list text-white fs-2"></i>
-            </button>
+        <div class="d-flex flex-grow-1 justify-content-center">
+            <ul class="nav nav-underline d-flex align-items-center flex-nowrap overflow-auto">
+                <li class="nav-item">
+                    <a class="nav-link px-2 {{ Request::is('nosotros*') ? 'border-bottom border-3' : '' }}" href="#" data-bs-toggle="modal" data-bs-target="#nosotrosModal">
+                        <i class="bi bi-info-circle"></i><span class="d-none d-xl-inline ms-1">Nosotros</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 {{ Request::is('carrito*') ? 'border-bottom border-3' : '' }}" href="/carrito">
+                        <i class="bi bi-cart"></i><span class="d-none d-xl-inline ms-1">Carrito</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 {{ Request::is('servicios*') ? 'border-bottom border-3' : '' }}" href="/servicios">
+                        <i class="bi bi-briefcase"></i><span class="d-none d-xl-inline ms-1">Servicios</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 {{ Request::is('marketplace*') ? 'border-bottom border-3' : '' }}" href="/marketplace">
+                        <i class="bi bi-coin"></i><span class="d-none d-xl-inline ms-1">Marketplace</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link px-2 {{ Request::is('perfil*') ? 'border-bottom border-3' : '' }}" href="/perfil">
+                        <i class="bi bi-person"></i><span class="d-none d-xl-inline ms-1">Perfil</span>
+                    </a>
+                </li>
+                @hasrole('admin')
+                <li class="nav-item">
+                    <a class="nav-link px-2 {{ Request::is('admin*') ? 'border-bottom border-3' : '' }}" href="/admin">
+                        <i class="bi bi-shield-lock"></i><span class="d-none d-xl-inline ms-1">Admin</span>
+                    </a>
+                </li>
+                @endrole
+            </ul>
         </div>
 
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav ms-auto me-auto">
-                <ul class="nav nav-underline d-flex align-items-center">
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium {{ Request::is('nosotros*') ? 'border-bottom border-3' : '' }}" href="#" data-bs-toggle="modal" data-bs-target="#nosotrosModal">
-                            <i class="bi bi-info-circle me-1"></i>Nosotros
-                        </a>
-                    </li>
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium {{ Request::is('carrito*') ? 'border-bottom border-3' : '' }}" href="/carrito">
-                            <i class="bi bi-cart me-1"></i>Carrito
-                        </a>
-                    </li>
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium {{ Request::is('servicios*') ? 'border-bottom border-3' : '' }}" href="/servicios">
-                            <i class="bi bi-briefcase me-1"></i>Servicios
-                        </a>
-                    </li>
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium {{ Request::is('marketplace*') ? 'border-bottom border-3' : '' }}" href="/marketplace">
-                            <i class="bi bi-coin me-1"></i>Marketplace
-                        </a>
-                    </li>
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium {{ Request::is('perfil*') ? 'border-bottom border-3' : '' }}" href="/perfil">
-                            <i class="bi bi-person me-1"></i>Perfil
-                        </a>
-                    </li>
-                    @hasrole('admin')
-                    <li class="nav-item mx-1">
-                        <a class="nav-link fw-medium {{ Request::is('admin*') ? 'border-bottom border-3' : '' }}" href="/admin">
-                            <i class="bi bi-shield-lock me-1"></i>Admin
-                        </a>
-                    </li>
-                    @endrole
-                </ul>
-            </div>
-
-            <!-- Formulario de búsqueda y login -->
+        <!-- Formulario de búsqueda y login -->
+        <div class="d-flex align-items-center mt-3 mt-lg-0">
             @guest
                 <!-- Botón de login para escritorio -->
-                <div class="d-none d-lg-flex align-items-center mt-3 mt-lg-0">
-                    <a class="btn btn-login ms-2" href="/login">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>
-                        <span class="d-none d-md-inline">Iniciar sesión</span>
-                    </a>
-                </div>
-
-                <!-- Botón de login para móvil -->
-                <div class="d-lg-none mt-3 text-center">
-                    <a class="btn btn-login w-100" href="/login">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>
-                        Iniciar sesión
-                    </a>
-                </div>
-            @endguest
-
-            @auth
+                <a class="btn btn-login btn-sm ms-lg-2" href="/login">
+                    <i class="bi bi-box-arrow-in-right"></i><span class="d-none d-xl-inline ms-1">Iniciar sesión</span>
+                </a>
+            @else
                 <!-- Cerrar sesión para escritorio -->
-                <div class="d-none d-lg-flex align-items-center mt-3 mt-lg-0">
-                    <button type="button" class="btn btn-login ms-2" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                        <i class="bi bi-box-arrow-in-left me-1"></i>
-                        <span class="d-none d-md-inline">Cerrar sesión (&#64;{{ Auth::user()->username }})</span>
-                    </button>
-                </div>
-
-                <!-- Cerrar sesión para móvil -->
-                <div class="d-lg-none mt-3 text-center">
-                    <button type="button" class="btn btn-login w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                        <i class="bi bi-box-arrow-in-left me-1"></i>
-                        Cerrar sesión (&#64;{{ Auth::user()->username }})
-                    </button>
-                </div>
-            @endauth
+                <button type="button" class="btn btn-login btn-sm ms-lg-2" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="bi bi-box-arrow-in-left"></i><span class="d-none d-xl-inline ms-1">Salir</span>
+                </button>
+            @endguest
         </div>
     </div>
 </nav>

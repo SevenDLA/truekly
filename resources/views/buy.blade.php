@@ -174,12 +174,13 @@
     }
 
     function updateOfferStatus() {
+        console.log("Actualizando estado de la oferta.")
         $.ajax({
-            url: "{{ route('offer.status.update') }}",
+            url: "/actualizar/oferta/status",
             method: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',
-                offerId: "{{ $offer ? $offer->id : '' }}"
+                offerId: "{{ $offer->id }}"
             },
             success: function(response) {
                 console.log('Estado de la oferta actualizada con éxito');

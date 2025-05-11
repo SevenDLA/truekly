@@ -14,39 +14,41 @@
 @else
     <!-- Lista de servicios -->
     @foreach ($services as $service)
-    <div id="SERVICE{{ $service->id }}" class="col-md-4 col-sm-6 mb-4 service-item"
-        data-price="{{ $service->price }}"
-        data-category="{{ $service->category }}"
-        data-user="{{ $service->user->username }}">
+        @if($service->stock > 0)
+        <div id="SERVICE{{ $service->id }}" class="col-md-4 col-sm-6 mb-4 service-item"
+            data-price="{{ $service->price }}"
+            data-category="{{ $service->category }}"
+            data-user="{{ $service->user->username }}">
         
-        <div class="card shadow-sm h-100">
-            <div class="card-body text-center d-flex flex-column">
-                <h5 class="card-title text-primary">{{ $service->title }}</h5>
-                <div class="text-center p-3">
-                    <img src="{{ asset('storage/' . $service->image ?? 'images/default.jpg') }}" alt="Imagen del servicio"
-                         class="mx-auto d-block img-fluid" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-md);">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center d-flex flex-column">
+                    <h5 class="card-title text-primary">{{ $service->title }}</h5>
+                    <div class="text-center p-3">
+                        <img src="{{ asset('storage/' . $service->image ?? 'images/default.jpg') }}" alt="Imagen del servicio"
+                             class="mx-auto d-block img-fluid" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-md);">
+                    </div>
+                    <p class="card-text text-muted flex-grow-1">{{ Str::limit($service->description, 80) }}</p>
+                    <h6 class="text-success">Precio: {{ $service->price }} TokenSkills</h6>
+                    <small class="text-secondary">Publicado por: {{ $service->user->username }}</small>
+                    <div class="mt-3">
+                        <a href="/servicio/ver/{{ $service->id }}" class="btn btn-primary btn-sm">Ver más</a>
+                    </div>
                 </div>
-                <p class="card-text text-muted flex-grow-1">{{ Str::limit($service->description, 80) }}</p>
-                <h6 class="text-success">Precio: {{ $service->price }} TokenSkills</h6>
-                <small class="text-secondary">Publicado por: {{ $service->user->username }}</small>
-                <div class="mt-3">
-                    <a href="/servicio/ver/{{ $service->id }}" class="btn btn-primary btn-sm">Ver más</a>
-                </div>
+                @if(Auth::check() && Auth::user()->id == $service->user_id)
+                <div class="card-footer bg-light text-center">
+                        <a href="/servicio/{{ $service->id }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
+                        <form action="eliminar_servicio/{{ $service->id }}" method="POST" class="flex-fill">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro?')">
+                                <i class="bi bi-trash me-2"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                @endif
             </div>
-            @if(Auth::check() && Auth::user()->id == $service->user_id)
-            <div class="card-footer bg-light text-center">
-                    <a href="/servicio/{{ $service->id }}" class="btn btn-outline-warning btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
-                    <form action="eliminar_servicio/{{ $service->id }}" method="POST" class="flex-fill">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Estás seguro?')">
-                            <i class="bi bi-trash me-2"></i> Eliminar
-                        </button>
-                    </form>
-                </div>
-            @endif
         </div>
-    </div>
+        @endif
     @endforeach
 @endif
 

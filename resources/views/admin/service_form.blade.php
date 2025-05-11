@@ -104,7 +104,10 @@
                                 <input {{ $disabled }} type="file" name="image" class="form-control @error('image') is-invalid @enderror"
                                     id="image">
                                 @if ($service->image)
-                                    <img src="{{ asset('storage/' . $service->image) }}" alt="Imagen del servicio" class="mt-2" width="200">
+                                    <img src="{{ $service->image ? asset('storage/' . $service->image) : asset('images/default.jpg') }}" 
+                         alt="Imagen de {{ $service->title }}" 
+                         class="card-img-top img-fluid" 
+                         style="height: 400px; object-fit: cover;">
                                 @endif
                                 @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
@@ -113,7 +116,7 @@
                                 <!-- Contacto -->
                         <div class="mb-3">
                             <label for="contact" class="form-label fw-bold">Tipo de Contacto</label>
-                            <select name="contact" id="contact" class="form-select @error('contact') is-invalid @enderror">
+                            <select {{ $disabled }} name="contact" id="contact" class="form-select @error('contact') is-invalid @enderror">
                                 <option value="">Selecciona un tipo de contacto...</option>
                                 @foreach ($CONTACT as $clave_contact => $texto_contact)
                                     @if ($clave_contact != 'P')
@@ -134,7 +137,7 @@
                         <!--Categoría-->
                         <div class="mb-3">
                             <label for="category" class="form-label fw-bold">Categoría</label>
-                            <select name="category" id="category" class="form-select @error('category') is-invalid @enderror">
+                            <select {{ $disabled }} name="category" id="category" class="form-select @error('category') is-invalid @enderror">
                                 <option value="">Selecciona una categoría...</option>
                                 @foreach ($CATEGORY as $clave_category => $texto_category)
                                     @php
