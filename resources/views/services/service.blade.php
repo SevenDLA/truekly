@@ -18,7 +18,7 @@
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filterPrice">
-                                        <i class="bi bi-currency-dollar me-2"></i> Precio
+                                        <i class="bi bi-currency-dollar me-2"></i> TokenSkills
                                     </button>
                                 </h2>
                                 <div id="filterPrice" class="accordion-collapse collapse show" data-bs-parent="#filtersAccordion">
@@ -41,9 +41,9 @@
                                 </h2>
                                 <div id="filterCategory" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
                                     <div class="accordion-body">
-                                        @foreach(['Tecnología', 'Hogar', 'Educación', 'Salud'] as $category)
+                                        @foreach(\App\Models\Service::CATEGORY as $key => $category)
                                             <div class="form-check">
-                                                <input class="form-check-input category-filter" type="checkbox" value="{{ $category }}" 
+                                                <input class="form-check-input category-filter" type="checkbox" value="{{ $key }}" 
                                                        {{ in_array($category, $categories ?? []) ? 'checked' : '' }}>
                                                 <label class="form-check-label">{{ $category }}</label>
                                             </div>
@@ -65,7 +65,7 @@
                                             <option value="">Todos los usuarios</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" {{ $userFilter == $user->id ? 'selected' : '' }}>
-                                                    {{ $user->name }} {{ $user->surname }}
+                                                    {{ $user->username }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -100,10 +100,15 @@
             const maxPrice = priceRange.value;
             const selectedCategories = Array.from(categoryFilters)
                 .filter(cb => cb.checked)
-                .map(cb => cb.value);
-            const user = userFilter.value;
+                .map(cb => cb.value)
+                .filter(val => val); // Eliminar valores vacíos
 
-            const url = `/servicios?maxPrice=${maxPrice}&categories=${selectedCategories.join(',')}&user=${user}`;
+            const user = userFilter.value;
+            
+            // Solo incluir categorías si hay alguna seleccionada
+            const categoriesParam = selectedCategories.length > 0 ? selectedCategories.join(',') : '';
+            
+            const url = `/servicios?maxPrice=${maxPrice}${categoriesParam ? '&categories=' + categoriesParam : ''}${user ? '&user=' + user : ''}`;
 
             history.pushState(null, null, url);
 

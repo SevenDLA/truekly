@@ -27,7 +27,7 @@
                          class="mx-auto d-block img-fluid" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius-md);">
                 </div>
                 <p class="card-text text-muted flex-grow-1">{{ Str::limit($service->description, 80) }}</p>
-                <h6 class="text-success">Precio: ${{ $service->price }}</h6>
+                <h6 class="text-success">Precio: {{ $service->price }} TokenSkills</h6>
                 <small class="text-secondary">Publicado por: {{ $service->user->username }}</small>
                 <div class="mt-3">
                     <a href="/servicio/ver/{{ $service->id }}" class="btn btn-primary btn-sm">Ver más</a>

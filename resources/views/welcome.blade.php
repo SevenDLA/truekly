@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Truekly - Plataforma de intercambio de habilidades')
+@section('title', 'Truekly - Inicio')
 
 @section('content')
     <!-- Hero Section Mejorada -->
@@ -108,15 +108,23 @@
             </div>
 
             <div class="row g-4">
-                @foreach ([['nombre' => 'Lucas Pérez', 'tag' => 'Popular', 'emoji' => '⭐', 'desc' => 'Diseño interfaces atractivas y responsivas con React y Tailwind.', 'rating' => 4.9], ['nombre' => 'Ana Torres', 'tag' => 'Tendencia', 'emoji' => '🔥', 'desc' => 'Desarrollo backends seguros y escalables con Node.js y PostgreSQL.', 'rating' => 4.8], ['nombre' => 'Martín Rojas', 'tag' => 'Mejor valorado', 'emoji' => '🏆', 'desc' => 'Construyo webs completas, desde el frontend hasta el backend.', 'rating' => 5.0]] as $usuario)
+                @foreach ([['nombre' => 'RizosBeys', 'tag' => 'Popular', 'emoji' => '⭐', 'desc' => 'Diseño interfaces atractivas y responsivas con React y Tailwind.', 'rating' => 4.9], ['nombre' => 'tommillo', 'tag' => 'Tendencia', 'emoji' => '🔥', 'desc' => 'Desarrollo backends seguros y escalables con Node.js y PostgreSQL.', 'rating' => 4.8], ['nombre' => 'XxJaviChampionxX', 'tag' => 'Peor valorado', 'emoji' => '🏆', 'desc' => 'Construyo webs completas, desde el frontend hasta el backend.', 'rating' => 1.1]] as $usuario)
                     <div class="col-md-4">
                         <div class="profile-card h-100">
                             <span class="tag">
                                 {{ $usuario['emoji'] }} {{ $usuario['tag'] }}
                             </span>
                             <div class="profile-image">
-                                <img src="{{ asset('images/default_male_pfp.jpg') }}" alt="{{ $usuario['nombre'] }}"
+                                @if ($usuario['nombre'] === 'RizosBeys')
+                                    <img src="{{ asset('images/rizosbeys.webp') }}" alt="{{ $usuario['nombre'] }}"
                                     class="img-fluid">
+                                @elseif ($usuario['nombre'] === 'tommillo')
+                                    <img src="{{ asset('images/default_female_pfp.jpg') }}" alt="{{ $usuario['nombre'] }}"
+                                    class="img-fluid">
+                                @else
+                                    <img src="{{ asset('images/clown.png') }}" alt="{{ $usuario['nombre'] }}"
+                                    class="img-fluid">
+                                @endif
                             </div>
                             <h5 class="fs-5 fw-bold mb-2">{{ $usuario['nombre'] }}</h5>
 
@@ -194,8 +202,10 @@
                                     <div class="token-card mx-auto" style="max-width: 320px;">
                                         <div class="token-card-content">
                                             <div class="token-coin-container">
-                                                <img src="{{ asset('images/coin.png') }}" alt="TokenSkills"
-                                                    class="token-coin">
+                                                @for ($i = 0; $i < ceil($pack['tokens'] / 500); $i++)
+                                                    <img src="{{ asset('images/coin.png') }}" alt="TokenSkills"
+                                                        class="token-coin" style="width: 45px; height: 45px; filter: drop-shadow(0 0 {{ 2 + ($pack['tokens'] / 500) }}px gold);">
+                                                @endfor
                                             </div>
                                             <h5 class="fs-3 mb-2">{{ $pack['tokens'] }} TokenSkills</h5>
                                             <p class="fs-4 mb-3 fw-bold">{{ $pack['precio'] }}€</p>
@@ -253,12 +263,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="scroll-container d-flex gap-4 overflow-auto px-2 py-3">
-                        @foreach ([['tokens' => 100, 'precio' => 4.99], ['tokens' => 250, 'precio' => 9.99], ['tokens' => 500, 'precio' => 24.99], ['tokens' => 1000, 'precio' => 45.99], ['tokens' => 2000, 'precio' => 89.99]] as $pack)
+                        @foreach ([['tokens' => 100, 'precio' => 4.99], ['tokens' => 250, 'precio' => 9.99], ['tokens' => 500, 'precio' => 24.99], ['tokens' => 1000, 'precio' => 45.99], ['tokens' => 2000, 'precio' => 89.99]] as $index => $pack)
                             <div class="token-card bg-light text-dark p-4 rounded-4 shadow-sm"
                                 style="min-width: 260px; max-width: 260px;">
                                 <div class="text-center">
-                                    <img src="{{ asset('images/coin.png') }}" alt="Token" class="mb-3"
-                                        style="width: 50px;">
+                                    <div class="mb-3" style="height: 60px; position: relative;">
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, 45px); gap: 8px; justify-content: center;">
+                                            @for ($i = 0; $i < ceil($pack['tokens'] / 500); $i++)
+                                                <img src="{{ asset('images/coin.png') }}" alt="Token" 
+                                                    style="width: 45px; height: 45px; object-fit: contain; filter: drop-shadow(0 0 {{ 2 + ($pack['tokens'] / 500) }}px gold);">
+                                            @endfor
+                                        </div>
+                                    </div>
                                     <h5 class="fw-bold mb-1">{{ $pack['tokens'] }} TokenSkills</h5>
                                     <p class="fs-5 fw-semibold mb-1">{{ $pack['precio'] }}€</p>
                                     <p class="text-muted mb-3">{{ round(($pack['precio'] / $pack['tokens']) * 100, 2) }}€
@@ -292,10 +308,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
-    </div>
     </div>
 
 

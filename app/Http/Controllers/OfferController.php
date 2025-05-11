@@ -53,25 +53,35 @@ class OfferController extends Controller
         $user = auth()->user();
         $maxTokens = $user->tokens;
 
+        // Validación con mensajes personalizados
         $validatedData = $request->validate([
             'tokens' => ['required', 'numeric', 'min:0', 'max:' . $maxTokens],
-            'price' => ['required', 'numeric', 'min:0'],
+            'price'  => ['required', 'numeric', 'min:0'],
+        ], [
+            'tokens.required' => 'Debes ingresar la cantidad de TokenSkills.',
+            'tokens.numeric'  => 'La cantidad de TokenSkills debe ser un valor numérico.',
+            'tokens.min'      => 'Los tokens no pueden ser negativos.',
+            'tokens.max'      => 'No puedes ofrecer más tokens de los que tienes (' . $maxTokens . ').',
+
+            'price.required'  => 'El precio es obligatorio.',
+            'price.numeric'   => 'El precio debe ser un valor numérico.',
+            'price.min'       => 'El precio no puede ser negativo.',
         ]);
 
         $oferta = empty($request->id_oferta) ? new Offer() : Offer::findOrFail($request->id_oferta);
 
         $oferta->user_seller_id = Auth::id();
-        $oferta->tokens = $request->tokens;
-        $oferta->price = $request->price;
-        if (empty($request->id_oferta)) {
-            $oferta->status = 'P';
-        }
+        $oferta->tokens = $validatedData['tokens'];
+        $oferta->price  = $validatedData['price'];
 
+        if (empty($request->id_oferta)) {
+            $oferta->status = 'P'; // P = Pendiente
+        }
 
         $oferta->save();
 
         return redirect()->route('profile.normal')
-               ->with('success', 'Oferta '.($request->id_oferta ? 'actualizado' : 'creado').' correctamente');
+            ->with('success', 'Oferta ' . ($request->id_oferta ? 'actualizada' : 'creada') . ' correctamente');
     }
 
     public function coger_ofertas_usuario()
@@ -121,14 +131,41 @@ class OfferController extends Controller
         $oferta->save();
     }
 
-    public function listado_admin()
+    public function listado_admin(Request $request)
     {
+        $query = Offer::query();
 
-     
-        $ESTADO  = Offer::ESTADO;
-        $ofertas = Offer::paginate(7);
+        // Aplicar búsqueda
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('tokens', 'LIKE', "%{$search}%")
+                ->orWhere('price', 'LIKE', "%{$search}%")
+                ->orWhereHas('seller', function($q) use ($search) {
+                    $q->where('username', 'LIKE', "%{$search}%");
+                });
+            });
+        }
+
+        // Aplicar filtros
+        if ($request->filled('filter')) {
+            if ($request->filter === 'sold') {
+                $query->where('status', 'V');
+            } elseif ($request->filter === 'on_sale') {
+                $query->where('status', 'E');
+            }
+        }
+
+        $ofertas = $query->paginate(7);
+        $ESTADO = Offer::ESTADO;
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.offer', ['ofertas' => $ofertas, 'ESTADO' => $ESTADO, 'is_ajax' => true])->render(),
+                'pagination' => (string) $ofertas->appends(request()->query())->links()
+            ]);
+        }
 
         return view('admin.offer', compact('ofertas', 'ESTADO'));
-     
     }
 }

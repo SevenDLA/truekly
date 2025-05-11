@@ -5,7 +5,7 @@
                 <div class="card shadow-lg rounded-lg">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <img src="{{ asset('images/truekly.png') }}" class="img-fluid w-75" />
+                            <img src="{{ asset('images/truekly.png') }}" class="img-fluid w-50 mx-auto d-block" style="display: block; margin: 0 auto;" />
                         </div>
 
                         <form method="POST" action="{{ route('enviar.registrarse') }}">
@@ -78,7 +78,7 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                     <x-text-input id="date_of_birth" class="form-control" 
-                                                  type="text" name="date_of_birth" :value="old('date_of_birth')" placeholder="DD/MM/YYYY"  />
+                                                  type="text" name="date_of_birth" :value="old('date_of_birth')" placeholder="YYYY-MM-DD"  />
                                 </div>
                                 <x-input-error :messages="$errors->get('date_of_birth')" class="invalid-feedback" />
                             </div>
@@ -120,6 +120,19 @@
                                                   type="password" name="password"  />
                                 </div>
                                 <x-input-error :messages="$errors->get('password')" class="invalid-feedback" />
+                            </div>
+
+                            <!-- Confirmar Contraseña -->
+                            <div class="mb-4">
+                                <x-input-label for="password_confirmation" :value="__('Confirmar contraseña')" class="form-label" />
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <x-text-input id="password_confirmation" class="form-control" 
+                                                type="password" name="password_confirmation" />
+                                </div>
+                                <x-input-error :messages="$errors->get('password_confirmation')" class="invalid-feedback" />
                             </div>
 
                             <!-- Botón de envío -->

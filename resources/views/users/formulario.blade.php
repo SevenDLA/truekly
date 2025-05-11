@@ -123,7 +123,7 @@
                                     <label for="date_of_birth" class="form-label">Fecha de nacimiento</label>
                                     <input {{ $disabled }} type="text" name="date_of_birth" 
                                            class="form-control @error('date_of_birth') is-invalid @enderror"
-                                           id="date_of_birth" value="{{ old('date_of_birth', $user->date_of_birth->format('d/m/Y')) }}">
+                                           id="date_of_birth" value="{{ old('date_of_birth', $user->date_of_birth ? $user->date_of_birth->format('Y-m-d') : '') }}">
                                     @error('date_of_birth')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 </div>
 
@@ -136,7 +136,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="tokens" class="form-label">Tokens</label>
+                                    <label for="tokens" class="form-label">TokenSkills</label>
                                     <input {{ $disabled }} type="text" name="tokens" 
                                            class="form-control @error('tokens') is-invalid @enderror" 
                                            id="tokens" value="{{ old('tokens', $user->tokens) }}">

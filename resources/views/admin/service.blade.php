@@ -24,9 +24,10 @@
             <!-- Filtros y Búsqueda -->
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <form method="GET" action="{{ route('services.listado') }}">
+                    <form method="GET" action="{{ route('services.admin.listado') }}">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Buscar servicios..." value="{{ request('search') }}">
+                            <input type="text" id="search-input" name="search" class="form-control" 
+                                   placeholder="Buscar servicios..." value="{{ request('search') }}">
                             <button class="btn btn-primary" type="submit">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -35,21 +36,26 @@
                 </div>
                 <div class="col-md-6 text-end">
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-filter me-1"></i> Filtros
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="{{ route('services.listado', ['filter' => 'active']) }}">Activos</a></li>
-                            <li><a class="dropdown-item" href="{{ route('services.listado', ['filter' => 'inactive']) }}">Inactivos</a></li>
+                            <li><a class="dropdown-item filter-btn" 
+                                  href="{{ route('services.admin.listado', ['filter' => 'high_price']) }}"
+                                  data-filter="high_price">Precio Alto (>50)</a></li>
+                            <li><a class="dropdown-item filter-btn" 
+                                  href="{{ route('services.admin.listado', ['filter' => 'low_price']) }}"
+                                  data-filter="low_price">Precio Bajo (<50)</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ route('services.listado') }}">Todos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('services.admin.listado') }}">Todos</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <!-- Tabla de Servicios -->
-            <div class="table-responsive">
+            <div class="table-responsive" id="services-table-container">
                 <table class="table table-striped table-hover table-bordered">
                     <thead class="table-dark">
                         <tr>
@@ -58,7 +64,7 @@
                             <th>Creador</th>
                             <th>Descripción</th>
                             <th>Categoría</th>
-                            <th>Precio</th>
+                            <th>Precio (TokenSkills)</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -69,8 +75,8 @@
                             <td>{{ $service->title}}
                             <td>{{ $service->user->username }}</td>
                             <td>{{ Str::limit($service->description, 50) }}</td>
-                            <td>{{ $service->category }}</td>
-                            <td>{{ number_format($service->price, 2) }} tokens</td>
+                            <td>{{ $CATEGORY[$service->category]}}</td>
+                            <td>{{ number_format($service->price, 2) }}</td>
                             
                             <td>
                                 <div class="d-flex gap-2">
@@ -100,7 +106,7 @@
             </div>
 
             <!-- Paginación -->
-            <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="d-flex justify-content-between align-items-center mt-3" id="pagination-container">
                 <div class="showing-text">
                     Mostrando {{ $services->firstItem() }} a {{ $services->lastItem() }} de {{ $services->total() }} registros
                 </div>
@@ -111,6 +117,71 @@
         </div>
     </div>
 </div>
+
+<script>
+    let activeFilters = new Set();
+
+    function applyFilters() {
+        let searchValue = $('#search-input').val();
+        let filters = Array.from(activeFilters);
+
+        $.ajax({
+            url: '{{ route("services.admin.listado") }}',
+            type: 'GET',
+            data: {
+                search: searchValue,
+                filter: filters
+            },
+            success: function(response) {
+                $('#services-table-container').html(response.html);
+                $('#pagination-container').html(response.pagination);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        // Handle filter clicks
+        $('.filter-btn').click(function(e) {
+            e.preventDefault();
+            let filter = $(this).data('filter');
+
+            if (activeFilters.has(filter)) {
+                activeFilters.delete(filter);
+                $(this).removeClass('active');
+            } else {
+                activeFilters.add(filter);
+                $(this).addClass('active');
+            }
+
+            applyFilters();
+        });
+
+        // Handle search input
+        let searchTimeout;
+        $('#search-input').on('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(applyFilters, 300);
+        });
+
+        // Handle pagination clicks
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            let url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                data: {
+                    search: $('#search-input').val(),
+                    filter: Array.from(activeFilters)
+                },
+                success: function(response) {
+                    $('#services-table-container').html(response.html);
+                    $('#pagination-container').html(response.pagination);
+                }
+            });
+        });
+    });
+</script>
 
 <style>
     .table th {

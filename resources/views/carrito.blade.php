@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 text-end pe-3">
-                                <p class="mb-1 fw-bold highlight-text">{{ $servicio->price * $quantity}} tokens</p>
+                                <p class="mb-1 fw-bold highlight-text">{{ $servicio->price * $quantity}} TokenSkills</p>
                                 <div class="quantity-control d-inline-flex align-items-center">
                                     <button class="btn btn-sm btn-outline-secondary quantity-btn minus" data-id="{{ $servicio->id }}" data-price="{{ $servicio->price }}" data-stock="{{ $servicio->stock }}">-</button>
                                     <input type="number" class="form-control form-control-sm mx-2 quantity-input" 
@@ -94,7 +94,7 @@
             <div class="card p-4 shadow-sm" style="border-radius: var(--border-radius-lg); box-shadow: var(--box-shadow-md); border: 1px solid rgba(0, 0, 0, 0.05);">
                 <h5 class="mb-3" style="color: var(--text-dark);">Resumen del Pedido</h5>
                 <div class="mb-2 d-flex justify-content-between">
-                    <span>Subtotal (tokens)</span>
+                    <span>Subtotal (TokenSkills)</span>
                     <span id="precioTotal" class="highlight-text">{{ $precio_total }}</span>
                 </div>
                 <div class="mb-2 d-flex justify-content-between">
@@ -258,9 +258,10 @@
                     contentType: 'application/json',  
                     success: function(response) {  
                         console.log('Success:', response);  
-                        showMessage("Pago realizado", "success")
-                        $('#precioTotal').html(0)
-                        emptyCart()
+                        showMessage("Pago realizado", "success");
+                        $('#precioTotal').html(0);
+                        emptyCart();
+                        window.location.href = 'perfil';
                     },
                     error: function(xhr, status, error) {
                         console.error('Error:', error);  

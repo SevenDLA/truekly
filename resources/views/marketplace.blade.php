@@ -14,7 +14,7 @@
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card h-100 shadow-sm hover-shadow">
                                     <div class="card-header bg-light">
-                                        <h5 class="card-title mb-0">{{ $oferta->tokens }} Tokens</h5>
+                                        <h5 class="card-title mb-0">{{ $oferta->tokens }} TokenSkills</h5>
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-unstyled mb-4">
@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="card-footer bg-white border-top-0 text-center">
                                         <a class="btn btn-primary btn-lg w-100" href="/comprar/{{ $oferta->tokens }}/{{ $oferta->price }}/{{ $oferta->seller->id }}/{{ $oferta->id }}">
-                                            <i class="bi bi-cart-plus me-2"></i>Comprar tokens
+                                            <i class="bi bi-cart-plus me-2"></i>Comprar TokenSkills
                                         </a>
                                     </div>
                                 </div>

@@ -34,7 +34,7 @@
                     <div class="card-body d-flex flex-column">
                         <h2 class="card-title text-primary">{{ $service->title }}</h2>
                         <p class="card-text text-muted">{{ $service->short_description }}</p>
-                        <h4 class="text-success">Precio: ${{ number_format($service->price, 2) }}</h4>
+                        <h4 class="text-success">Precio: {{ number_format($service->price, 2) }} TokenSkills</h4>
                         <p class="text-secondary">Stock: 
                             <span class="{{ $service->stock>0 ? 'text-success' : 'text-danger' }}">
                                 {{ $service->stock>0 ? $service->stock : 'Agotado' }}
@@ -52,6 +52,10 @@
                             @if(Auth::check() && Auth::user()->id == $service->user_id)
                                 <button class="btn btn-primary btn-lg" disabled>
                                     <i class="bi bi-cart-plus"></i> Eres el creador
+                                </button>
+                            @elseif(!Auth::check())
+                                <button class="btn btn-warning btn-lg" disabled>
+                                    <i class="bi bi-person"></i> Inicia sesión para comprar
                                 </button>
                             @elseif($service->stock > 0)
                                 <button class="btn btn-primary btn-lg" id="anhadir_button">

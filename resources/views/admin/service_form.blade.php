@@ -83,7 +83,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="price" class="form-label">Precio</label>
+                                <label for="price" class="form-label">TokenSkills</label>
                                 <input {{ $disabled }} type="number" name="price" class="form-control @error('price') is-invalid @enderror"
                                     id="price" value="{{ old('price', $service->price) }}">
                                 @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -94,13 +94,6 @@
                                 <input {{ $disabled }} type="number" name="stock" class="form-control @error('stock') is-invalid @enderror"
                                     id="stock" value="{{ old('stock', $service->stock) }}">
                                 @error('stock')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="category" class="form-label">Categoría</label>
-                                <input {{ $disabled }} type="text" name="category" class="form-control @error('category') is-invalid @enderror"
-                                    id="category" value="{{ old('category', $service->category) }}">
-                                @error('category')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
                         </div>
 
@@ -115,6 +108,45 @@
                                 @endif
                                 @error('image')<div class="invalid-feedback">{{ $message }}</div>@enderror
                             </div>
+                        </div>
+
+                                <!-- Contacto -->
+                        <div class="mb-3">
+                            <label for="contact" class="form-label fw-bold">Tipo de Contacto</label>
+                            <select name="contact" id="contact" class="form-select @error('contact') is-invalid @enderror">
+                                <option value="">Selecciona un tipo de contacto...</option>
+                                @foreach ($CONTACT as $clave_contact => $texto_contact)
+                                    @if ($clave_contact != 'P')
+                                        @php
+                                            $selected = 
+                                                (old('contact') && old('contact') == $clave_contact) || 
+                                                ($service->contact && $service->contact == $clave_contact) 
+                                                    ? 'selected="selected"'
+                                                    : '';
+                                        @endphp
+                                        <option value="{{ $clave_contact }}" {{ $selected }}>{{ $texto_contact }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @error('contact')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+
+                        <!--Categoría-->
+                        <div class="mb-3">
+                            <label for="category" class="form-label fw-bold">Categoría</label>
+                            <select name="category" id="category" class="form-select @error('category') is-invalid @enderror">
+                                <option value="">Selecciona una categoría...</option>
+                                @foreach ($CATEGORY as $clave_category => $texto_category)
+                                    @php
+                                        $selected =
+                                            old('category') == $clave_category || $service->category == $clave_category
+                                                ? 'selected="selected"'
+                                                : '';
+                                    @endphp
+                                    <option value="{{ $clave_category }}" {{ $selected }}>{{ $texto_category }}</option>
+                                @endforeach
+                            </select>
+                            @error('category')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                     </div>
 

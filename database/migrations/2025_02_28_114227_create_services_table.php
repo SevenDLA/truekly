@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string      ('image')->nullable();
             $table->integer     ('stock');
             $table->string      ('category')->nullable();
+            $table->char        ('contact', 1);
             $table->timestamps();
         });
     }

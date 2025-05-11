@@ -25,6 +25,11 @@ class Service extends Model
         'TEC' => 'Tecnología'
     ];
 
+    const CONTACT = [
+        'P' => 'Teléfono',
+        'E' => 'Email',
+        'T' => 'Teléfono'
+    ];
 
     // In Service.php model
     public function compras()

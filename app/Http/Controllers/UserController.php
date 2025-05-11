@@ -19,15 +19,34 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {   
 
-    function listado()
+    function listado(Request $request)
     {
+        $query = User::query();
 
-        $users = User::paginate(7);
+        // Aplicar búsqueda de manera independiente
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('surname', 'LIKE', "%{$search}%")
+                  ->orWhere('username', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
 
-        $SEX     = User::SEX;
+        // Aplicar filtro de tokens de manera independiente
+        if ($request->filled('filter')) {
+            if ($request->filter === 'with_tokens') {
+                $query->where('tokens', '>', 0);
+            } elseif ($request->filter === 'without_tokens') {
+                $query->where('tokens', '=', 0);
+            }
+        }
 
+        $users = $query->paginate(7);
+        $SEX = User::SEX;
 
-        return view('admin.user',compact('users','SEX'));
+        return view('admin.user', compact('users', 'SEX'));
     }
 
     function formulario($oper='', $id='')
@@ -87,7 +106,7 @@ class UserController extends Controller
             'username'        => ['required', 'string', 'max:255', 'unique:users,username,' . $request->id],
             'email'           => ['required', 'email', 'unique:users,email,' . $request->id],
             'sex'             => ['required', 'in:' . $validacion_sex],
-            'date_of_birth'   => ['required', 'date_format:d/m/Y'],
+            'date_of_birth'   => ['required', 'date_format:Y-m-d'],
             'phone_number'    => ['required', 'numeric', 'digits:10'],
             'password'        => $request->id ? ['nullable', 'string', 'min:8'] : ['required', 'string', 'min:8'],
             'tokens'          => ['numeric'],
@@ -105,7 +124,7 @@ class UserController extends Controller
             'sex.required'              => 'El sexo es obligatorio.',
             'sex.in'                    => 'Selecciona una opción válida para el sexo.',
             'date_of_birth.required'    => 'La fecha de nacimiento es obligatoria.',
-            'date_of_birth.date_format' => 'La fecha de nacimiento debe tener el formato DD/MM/AAAA.',
+            'date_of_birth.date_format' => 'La fecha de nacimiento debe tener el formato AAAA-MM-DD.',
             'phone_number.required'     => 'El número de teléfono es obligatorio.',
             'phone_number.numeric'      => 'El número de teléfono debe contener solo números.',
             'phone_number.digits'       => 'El número de teléfono debe tener exactamente 10 dígitos.',
@@ -127,7 +146,7 @@ class UserController extends Controller
         $user->username      = $request->username;
         $user->email         = $request->email;
         $user->sex           = $request->sex;
-        $user->date_of_birth = \Carbon\Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d');
+        $user->date_of_birth = \Carbon\Carbon::createFromFormat('Y-m-d', $request->date_of_birth)->format('Y-m-d');
         $user->phone_number  = $request->phone_number;
         $user->tokens        = $request->tokens;
 
@@ -180,8 +199,10 @@ class UserController extends Controller
     {
         $current_logged_in_user = Auth::user();
         $SEX = User::SEX;
+        $CONTACT = Service::CONTACT;
+        $CATEGORY = Service::CATEGORY;
 
-        return view('normal_profile',compact('current_logged_in_user', 'SEX'));
+        return view('normal_profile',compact('current_logged_in_user', 'SEX', 'CONTACT', 'CATEGORY'));
     }
 
 

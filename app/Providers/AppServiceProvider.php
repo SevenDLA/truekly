@@ -1,26 +1,36 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\Router;
 use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+/**
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+
+
+* Registra cualquier servicio de la aplicación.
+*
+* @return void
+*/
+    public function register()
     {
-        //
-        Paginator::useBootstrap();
+    // Registrar servicios
+    }
+    /**
+    * Realiza las operaciones de arranque para la aplicación.
+    *
+    * @return void
+    */
+    
+    public function boot(Router $router)
+    {
+    // Nuevo
+    $router->aliasMiddleware('role',
+    \Spatie\Permission\Middleware\RoleMiddleware::class);
+
+    Paginator::useBootstrap();
     }
 }

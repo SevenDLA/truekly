@@ -4,6 +4,7 @@
 
 @section('content')
     @vite(['resources/js/profile.js'])
+    <div id="messageBox"></div>
     <div class="container mt-4">
         <div class="row">
             <!-- User Profile Section -->
@@ -84,14 +85,14 @@
                     <p><strong>Sexo:</strong> {{ $SEX[$current_logged_in_user->sex] }}</p>
 
                     <!-- Tokens -->
-                    <p><strong>Tokens:</strong> {{ $current_logged_in_user->tokens }}</p>
+                    <p><strong>TokenSkills:</strong> {{ $current_logged_in_user->tokens }}</p>
                     
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tokensModal">
-                            Comprar tokens
+                            Comprar TokenSkills
                         </button>
                         <a class="btn btn-secondary" href="/vender">
-                            Vender tokens
+                            Vender TokenSkills
                         </a>
                         <a href="/servicio/" class="btn btn-secondary">
                             Añadir servicio
@@ -103,50 +104,63 @@
 
             <!-- Token Modal -->
             <div class="modal fade" id="tokensModal" tabindex="-1" aria-labelledby="tokensModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title highlight-text" id="tokensModalLabel">Paquetes de TokenSkills</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="d-flex flex-nowrap overflow-auto pb-3">
-                                @foreach ([['tokens' => 100, 'precio' => 4.99], ['tokens' => 250, 'precio' => 9.99], ['tokens' => 500, 'precio' => 24.99], ['tokens' => 1000, 'precio' => 45.99], ['tokens' => 2000, 'precio' => 99.99]] as $pack)
-                                    <div class="flex-shrink-0 me-3" style="width: 250px;">
-                                        <div class="token-card p-3 text-center h-100">
-                                            <div class="token-coin-container mb-3">
-                                                <div class="position-relative"
-                                                    style="width: 100px; height: 100px; margin: 0 auto;">
-                                                    @php
-                                                        $numCoins = min(5, intval($pack['tokens'] / 100));
-                                                        $totalOffset = ($numCoins - 1) * 10;
-                                                    @endphp
-                                                    @for ($i = 0; $i < $numCoins; $i++)
-                                                        <img src="{{ asset('images/coin.png') }}" alt="Coins"
-                                                            class="token-coin position-absolute"
-                                                            style="
-                                                            max-height: 100px;
-                                                            transform: translateX({{ $i * 10 - $totalOffset / 2 }}px);
-                                                            z-index: {{ $i }};
-                                                        ">
-                                                    @endfor
-                                                </div>
-                                            </div>
-                                            <h5 class="text-black fs-5">{{ $pack['tokens'] }} TokenSkills</h5>
-                                            <p class="fs-6 mb-3 text-black">{{ $pack['precio'] }}€</p>
-                                            <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}"
-                                                class="btn btn-primary w-100">Comprar</a>
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content bg-white text-white">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title" id="tokensModalLabel">
+                        <i class="bi bi-currency-exchange me-2"></i> Elige tu paquete de TokenSkills
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="scroll-container d-flex gap-4 overflow-auto px-2 py-3">
+                        @foreach ([['tokens' => 100, 'precio' => 4.99], ['tokens' => 250, 'precio' => 9.99], ['tokens' => 500, 'precio' => 24.99], ['tokens' => 1000, 'precio' => 45.99], ['tokens' => 2000, 'precio' => 89.99]] as $index => $pack)
+                            <div class="token-card bg-light text-dark p-4 rounded-4 shadow-sm"
+                                style="min-width: 260px; max-width: 260px;">
+                                <div class="text-center">
+                                    <div class="mb-3" style="height: 60px; position: relative;">
+                                        <div style="display: grid; grid-template-columns: repeat(auto-fit, 45px); gap: 8px; justify-content: center;">
+                                            @for ($i = 0; $i < ceil($pack['tokens'] / 500); $i++)
+                                                <img src="{{ asset('images/coin.png') }}" alt="Token" 
+                                                    style="width: 45px; height: 45px; object-fit: contain; filter: drop-shadow(0 0 {{ 2 + ($pack['tokens'] / 500) }}px gold);">
+                                            @endfor
                                         </div>
                                     </div>
-                                @endforeach
+                                    <h5 class="fw-bold mb-1">{{ $pack['tokens'] }} TokenSkills</h5>
+                                    <p class="fs-5 fw-semibold mb-1">{{ $pack['precio'] }}€</p>
+                                    <p class="text-muted mb-3">{{ round(($pack['precio'] / $pack['tokens']) * 100, 2) }}€
+                                        por cada 100 tokens</p>
+                                    <a href="/comprar/{{ $pack['tokens'] }}/{{ $pack['precio'] }}"
+                                        class="btn btn-primary w-100">
+                                        <i class="bi bi-bag-check me-1"></i> Comprar
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        @endforeach
+                    </div>
+                    <div class="mt-4">
+                        <div class="alert alert-primary" role="alert">
+                            <div class="d-flex">
+                                <div class="me-3">
+                                    <i class="bi bi-info-circle-fill fs-3"></i>
+                                </div>
+                                <div>
+                                    <h6 class="alert-heading mb-1">¿Cómo funcionan los TokenSkills?</h6>
+                                    <p class="mb-0">Los TokenSkills son nuestra moneda virtual para intercambiar
+                                        servicios en la plataforma. Puedes usarlos para adquirir habilidades o recibirlos al
+                                        ofrecer las tuyas.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </div>
+        </div>
+    </div>
         </div>
     </div>
 
@@ -166,6 +180,72 @@
 
         $(document).ready(function() 
         {
+            // Obtener parámetro de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const vistaParam = urlParams.get('vista');
+
+            // Si viene de una compra, mostrar las compras
+            if (vistaParam === 'comprados') {
+                currentView = 'bought';
+                updateActiveButton('#boughtTest');
+                loadUserCompras('bought');
+            } else {
+                loadUserServices('every');
+            }
+
+
+             $(document).on('submit', '.pagar-form', function(e) 
+             {
+                e.preventDefault(); // Stop regular form submission
+
+                const form = $(this);
+                const actionUrl = form.attr('action');
+                const formData = form.serialize();
+
+                $.post(actionUrl, formData)
+                    .done(function(response) {
+                        showMessage('Servicio aceptado correctamente.', 'success');
+                    })
+                    .fail(function(xhr) {
+                        let msg = 'Error al realizar el pago.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            msg = xhr.responseJSON.message;
+                        }
+                        showMessage(msg, 'error');
+                    });
+            });
+
+            function showMessage(message='', type)
+            {
+                console.log(message, type)
+                let bgColor = type == "error" ? "#ef4444" : "#10b981";
+                $('#messageBox')
+                                .stop(true, true)
+                                .text(message) 
+                                .css({
+                                    'background-color': bgColor,
+                                    'color': 'white',
+                                    'font-weight': 'bold',
+                                    'text-align': 'center',
+                                    'padding': '10px',
+                                    'width': '100%',
+                                    'border-radius': 'var(--border-radius-md)',
+                                    'box-shadow': 'var(--box-shadow-sm)',
+                                    'position': 'fixed',
+                                    'top': '20px',
+                                    'left': '50%',
+                                    'transform': 'translateX(-50%)',
+                                    'z-index': '1050',
+                                    'max-width': '500px'
+                                })
+                                .fadeIn(500) 
+                                .delay(1000)
+                                .fadeOut(500, function () 
+                                {
+                                    location.reload(); 
+                                });
+            }
+
             function updateActiveButton(clickedButton) {
                 $('.btn').removeClass('active');
                 $(clickedButton).addClass('active');
@@ -252,20 +332,47 @@
                     );
                 } else {
                     services.forEach(service => {
-                        let buttons;
-                        let info;
-
+                        let buttons='';
+                        let info='';
+                        const CONTACT = @json($CONTACT);
+                        const CATEGORY = @json($CATEGORY);
                         // Switch to determine the info and buttons based on the option
                         switch (option) {
                             case 'bought':
-                                info = `<span class="tag"><i class="fas fa-coins me-1"></i>Vendedor: ${service.seller_name}</span>`;
-                                buttons = `<form action="/pagar/vendedor/${service.compra_id}" method="POST" class="flex-fill">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <button type="submit" class="btn btn-success w-100">
-                                                    Aceptar
-                                                </button>
-                                            </form>
+                                let contact = 
+                                info = `<span class="tag">Vendedor: ${service.seller_name}</span>
+                                        <span class="tag">Comprado el: ${service.compra_created_at} por ${service.price} TokenSkills</span>
+                                        <span class="tag">${CONTACT[service.contact]}:
                                         `;
+
+
+                                if(service.contact == 'E')
+                                {
+                                    info += `${service.seller_email}`
+                                }
+                                else
+                                {
+                                    info += `${service.seller_phone}`
+                                }
+                                info += "</span>"
+
+
+                                buttons = `<form action="/pagar/vendedor/${service.compra_id}" method="POST" class="flex-fill pagar-form" data-id="${service.compra_id}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-success w-100">Aceptar</button>
+                                            </form>
+
+                                        `;
+                                if(service.estado == "TERMINADO")
+                                {
+                                    info += `<span class ="tag">Terminado el: ${service.compra_updated_at}</span>`
+                                    buttons = buttons.replace('<button ', '<button disabled ');
+                                    buttons = buttons.replace('Aceptar', 'Servicio ya terminado');
+                                }
+                                else
+                                {
+                                    info += `<span class ="tag">Pendiente por terminar</span>`
+                                }
                                 break;
                             case 'sold':
                                 info = `<span class="tag"><i class="fas fa-coins me-1"></i>Comprado por: ${service.buyer_name}</span>
@@ -273,8 +380,11 @@
                                 buttons = '';
                                 break;
                             default:
-                                info = `<span class="tag"><i class="fas fa-coins me-1"></i>${service.price} tokens</span>
-                                        <span class="tag"><i class="fas fa-box me-1"></i>Stock: ${service.stock}</span>`;
+                                info = `<span class="tag"> ${service.price} TokenSkills</span>
+                                        <span class="tag">Stock: ${service.stock}</span>
+                                        <span class="tag">Categoría: ${service.category}</span>
+                                        <span class = "tag">Tipo de contacto: ${CONTACT[service.contact]}</span>`;
+                                        
                                 buttons = `<a class="btn btn-primary flex-fill" href="servicio/${service.id}">
                                                 <i class="fas fa-edit me-2"></i>Editar
                                             </a>
@@ -299,7 +409,7 @@
                                         <br>
                                         <p class="flex-grow-1">${service.description}</p>
                                         <div class="mt-auto">
-                                            <div class="d-flex justify-content-between mb-3">
+                                            <div class="mb-3">
                                                 ${info}
                                             </div>
                                             <div class="d-flex gap-2 mt-3">
@@ -344,7 +454,7 @@
             {
                 $.ajax
                 ({
-                    url:'/usario/servicio/compras',
+                    url:'/usuario/servicio/compras',
                     type:'POST',
                     dataType:'json',
                     data:
@@ -413,7 +523,7 @@
                             $('.profile-image img').attr('src', response.image_url + '?t=' +
                                 new Date().getTime());
                             // Show success toast or alert
-                            alert("¡Foto de perfil actualizada con éxito!");
+                            showMessage('¡Foto de perfil actualizada con éxito!', 'success');
                         } else {
                             alert(response.error || "Error al subir la imagen");
                         }
@@ -475,6 +585,9 @@
                 });
             });
         });
+
+
+
     </script>
 
     <style>

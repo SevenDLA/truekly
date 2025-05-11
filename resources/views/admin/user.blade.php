@@ -18,9 +18,6 @@
                         <i class="fas fa-users me-1"></i>
                         Listado de Usuarios
                     </div>
-                    <a href="{{ route('users.alta') }}" class="btn btn-success">
-                        <i class="fas fa-plus me-1"></i> Nuevo Usuario
-                    </a>
                 </div>
             </div>
             <div class="card-body">
@@ -29,8 +26,8 @@
                     <div class="col-md-6">
                         <form method="GET" action="{{ route('users.listado') }}">
                             <div class="input-group">
-                                <input type="text" name="search" class="form-control" placeholder="Buscar usuarios..."
-                                    value="{{ request('search') }}">
+                                <input type="text" id="search-input" name="search" class="form-control"
+                                    placeholder="Buscar usuarios..." value="{{ request('search') }}">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="bi bi-search"></i>
                                 </button>
@@ -44,10 +41,12 @@
                                 <i class="fas fa-filter me-1"></i> Filtros
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item"
-                                        href="{{ route('users.listado', ['filter' => 'with_tokens']) }}">Con Tokens</a></li>
-                                <li><a class="dropdown-item"
-                                        href="{{ route('users.listado', ['filter' => 'without_tokens']) }}">Sin Tokens</a>
+                                <li><a class="dropdown-item filter-btn"
+                                        href="{{ route('users.listado', ['filter' => 'with_tokens']) }}"
+                                        data-filter="with_tokens">Con TokenSkills</a></li>
+                                <li><a class="dropdown-item filter-btn"
+                                        href="{{ route('users.listado', ['filter' => 'without_tokens']) }}"
+                                        data-filter="without_tokens">Sin TokenSkills</a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -59,7 +58,7 @@
                 </div>
 
                 <!-- Tabla de Usuarios -->
-                <div class="table-responsive">
+                <div class="table-responsive" id="users-table-container">
                     <table class="table table-striped table-hover table-bordered">
                         <thead class="table-dark">
                             <tr>
@@ -68,7 +67,7 @@
                                 <th>Apellido</th>
                                 <th>Usuario</th>
                                 <th>Email</th>
-                                <th>Tokens</th>
+                                <th>TokenSkills</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -117,7 +116,7 @@
                 </div>
 
                 <!-- Paginación -->
-                <div class="d-flex justify-content-between align-items-center mt-3">
+                <div class="d-flex justify-content-between align-items-center mt-3" id="pagination-container">
                     <div class="showing-text">
                         Mostrando {{ $users->firstItem() }} a {{ $users->lastItem() }} de {{ $users->total() }} registros
                     </div>
@@ -129,4 +128,67 @@
         </div>
     </div>
 
+    <script>
+        let activeFilters = new Set();
+
+        function applyFilters() {
+            let searchValue = $('#search-input').val();
+            let filters = Array.from(activeFilters);
+
+            $.ajax({
+                url: '{{ route("users.listado") }}',
+                type: 'GET',
+                data: {
+                    search: searchValue,
+                    filter: filters
+                },
+                success: function(response) {
+                    $('#users-table-container').html(response.html);
+                    $('#pagination-container').html(response.pagination);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            // Handle filter clicks
+            $('.filter-btn').click(function() {
+                let filter = $(this).data('filter');
+
+                if (activeFilters.has(filter)) {
+                    activeFilters.delete(filter);
+                    $(this).removeClass('active');
+                } else {
+                    activeFilters.add(filter);
+                    $(this).addClass('active');
+                }
+
+                applyFilters();
+            });
+
+            // Handle search input
+            let searchTimeout;
+            $('#search-input').on('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(applyFilters, 300);
+            });
+
+            // Handle pagination clicks
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                let url = $(this).attr('href');
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        search: $('#search-input').val(),
+                        filter: Array.from(activeFilters)
+                    },
+                    success: function(response) {
+                        $('#users-table-container').html(response.html);
+                        $('#pagination-container').html(response.pagination);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
