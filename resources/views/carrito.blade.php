@@ -47,7 +47,7 @@
 
                         <div class="row g-0 align-items-center">
                             <div class="col-md-2 text-center p-2">
-                                <img src="{{ asset($service->image ?? 'images/default.jpg') }}" class="img-fluid" alt="Service Image" style="border-radius: var(--border-radius-md); object-fit: cover; height: 80px; width: 100%;">
+                                <img src="{{ asset('storage/' . ($servicio->image ?? 'images/default.jpg')) }}" class="img-fluid" alt="Service Image" style="border-radius: var(--border-radius-md); object-fit: cover; height: 80px; width: 100%;">
                             </div>
                             <div class="col-md-7">
                                 <div class="card-body">

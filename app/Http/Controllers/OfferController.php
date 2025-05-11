@@ -168,4 +168,19 @@ class OfferController extends Controller
 
         return view('admin.offer', compact('ofertas', 'ESTADO'));
     }
+
+    public function eliminar_oferta()
+    {
+        $oferta = Offer::findOrFail($request->offerId);
+
+        try 
+        {
+            $oferta->delete();
+            return response()->json(['success' => true, 'message' => 'Oferta eliminada correctamente.']);
+        } 
+        catch (\Exception $e) 
+        {
+            return response()->json(['success' => false, 'message' => 'Error al eliminar la oferta.']);
+        }
+    }
 }

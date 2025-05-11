@@ -280,6 +280,33 @@
             })
             
 
+            function eliminarOferta(offerId) 
+            {
+                if (!confirm('¿Estás seguro de que quieres eliminar esta oferta?')) return;
+
+                $.ajax(
+                    {
+                    url: '/oferta/eliminar',
+                    type: 'DELETE',
+                    data: {
+                        offerId: offerId,
+                        _token: '{{ csrf_token() }}' // CSRF token for security
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            showMessage(response.message, "success")
+                            // Optionally remove the card from the DOM
+                            $('#oferta-' + offerId).remove();
+                        } else {
+                            showMessage(response.message, "error")
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('Error inesperado. Intenta de nuevo.');
+                    }
+                });
+            }
+
             function getUserOffers()
             {
                 $("#ajaxList").empty();
@@ -304,17 +331,25 @@
                         {
                             $("#ajaxList").append
                             (
-                                `<div class="col">
-                                        <div class="profile-card h-75 w-50">
-                                            <div class="d-flex flex-column h-100">
-                                                <h2> Tokens: ${oferta.tokens} </h2>
-                                                <h2> Precio: ${oferta.price} €  </h2>
-                                                <a class="btn btn-primary flex-fill" href="/oferta/${oferta.id}">
+                                `<div class="col-md-6 col-lg-4 mb-4" id="oferta-${oferta.id}">
+                                    <div class="card shadow rounded h-100 border-0">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div class="mb-3">
+                                                <h5 class="card-title fw-bold">Tokens: ${oferta.tokens}</h5>
+                                                <h5 class="card-subtitle fw-bold text-muted">Precio: ${oferta.price} €</h5>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-auto">
+                                                <a href="/oferta/${oferta.id}" class="btn btn-primary w-50">
                                                     <i class="fas fa-edit me-2"></i>Editar
                                                 </a>
+                                                <button id="btn-eliminar-${oferta.id}" class="btn btn-danger w-50">
+                                                    <i class="fas fa-trash-alt me-2"></i>Eliminar
+                                                </button>
                                             </div>
                                         </div>
-                                </div>`
+                                    </div>
+                                </div>
+                                `
                             )
                         })
                     }
@@ -322,6 +357,16 @@
                 })
                 
             }
+
+            $(document).ready(function () 
+            {
+                $('[id^=btn-eliminar-]').each(function () {
+                    const offerId = $(this).attr('id').split('-')[2];
+                    $(this).on('click', function () {
+                        eliminarOferta(offerId);
+                    });
+                });
+            });
 
             function addServices(services, option) 
             {
@@ -382,7 +427,7 @@
                             default:
                                 info = `<span class="tag"> ${service.price} TokenSkills</span>
                                         <span class="tag">Stock: ${service.stock}</span>
-                                        <span class="tag">Categoría: ${service.category}</span>
+                                        <span class="tag">Categoría: ${CATEGORY[service.category]}</span>
                                         <span class = "tag">Tipo de contacto: ${CONTACT[service.contact]}</span>`;
                                         
                                 buttons = `<a class="btn btn-primary flex-fill" href="servicio/${service.id}">

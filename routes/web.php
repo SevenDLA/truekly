@@ -121,6 +121,7 @@ Route::get('/usuario/ofertas', [OfferController::class, 'coger_ofertas_usuario']
 Route::get('/oferta/{id_oferta?}', [OfferController::class, 'offer_formulario']);
 Route::post('/nuevo_oferta', [OfferController::class, 'almacenar_offer'])->name('offer.store');
 Route::post('/actualizar/oferta/status', [OfferController::class, 'actualizar_estado_oferta'])->name('offer.status.update');
+Route::delete('/oferta/eliminar', [OfferController::class, 'eliminar_oferta'])->name('oferta.eliminar');
 
 
 //Paypal
